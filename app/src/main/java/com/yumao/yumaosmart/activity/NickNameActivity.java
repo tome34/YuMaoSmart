@@ -29,7 +29,7 @@ import okhttp3.Response;
 /**
  * Created by kk on 2017/3/7.
  */
-public class SweetNameActivity extends BaseItemActivity implements View.OnClickListener {
+public class NickNameActivity extends BaseItemActivity implements View.OnClickListener {
     @BindView(R.id.edit_sweetactivity)
     EditText mEditSweetactivity;
     @BindView(R.id.btn_sweetactivity_save)
@@ -88,7 +88,7 @@ public class SweetNameActivity extends BaseItemActivity implements View.OnClickL
 
             @Override
             public void onError(Call call, Exception e, int id) {
-                Toast.makeText(SweetNameActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NickNameActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
             }
 
             @Override

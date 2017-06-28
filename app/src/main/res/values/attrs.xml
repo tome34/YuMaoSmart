@@ -9,4 +9,13 @@
         <attr name="tvTextSize" format="dimension"/>
         <attr name="btnTextSize" format="dimension"/>
     </declare-styleable>
+
+    <!--我的资料自定义item-->
+    <declare-styleable name="MyMaterialItem">
+        <attr name="materialText" format="string"/>
+        <attr name="materialText2" format="string" />
+        <!--指定是否有图标>-->
+        <attr name="materialToggle" format="boolean"/>
+    </declare-styleable>
+
 </resources>

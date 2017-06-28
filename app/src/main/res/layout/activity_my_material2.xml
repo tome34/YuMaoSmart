@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yumao="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_my_material2"
     android:layout_width="match_parent"
@@ -8,12 +9,106 @@
     android:orientation="vertical"
     tools:context="com.yumao.yumaosmart.activity.MyMaterial2Activity">
 
-
-    <TextView
-        android:id="@+id/nihao"
+    <include layout="@layout/item_toolbar"/>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="nihao"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+    <include layout="@layout/item_material_touxiang"/>
 
+    <com.yumao.yumaosmart.widgit.MyMaterialItemView
+        android:id="@+id/activity_my_material_nick_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        yumao:materialText="昵称"
+        yumao:materialToggle="true">
+    </com.yumao.yumaosmart.widgit.MyMaterialItemView>
+
+    <com.yumao.yumaosmart.widgit.MyMaterialItemView
+        android:id="@+id/activity_my_material_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        yumao:materialText="用户名/手机号"
+        yumao:materialToggle="true">
+    </com.yumao.yumaosmart.widgit.MyMaterialItemView>
+
+    <com.yumao.yumaosmart.widgit.MyMaterialItemView
+        android:id="@+id/activity_my_material_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        yumao:materialText="我的收货地址"
+        yumao:materialToggle="true">
+    </com.yumao.yumaosmart.widgit.MyMaterialItemView>
+
+    <com.yumao.yumaosmart.widgit.MyMaterialItemView
+        android:id="@+id/activity_my_material_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        yumao:materialText="性别"
+        yumao:materialToggle="true">
+    </com.yumao.yumaosmart.widgit.MyMaterialItemView>
+
+    <com.yumao.yumaosmart.widgit.MyMaterialItemView
+        android:id="@+id/activity_my_material_data_of_birth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        yumao:materialText="生日"
+        yumao:materialToggle="true">
+    </com.yumao.yumaosmart.widgit.MyMaterialItemView>
+
+    <com.yumao.yumaosmart.widgit.MyMaterialItemView
+        android:id="@+id/activity_my_material_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        yumao:materialText="我的推荐码"
+        yumao:materialToggle="false">
+    </com.yumao.yumaosmart.widgit.MyMaterialItemView>
+
+    <com.yumao.yumaosmart.widgit.MyMaterialItemView
+        android:id="@+id/activity_my_material_real_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        yumao:materialText="实名认证"
+        yumao:materialToggle="true">
+    </com.yumao.yumaosmart.widgit.MyMaterialItemView>
+
+    <com.yumao.yumaosmart.widgit.MyMaterialItemView
+        android:id="@+id/activity_my_material_reset_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        yumao:materialText="重置密码"
+        yumao:materialToggle="true">
+    </com.yumao.yumaosmart.widgit.MyMaterialItemView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="0">
+    <Button
+        android:id="@+id/activity_my_material_button_back"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorRed"
+        android:textColor="#ffff"
+        android:textSize="20sp"
+        android:text="退出当前登录"/>
+    </LinearLayout>
 </LinearLayout>

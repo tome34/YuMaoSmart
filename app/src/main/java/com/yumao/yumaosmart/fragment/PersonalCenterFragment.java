@@ -21,16 +21,19 @@ import com.yumao.yumaosmart.adapter.PersonnalcenterAdapter;
 import com.yumao.yumaosmart.base.LoadingPager;
 import com.yumao.yumaosmart.bean.MyOrderlistBean;
 import com.yumao.yumaosmart.bean.PersonnalBean;
+import com.yumao.yumaosmart.callback.UserCallback;
 import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
 
 /**
  * Created by kk on 2017/2/24.
@@ -68,6 +71,8 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     private PersonnalBean mPersonnalBean;
     private View mRootView;
     private Intent mIntent;
+    private Boolean mLoginState;
+    private Boolean mIsCode;
 
     //    初始化监听
     @Override
@@ -90,7 +95,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
 
         mRvPersonalCenter.setLayoutManager(new GridLayoutManager(UiUtilities.getContex(), 4));
-        mPersonnalcenterAdapter = new PersonnalcenterAdapter(UiUtilities.getContex(), R.layout.item_personnal_rv, mData,getActivity());
+        mPersonnalcenterAdapter = new PersonnalcenterAdapter(UiUtilities.getContex(), R.layout.item_personnal_rv, mData, getActivity());
 
 
         mRvPersonalCenter.setAdapter(mPersonnalcenterAdapter);
@@ -101,23 +106,23 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     @Override
     protected void init() {
         mData = new ArrayList<>();
-        mPersonnalBean = new PersonnalBean("我的资料",String.valueOf(R.mipmap.personnal_my_material));
+        mPersonnalBean = new PersonnalBean("我的资料", String.valueOf(R.mipmap.personnal_my_material));
         mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("我的佣金",String.valueOf(R.mipmap.personnal_my_employree));
+        mPersonnalBean = new PersonnalBean("我的佣金", String.valueOf(R.mipmap.personnal_my_employree));
         mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("会员订单",String.valueOf(R.mipmap.personnalcenter_vip_orderlist));
+        mPersonnalBean = new PersonnalBean("会员订单", String.valueOf(R.mipmap.personnalcenter_vip_orderlist));
         mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("我的人气",String.valueOf(R.mipmap.personnal_my_populatrity));
+        mPersonnalBean = new PersonnalBean("我的人气", String.valueOf(R.mipmap.personnal_my_populatrity));
         mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("我的推广",String.valueOf(R.mipmap.personnal_center_my_spread));
+        mPersonnalBean = new PersonnalBean("我的推广", String.valueOf(R.mipmap.personnal_center_my_spread));
         mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("门店订单",String.valueOf(R.mipmap.personnal_stores_orderlistl));
+        mPersonnalBean = new PersonnalBean("门店订单", String.valueOf(R.mipmap.personnal_stores_orderlistl));
         mData.add(mPersonnalBean);
-            mPersonnalBean = new PersonnalBean("我的会员",String.valueOf(R.mipmap.personnal_center_my_vip));
+        mPersonnalBean = new PersonnalBean("我的会员", String.valueOf(R.mipmap.personnal_center_my_vip));
         mData.add(mPersonnalBean);
-            mPersonnalBean = new PersonnalBean("门店资料",String.valueOf(R.mipmap.personnal_my_material));
+        mPersonnalBean = new PersonnalBean("门店资料", String.valueOf(R.mipmap.personnal_my_material));
         mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("服务中心",String.valueOf(R.mipmap.personnalcenter_my_partner));
+        mPersonnalBean = new PersonnalBean("服务中心", String.valueOf(R.mipmap.personnalcenter_my_partner));
         mData.add(mPersonnalBean);
 
 
@@ -136,7 +141,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
     @Override
     public View onInitView() {
-  View view= View.inflate(UiUtilities.getContex(), R.layout.fragment_personal_center, null);
+        View view = View.inflate(UiUtilities.getContex(), R.layout.fragment_personal_center, null);
 
         return view;
     }
@@ -144,7 +149,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
-        View mRootView =  super.onCreateView(inflater, container, savedInstanceState);
+        View mRootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, mRootView);
         return mRootView;
     }
@@ -164,13 +169,13 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
                 Toast.makeText(UiUtilities.getContex(), "个人中心头像被点击", Toast.LENGTH_SHORT).show();
                 //调转到登录界面
                 //判断是否登录
-                if (isLoginState()){
+                if (isLoginState()) {
                     //跳转到我的资料
-                    mIntent = new Intent(getActivity() , MyMaterial2Activity.class);
+                    mIntent = new Intent(getActivity(), MyMaterial2Activity.class);
 
                     startActivity(mIntent);
 
-                }else{
+                } else {
                     mIntent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(mIntent);
                 }
@@ -215,15 +220,43 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
     public boolean isLoginState() {
 
-        Boolean mLoginState ;
-        String token = SPUtils.getString(getActivity(), Constant.TOKEN,null);
-            LogUtils.d("token:"+token);
-        if (TextUtils.isEmpty(token) ){
-            mLoginState = false ;
-        }else{
-            mLoginState = true ;
-        }
 
+        String token = SPUtils.getString(getActivity(), Constant.TOKEN, null);
+        LogUtils.d("token:" + token);
+        if (!TextUtils.isEmpty(token) ) {
+
+            mLoginState = true;
+        } else {
+
+            mLoginState = false;
+
+        }
         return mLoginState;
+
+
+
     }
+
+    public Boolean isNetQueue(String token) {
+        OkHttpUtils.post().url(Constant.BASE_URL + "token").addParams("X-API-TOKEN", token).build().execute(new UserCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                    LogUtils.d("tag",e);
+                mIsCode=false;
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+
+                if (mCode ==200){
+                    mIsCode = true ;
+                }else {
+                    mIsCode=false ;
+                }
+            }
+        });
+
+        return mIsCode;
+    }
+
 }

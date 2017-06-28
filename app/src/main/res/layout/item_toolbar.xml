@@ -5,15 +5,17 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="25dp"
         android:fitsSystemWindows="true"
+        android:background="@color/colorNormal"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <TextView
+            android:id="@+id/tv_titlle"
             android:layout_gravity="center"
             style="@style/normalTextView"
             android:text="title"
-            android:id="@+id/tv_titlle"
+            android:textSize="20sp"
+            android:textColor="@color/colorLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </android.support.v7.widget.Toolbar>

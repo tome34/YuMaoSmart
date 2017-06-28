@@ -4,28 +4,29 @@
               android:layout_width="match_parent"
               android:layout_height="60dp">
     <TextView
-
+        android:id="@+id/tv_mymaterial_other_title"
         android:textColor="@color/colorNormal"
         android:gravity="center_vertical"
-        android:id="@+id/tv_mymaterial_other_title"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:textSize="20sp"
         android:text="用户"/>
     <TextView
-
+        android:id="@+id/tv_my_material_other_content"
         android:gravity="center_vertical"
         android:src="@mipmap/first_page_person_icon_touxiang"
         android:layout_centerVertical="true"
         android:layout_marginRight="50dp"
         android:textColor="@color/colorNormal"
-        android:id="@+id/tv_my_material_other_content"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
+        android:textSize="20sp"
         android:text="名字"/>
 
     <ImageView
+        android:id="@+id/iv_mymaterial"
         android:scaleType="fitXY"
         android:layout_marginRight="5dp"
         android:layout_width="30dp"
@@ -33,4 +34,11 @@
         android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey"/>
+
+
 </RelativeLayout>

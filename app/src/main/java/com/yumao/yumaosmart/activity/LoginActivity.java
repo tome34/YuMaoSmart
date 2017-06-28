@@ -127,7 +127,7 @@ public class LoginActivity extends BaseItemActivity {
                                 String token = mUserBean.getToken();
                                 Toast.makeText(LoginActivity.this, "token:"+token, Toast.LENGTH_SHORT).show();
                                 SPUtils.putString(LoginActivity.this ,Constant.TOKEN ,token);
-                                SPUtils.putString(LoginActivity.this, Constant.USER_DATA,null);
+                                SPUtils.putString(LoginActivity.this, Constant.USER_DATA,response);
 
 
                                 finish();

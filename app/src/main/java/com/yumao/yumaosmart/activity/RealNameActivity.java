@@ -24,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Created by kk on 2017/3/9.
  */
-public class TestIdentity extends BaseItemActivity {
+public class RealNameActivity extends BaseItemActivity {
     @BindView(R.id.edit_testidentity_activity_name)
     EditText mEditTestidentityActivityName;
     @BindView(R.id.edit_testidentity_activity_num)

@@ -11,8 +11,8 @@ import com.orhanobut.dialogplus.OnItemClickListener;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.activity.AddressActivity;
 import com.yumao.yumaosmart.activity.PhoneNumberActivity;
-import com.yumao.yumaosmart.activity.SweetNameActivity;
-import com.yumao.yumaosmart.activity.TestIdentity;
+import com.yumao.yumaosmart.activity.NickNameActivity;
+import com.yumao.yumaosmart.activity.RealNameActivity;
 import com.yumao.yumaosmart.adapter.GenderDialogAdapter;
 import com.yumao.yumaosmart.bean.MyMaterialOtherBean;
 import com.yumao.yumaosmart.event.BirthDayEvent;
@@ -76,7 +76,7 @@ public class MyMaterialOtherDelegate implements ItemViewDelegate<DisPlay> {
                     case 1:
 
 
-                        mActivity.startActivity(new Intent(mActivity,SweetNameActivity.class));
+                        mActivity.startActivity(new Intent(mActivity,NickNameActivity.class));
                         break;
     //电话
                     case 2:
@@ -101,7 +101,7 @@ public class MyMaterialOtherDelegate implements ItemViewDelegate<DisPlay> {
                         break;
 // 实名认证
                     case 7:
-                    mActivity.startActivity(new Intent(mActivity,TestIdentity.class));
+                    mActivity.startActivity(new Intent(mActivity,RealNameActivity.class));
                         break;
 //重置密码
                     case 8:
