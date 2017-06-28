@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:padding="2dp"
+              android:layout_width="70dp"
+              android:layout_height="70dp">
+<ImageView
+    android:background="#d4d4cc"
+    android:layout_gravity="center_horizontal"
+   android:id="@+id/iv_personnal_item"
+    android:scaleType="fitXY"
+    android:layout_width="40dp"
+    android:layout_height="40dp"/>
+    <TextView
+        android:textColor="@color/colorNormal"
+        android:id="@+id/tv_personnal_item"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="我的收藏"
+        android:textSize="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"/>
+</LinearLayout>

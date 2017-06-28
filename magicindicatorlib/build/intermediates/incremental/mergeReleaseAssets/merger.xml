@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="E:\IDE\WORKSPACE\YuMaoSmart\magicindicatorlib\src\main\assets"/><source path="E:\IDE\WORKSPACE\YuMaoSmart\magicindicatorlib\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="E:\IDE\WORKSPACE\YuMaoSmart\magicindicatorlib\src\release\assets"/></dataSet></merger>

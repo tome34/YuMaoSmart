@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--个人中心布局-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@mipmap/personna_center_head_background">
+
+        <ImageView
+            android:id="@+id/iv_personnal_fragment_touxiang"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/first_page_person_icon_touxiang"/>
+
+        <TextView
+
+            android:id="@+id/tv_personnal_petname"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/iv_personnal_fragment_touxiang"
+            android:text="昵称"/>
+
+        <TextView
+            android:id="@+id/tv_personnal_regist_time"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="55dp"
+            android:layout_toRightOf="@id/iv_personnal_fragment_touxiang"
+            android:text="注册时间:2017-1-1"/>
+
+        <TextView
+            android:id="@+id/tv_personnal_identity"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="80dp"
+            android:layout_toRightOf="@id/iv_personnal_fragment_touxiang"
+            android:text="城市合伙人"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="累计销量:168"
+                android:textColor="@color/colorNormal"/>
+
+            <ImageView
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="累计资产:168"
+                android:textColor="@color/colorNormal"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <!--个人中心订单界面-->
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp">
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:text="我的订单"
+            android:textColor="@color/colorNormal"/>
+
+        <TextView
+            android:id="@+id/iv_personnal_fragment_lookfororder1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="45dp"
+            android:gravity="center_vertical"
+            android:text="查看全部订单"
+            android:textColor="@color/colorNormal"/>
+
+        <ImageView
+            android:id="@+id/iv_personnal_fragment_lookfororder2"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ibtn_personna_look_order"/>
+    </RelativeLayout>
+
+    <!--个人中心表格布局-->
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:columnCount="5"
+        android:rowCount="1"
+        >
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_personnal_daifukuan"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/personnal_daifukuan"/>
+
+            <TextView
+                android:textSize="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="待付款"
+                android:textColor="@color/colorNormal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_personnal_daifahuo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/personnal_daifahuo"/>
+
+            <TextView
+                android:textSize="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="待发货"
+                android:textColor="@color/colorNormal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_personnal_daishouhuo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/personnal_daishouhuo"/>
+
+            <TextView
+                android:textSize="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="待收货"
+                android:textColor="@color/colorNormal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_personnal_yiwancheng"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/personnal_yiwancheng"/>
+
+            <TextView
+                android:textSize="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="已完成"
+                android:textColor="@color/colorNormal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_personnal_tuihuanhuo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/personnal_tuihuanhuo"/>
+
+            <TextView
+                android:textSize="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="退换货"
+                android:textColor="@color/colorNormal"/>
+        </LinearLayout>
+
+    </GridLayout>
+
+
+    <!--个人中心列表-->
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/rv_personal_center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

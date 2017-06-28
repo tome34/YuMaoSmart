@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+<RelativeLayout
+    android:padding="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+    <TextView
+        android:id="@+id/tv_item_activity_address_name"
+        android:text="小泽"
+        style="@style/normalTextView"
+       android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+    <TextView
+        android:layout_alignParentRight="true"
+        android:id="@+id/tv_item_activity_address_phonenum"
+        android:text="小泽"
+        style="@style/normalTextView"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+    <TextView
+        style="@style/normalTextView"
+        android:id="@+id/tv_item_activity_address_detailaddress"
+        android:text="深圳市罗湖区"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_item_activity_address_name"
+
+        />
+</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <RadioButton
+            android:id="@+id/rbtn_item_activity_address_isdefault"
+            android:drawableLeft="@drawable/shopping_card_title_rbtn"
+            android:button="@null"
+            android:textColor="@drawable/text_color_check"
+            android:text="设为默认"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"/>
+
+        <ImageView
+
+            android:id="@+id/iv_item_activity_address_bianji"
+            style="@style/normalImageView"
+            android:src="@mipmap/item_activity_address_bianji"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/iv_item_activity_address_shanchu"
+            android:layout_marginEnd="85dp"/>
+
+        <TextView
+            android:id="@+id/tv_item_activity_address_shanchu"
+            android:text="删除"
+            style="@style/normalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/iv_item_activity_address_shanchu"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/iv_item_activity_address_shanchu"
+            android:layout_alignBottom="@+id/iv_item_activity_address_bianji"/>
+
+        <ImageView
+
+            android:id="@+id/iv_item_activity_address_shanchu"
+            style="@style/normalImageView"
+            android:src="@mipmap/item_activity_address_shanchu"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="45dp"
+
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView
+            android:id="@+id/tv_item_activity_address_bianji"
+            android:text="编辑"
+            style="@style/normalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/iv_item_activity_address_shanchu"
+            android:layout_toStartOf="@+id/iv_item_activity_address_shanchu"
+            android:layout_marginEnd="23dp"/>
+
+    </RelativeLayout>
+</LinearLayout>

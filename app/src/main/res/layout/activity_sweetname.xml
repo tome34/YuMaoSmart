@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="#e7e2e2"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/item_toolbar"></include>
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+    <TextView
+        android:textSize="15dp"
+        android:gravity="center"
+            android:layout_gravity="center_vertical"
+        android:textColor="@color/colorNormal"
+        android:text="昵称"
+        android:layout_marginLeft="15dp"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"/>
+    <EditText
+        android:id="@+id/edit_sweetactivity"
+        android:gravity="center_vertical"
+        android:layout_marginRight="15dp"
+        android:hint="请输入昵称"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+</LinearLayout>
+    <Button
+        android:id="@+id/btn_sweetactivity_save"
+        android:text="保存"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:background="@color/colorRed"
+        android:textColor="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+</LinearLayout>

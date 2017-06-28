@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+<TextView
+    android:layout_centerVertical="true"
+
+    android:layout_marginLeft="5dp"
+    style="@style/normalTextView"
+    android:id="@+id/tv_item_activity_confirm_order_name"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_marginRight="80dp"
+     android:layout_alignParentRight="true"
+
+
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="5dp"
+    style="@style/normalTextView"
+    android:id="@+id/tv_item_activity_confirm_order_amount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_alignParentRight="true"
+    android:textColor="@color/colorRed"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="5dp"
+    style="@style/normalTextView"
+    android:id="@+id/tv_item_activity_confirm_order_price"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+</RelativeLayout>

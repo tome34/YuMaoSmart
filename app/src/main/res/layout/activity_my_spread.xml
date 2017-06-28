@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_spread"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.yumao.yumaosmart.activity.itemactivity.MySpreadActivity">
+    <include layout="@layout/item_toolbar"></include>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@mipmap/personna_center_head_background">
+
+        <ImageView
+            android:id="@+id/iv_activity_spread_touxiang"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/first_page_person_icon_touxiang"/>
+
+        <TextView
+
+            android:id="@+id/tv_activity_spread_petname"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/iv_activity_spread_touxiang"
+            android:text="昵称"/>
+
+        <TextView
+            android:id="@+id/tv_activity_spread_logintime"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="55dp"
+            android:layout_toRightOf="@id/iv_activity_spread_touxiang"
+            android:text="注册时间:2017-1-1"/>
+
+        <TextView
+            android:id="@+id/tv_activity_spread_identity"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="80dp"
+            android:layout_toRightOf="@id/iv_activity_spread_touxiang"
+            android:text="城市合伙人"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="累计销量:168"
+                android:textColor="@color/colorNormal"/>
+
+            <ImageView
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="累计资产:168"
+                android:textColor="@color/colorNormal"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <!--我的二维码-->
+    <RelativeLayout
+        android:id="@+id/rel_activity_spread_erweima_my"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+        <ImageView
+            android:id="@+id/iv_item_activity_spread_erweima"
+            android:layout_centerVertical="true"
+                android:src="@mipmap/first_page_person_icon_touxiang"
+            style="@style/normalImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            style="@style/normalTextView"
+            android:text="我的商城二维码"
+            android:layout_toEndOf="@id/iv_item_activity_spread_erweima"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:src="@mipmap/iv_activity_my_employee_getted_detail"
+            style="@style/normalImageView"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+    </RelativeLayout>
+    <!--推荐开店的二维码-->
+    <RelativeLayout
+        android:id="@+id/rel_activity_spread_recommend"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+        <ImageView
+            android:id="@+id/iv_item_activity_spread_erweima_recommend"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/first_page_person_icon_touxiang"
+            style="@style/normalImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            style="@style/normalTextView"
+            android:text="推荐开店二维码"
+            android:layout_toEndOf="@id/iv_item_activity_spread_erweima_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:src="@mipmap/iv_activity_my_employee_getted_detail"
+            style="@style/normalImageView"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+    </RelativeLayout>
+</LinearLayout>

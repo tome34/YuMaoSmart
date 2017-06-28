@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_employee"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yumao.yumaosmart.activity.itemactivity.MyEmployeeActivity">
+        <include layout="@layout/item_toolbar"></include>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@mipmap/personna_center_head_background">
+
+        <ImageView
+            android:id="@+id/iv_activity_my_employee_touxiang"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/first_page_person_icon_touxiang"/>
+
+        <TextView
+
+            android:id="@+id/tv_personnal_petname"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/iv_activity_my_employee_touxiang"
+            android:text="昵称"/>
+
+        <TextView
+            android:id="@+id/tv_activity_my_employee_petname"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="55dp"
+            android:layout_toRightOf="@id/iv_activity_my_employee_touxiang"
+            android:text="注册时间:2017-1-1"/>
+
+        <TextView
+            android:id="@+id/tv_activity_my_employee_identity"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="80dp"
+            android:layout_toRightOf="@id/iv_activity_my_employee_touxiang"
+            android:text="城市合伙人"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="累计销量:168"
+                android:textColor="@color/colorNormal"/>
+
+            <ImageView
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="累计资产:168"
+                android:textColor="@color/colorNormal"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <!--已提现佣金-->
+    <RelativeLayout
+        android:id="@+id/rellayout_activity_my_employee_gettedmoney"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="47dp">
+        <ImageView
+
+            android:src="@mipmap/activity_my_employee_money_getted_loggo"
+            style="@style/normalImageView"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"/>
+        <TextView
+
+            android:layout_marginLeft="48dp"
+            android:layout_centerVertical="true"
+            android:text="已提现佣金"
+            style="@style/normalTextView"
+            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="33"
+            android:layout_centerVertical="true"
+            android:id="@+id/tv_activity_my_employee_money_getted"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+           android:textColor="@color/colorRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/iv_activity_my_employee_getted_detail"
+            android:id="@+id/iv_activity_my_employee_money_getted_detail"
+            android:layout_width="15dp"
+            android:layout_height="15dp"/>
+    </RelativeLayout>
+<!--未提现佣金-->
+    <RelativeLayout
+        android:id="@+id/rellayout_activity_my_employee_ungettedmoney"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="47dp">
+        <ImageView
+
+            android:src="@mipmap/activity_my_employee_money_nungetted_logo"
+            style="@style/normalImageView"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"/>
+        <TextView
+
+            android:layout_marginLeft="48dp"
+            android:layout_centerVertical="true"
+            android:text="未提现佣金"
+            style="@style/normalTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="33"
+            android:layout_centerVertical="true"
+            android:id="@+id/tv_activity_my_employee_money_ungetted"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:textColor="@color/colorRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/iv_activity_my_employee_getted_detail"
+            android:id="@+id/iv_activity_my_employee_money_ungetted_detail"
+            android:layout_width="15dp"
+            android:layout_height="15dp"/>
+    </RelativeLayout>
+
+    <!--冻结中佣金-->
+    <RelativeLayout
+        android:id="@+id/rellayout_activity_my_employee_lockedmoney"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="47dp">
+        <ImageView
+
+            android:src="@mipmap/activity_my_employee_money_locked_logo"
+            style="@style/normalImageView"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"/>
+        <TextView
+
+            android:layout_marginLeft="48dp"
+            android:layout_centerVertical="true"
+            android:text="冻结中佣金"
+            style="@style/normalTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="33"
+            android:layout_centerVertical="true"
+            android:id="@+id/tv_activity_my_employee_money_logked"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:textColor="@color/colorRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/iv_activity_my_employee_getted_detail"
+            android:id="@+id/iv_activity_my_employee_money_locked_detail"
+            android:layout_width="15dp"
+            android:layout_height="15dp"/>
+    </RelativeLayout>
+
+    <!--冻结中佣金-->
+    <RelativeLayout
+        android:id="@+id/rellayout_activity_my_employee_lockedbank"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="47dp">
+        <ImageView
+
+            android:src="@mipmap/activity_my_employee_locked_bank_logo"
+            style="@style/normalImageView"
+            android:layout_width="47dp"
+            android:layout_height="match_parent"/>
+        <TextView
+
+            android:layout_marginLeft="48dp"
+            android:layout_centerVertical="true"
+            android:text="绑定银行卡"
+            style="@style/normalTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="33"
+            android:layout_centerVertical="true"
+            android:id="@+id/tv_activity_my_employee_bank_logked"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:textColor="@color/colorRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/iv_activity_my_employee_getted_detail"
+            android:id="@+id/iv_activity_my_employee_bank_locked_detail"
+            android:layout_width="15dp"
+            android:layout_height="15dp"/>
+    </RelativeLayout>
+</LinearLayout>

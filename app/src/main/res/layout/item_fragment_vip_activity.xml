@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="140dp"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <TextView
+            android:layout_marginLeft="35dp"
+            style="@style/normalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="订单编号:"/>
+
+        <TextView
+            android:id="@+id/tv_item_viporderlist_serialnumber"
+            android:layout_marginLeft="100dp"
+            style="@style/normalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_item_viporderlist_orderstate"
+            android:gravity="center"
+            android:text="待付款"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorRed"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="90dp">
+        <ImageView
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/iv_item_viporderlist_touxiang"
+            android:layout_width="60dp"
+            android:layout_height="60dp"/>
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_item_viporderlist_petname"
+                android:text="昵称(中心合伙人)"
+                style="@style/normalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_item_viporderlist_ordertime"
+                android:text="下单时间:"
+                android:layout_below="@id/tv_item_viporderlist_petname"
+                style="@style/normalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="2017-1-7"
+               android:id="@+id/tv_item_viporderlist_realordertime"
+                android:layout_below="@id/tv_item_viporderlist_petname"
+                android:layout_toEndOf="@id/tv_item_viporderlist_ordertime"
+                style="@style/normalTextView"
+                android:layout_marginLeft="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_item_viporderlist_totalmoney"
+                android:text="订单总金额:"
+                android:layout_below="@id/tv_item_viporderlist_realordertime"
+                style="@style/normalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                style="@style/normalTextView"
+                android:text="￥56"
+                android:textColor="@color/colorRed"
+                android:id="@+id/tv_item_viporderlist_citypartner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_toLeftOf="@id/tv_item_viporderlist_citypartner"
+                style="@style/normalTextView"
+                android:text="城市合伙人佣金:"
+                android:layout_alignTop="@id/tv_item_viporderlist_citypartner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_alignParentRight="true"
+                style="@style/normalTextView"
+                android:text="￥56"
+                android:textColor="@color/colorRed"
+                android:layout_below="@id/tv_item_viporderlist_citypartner"
+                android:id="@+id/tv_item_viporderlist_centerpartner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_toLeftOf="@id/tv_item_viporderlist_citypartner"
+                style="@style/normalTextView"
+                android:text="城市合伙人佣金:"
+                android:layout_alignTop="@id/tv_item_viporderlist_centerpartner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

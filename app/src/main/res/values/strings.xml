@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">玉猫</string>
+    <string name="search">搜索一下</string>
+    <string name="feicui">翡翠</string>
+    <string name="caibao">彩宝</string>
+    <string name="zuanshi">钻饰</string>
+    <string name="huangbojin">黄铂K金</string>
+    <string name="zhenzhu">珍珠</string>
+    <string name="yinshi">银饰</string>
+    <string name="hetianyu">和田玉</string>
+    <string name="other">其他</string>
+    <string name="title_my_employee">我的佣金</string>
+    <string name="title_my_material">我的资料</string>
+    <string name="title_sweetname">昵称</string>
+    <string name="title_test_identity">身份认证</string>
+    <string name="title_myaddress">我的收货地址</string>
+    <string name="title_phonenum_idname">用户名/手机号</string>
+    <string name="title_add_address">新增收货地址</string>
+    <string name="title_toband">绑定银行卡</string>
+    <string name="title_vip_order">会员订单</string>
+    <string name="title_my_popularity">我的人气</string>
+    <string name="title_myspread">我的推广</string>
+    <string name="title_my_erweima">我的商城二维码</string>
+    <string name="title_recommend_erwema">推荐开店二维码</string>
+    <string name="title_my_vip">我的会员</string>
+    <string name="title_stores_material">门店资料</string>
+    <string name="title_service_center">服务中心</string>
+    <string name="title_myorderlist">我的订单</string>
+    <string name="title_goods_detail">商品详情</string>
+    <string name="title_goods_upload">商品列表</string>
+    <string name="title_publish_goods">发布商品</string>
+    <string name="title_login">登录</string>
+    <string name="title_regist">注册</string>
+    <string name="title_reset_password">重置密码</string>
+    <string name="brand_yumaopintai">玉猫平台</string>
+    <string name="title_confirm_order">确认订单</string>
+    <string name="title_order_detail">订单详情</string>
+    <string name="very_personnal">保密</string>
+
+
+</resources>

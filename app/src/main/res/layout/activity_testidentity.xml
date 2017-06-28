@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/item_toolbar"></include>
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <TextView
+            android:id="@+id/tv_testidentity_activity_name"
+            style="@style/normalTextView"
+            android:text="真实姓名"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <EditText
+            android:id="@+id/edit_testidentity_activity_name"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tv_testidentity_activity_name"
+            style="@style/normalEdit"
+            android:hint="请如实填写"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <TextView
+            android:id="@+id/tv_testidentity_activity_num"
+            style="@style/normalTextView"
+            android:text="真实姓名"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <EditText
+            android:id="@+id/edit_testidentity_activity_num"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tv_testidentity_activity_num"
+            style="@style/normalEdit"
+            android:hint="身份证号码"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+        <TextView
+            android:layout_marginTop="10dp"
+            style="@style/normalTextView"
+            android:layout_marginLeft="10dp"
+            android:text="证件照片"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/iv_test_identity_activity_front"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/test_identity_front"
+            android:layout_centerHorizontal="true"
+            android:layout_width="178dp"
+            android:layout_height="100dp"/>
+        <ImageView
+            android:id="@+id/iv_test_identity_activity_back"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:src="@mipmap/test_identity_back"
+            android:layout_centerHorizontal="true"
+            android:layout_width="178dp"
+            android:layout_height="100dp"/>
+
+
+
+    </RelativeLayout>
+</LinearLayout>

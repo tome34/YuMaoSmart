@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+                android:layout_centerVertical="true"
+              android:layout_width="match_parent"
+              android:layout_height="100dp">
+<TextView
+    android:id="@+id/tv_mymaterial_title"
+    android:textColor="@color/colorNormal"
+    android:gravity="center_vertical"
+    android:text="头像"
+    android:layout_marginLeft="10dp"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"/>
+  <ImageView
+      android:src="@mipmap/first_page_person_icon_touxiang"
+        android:layout_centerVertical="true"
+      android:layout_marginRight="50dp"
+      android:scaleType="fitXY"
+      android:id="@+id/iv_my_material_touxiang"
+      android:layout_alignParentRight="true"
+      android:layout_width="70dp"
+      android:layout_height="70dp"/>
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:layout_marginRight="5dp"
+        android:layout_width="30dp"
+        android:src="@mipmap/my_material_jump"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

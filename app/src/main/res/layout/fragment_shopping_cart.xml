@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+<ListView
+    android:layout_weight="1"
+    android:id="@+id/lv_shopping_cart"
+    android:layout_width="match_parent"
+    android:layout_height="0dp">
+
+</ListView>
+
+    <RelativeLayout
+        android:background="#edd2d2"
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <RadioButton
+           android:layout_marginTop="8dp"
+            android:id="@+id/rbtn_shopping_card_selectall"
+            android:button="@null"
+            android:background="@drawable/shopping_card_title_rbtn"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+        <TextView
+            android:textColor="@color/colorNormal"
+            android:layout_marginLeft="2dp"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/rbtn_shopping_card_selectall"
+            android:text="全选"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:textColor="@color/colorNormal"
+            android:text="不含运费"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignStart="@+id/textView2"
+            android:id="@+id/tv_shopping_card_ifcontains_delive"
+            android:layout_alignRight="@+id/tv_shopping_card_total"
+            android:layout_alignEnd="@+id/tv_shopping_card_total"/>
+
+        <TextView
+            android:textColor="@color/colorRed"
+            android:text="￥:0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_shopping_card_total"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="72dp"
+            android:layout_marginEnd="70dp"/>
+
+        <TextView
+            android:textColor="@color/colorNormal"
+            android:text="合计"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_marginRight="78dp"
+            android:layout_marginEnd="78dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/tv_shopping_card_total"
+            android:layout_alignEnd="@+id/tv_shopping_card_total"/>
+
+        <Button
+            android:textColor="#fff"
+            android:background="@color/colorRed"
+            android:text="去结算"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/tv_shopping_card_ifcontains_delive"
+            android:layout_toEndOf="@+id/tv_shopping_card_ifcontains_delive"
+            android:id="@+id/button"/>
+    </RelativeLayout>
+</LinearLayout>

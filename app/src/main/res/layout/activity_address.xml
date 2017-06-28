@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/item_toolbar"></include>
+<ListView
+    android:id="@+id/lv_activity_address_add"
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="0dp">
+    
+</ListView>
+    <Button
+        android:id="@+id/btn_activity_address_add"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/colorLight"
+        android:text="新增收货地址"
+        android:background="@color/colorRed"
+
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+</LinearLayout>

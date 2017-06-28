@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/item_toolbar"></include>
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:textSize="20dp"
+            style="@style/normalTextView"
+            android:text="手机号码"
+            android:layout_width="100dp"
+
+            android:layout_height="match_parent"/>
+        <EditText
+            android:id="@+id/edit_phoneactivity_phonenum"
+            android:layout_marginLeft="105dp"
+            android:hint="请输入需要更改的手机号码"
+            style="@style/normalEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:textSize="20dp"
+        style="@style/normalTextView"
+        android:text="我的验证码"
+        android:layout_width="100dp"
+
+        android:layout_height="match_parent"/>
+    <EditText
+        android:id="@+id/edit_phoneactivityt_yanzhengma"
+        android:layout_marginLeft="105dp"
+        android:hint="请输入验证码"
+        style="@style/normalEdit"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"/>
+    <Button
+        android:id="@+id/btn_phoneactivityt_getyanzhengma"
+        android:background="@color/colorYellow"
+        android:textColor="@color/colorLight"
+        android:text="获取短信验证码"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_width="130dp"
+        android:layout_height="match_parent"/>
+</RelativeLayout>
+
+    <Button
+        android:text="保存"
+        android:id="@+id/btn_activity_phonenum_save"
+        android:layout_marginRight="20dp"
+        android:background="@color/colorRed"
+        android:textColor="@color/colorLight"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+</LinearLayout>

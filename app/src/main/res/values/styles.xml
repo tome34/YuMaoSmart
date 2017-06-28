@@ -1,0 +1,49 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+    <style name="textSizeNormal">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="textSizeBig">
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <!--  基准TextView-->
+    <style name="baseTextView">
+
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/colorNormal</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!--标准TextView-->
+    <style name="normalTextView" parent="baseTextView">
+
+    </style>
+    <!--标准ImageView-->
+
+    <style name="normalImageView">
+        <item name="android:scaleType">fitXY</item>
+    </style>
+    <!--标准Button-->
+    <style name="normalButton" parent="baseTextView">
+        <item name="android:background">@drawable/btn_nomal</item>
+    </style>
+    <!--点击后字体为红色-->
+    <style name="redTextButton">
+        <item name="android:textSize" >15dp</item>
+
+        <item name="android:textColor">@drawable/text_color_check</item>
+    </style>
+    <!--标准Edittext-->
+    <style name="normalEdit" parent="baseTextView">
+     <item name="android:background">@null</item>
+
+    </style>
+</resources>

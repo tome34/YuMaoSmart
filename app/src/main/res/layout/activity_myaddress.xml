@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/item_toolbar"></include>
+    <!--我的收货地址-->
+<RelativeLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+<TextView
+    android:text="收货人:"
+    style="@style/normalTextView"
+    android:layout_marginLeft="5dp"
+    android:layout_width="70dp"
+
+    android:layout_height="match_parent"/>
+<EditText
+    android:id="@+id/edit_activity_myaddress_shouhuoren"
+    style="@style/normalEdit"
+    android:hint="收货人(必填)"
+    android:layout_marginLeft="85dp"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"/>
+
+</RelativeLayout>
+<!--手机号码-->
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:text="手机号码:"
+            style="@style/normalTextView"
+            android:layout_marginLeft="5dp"
+            android:layout_width="70dp"
+
+            android:layout_height="match_parent"/>
+        <EditText
+            android:id="@+id/edit_activity_myaddress_phonenum"
+            style="@style/normalEdit"
+            android:hint="手机号码(必填)"
+            android:layout_marginLeft="85dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+    <!--配送区域-->
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:text="配送区域:"
+            style="@style/normalTextView"
+            android:layout_marginLeft="5dp"
+            android:layout_width="70dp"
+
+            android:layout_height="match_parent"/>
+        <EditText
+            android:id="@+id/edit_activity_myaddress_send_area"
+            style="@style/normalEdit"
+            android:hint="请选择"
+            android:layout_marginLeft="85dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+            <ImageView
+                android:layout_marginRight="5dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/iv_activity_myaddress_send_area"
+                android:src="@mipmap/activity_myaddress_send_area"
+                android:layout_centerVertical="true"
+                style="@style/normalImageView"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <!--详细地址-->
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:text="详细地址:"
+            style="@style/normalTextView"
+            android:layout_marginLeft="5dp"
+            android:layout_width="70dp"
+
+            android:layout_height="match_parent"/>
+        <EditText
+            android:id="@+id/edit_activity_myaddress_detail_area"
+            style="@style/normalEdit"
+            android:hint="详细地址(必填)"
+            android:layout_marginLeft="85dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+    <!--默认地址-->
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <RadioButton
+            android:id="@+id/rbtn_activity_myaddress_isdefault"
+            android:textColor="@drawable/text_color_check"
+            android:text="设为默认地址"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/shopping_card_title_rbtn"
+            android:button="@null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_activity_myaddress_save_address"
+        android:textColor="@color/colorLight"
+        android:background="@color/colorRed"
+        android:text="保存收货地址"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+</LinearLayout>

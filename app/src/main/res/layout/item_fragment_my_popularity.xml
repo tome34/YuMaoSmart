@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="52dp">
+<ImageView
+    android:id="@+id/iv_item_fragment_my_popularity"
+    android:layout_marginLeft="10dp"
+    android:src="@mipmap/first_page_person_icon_touxiang"
+    style="@style/normalImageView"
+    android:layout_centerVertical="true"
+    android:layout_width="35dp"
+    android:layout_height="35dp"/>
+    <TextView
+        android:id="@+id/tv_item_fragment_mypopularity_petname"
+       android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        style="@style/normalTextView"
+        android:text="用户昵称"
+        android:layout_toRightOf="@id/iv_item_fragment_my_popularity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_item_fragment_mypopularity_time"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        style="@style/normalTextView"
+        android:text="2015.11.23 19:45:23"
+        android:layout_toRightOf="@id/iv_item_fragment_my_popularity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_item_fragment_mypopularity_favour"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:text="+1"
+        android:textColor="@color/colorRed"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

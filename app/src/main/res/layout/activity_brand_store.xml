@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_brand_store"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.yumao.yumaosmart.activity.itemactivity.BrandStoreActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <!--首页personnal条目左边视图-->
+        <ImageView
+            android:id="@+id/iv_activity_brand_store_logo_title"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/first_page_person_icon_brand"
+            android:scaleType="fitXY"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            />
+        <ImageView
+            android:layout_alignParentBottom="true"
+            android:src="@mipmap/first_page_person_icon"
+            android:id="@+id/iv_activity_brand_store_icon"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentLeft="true"
+            android:scaleType="fitXY"
+            android:layout_width="8dp"
+            android:layout_height="16dp"/>
+        <TextView
+            android:textColor="@color/colorNormal"
+            android:text="个人中心"
+            android:id="@+id/tv_activity_brand_store_personcenter"
+            android:layout_toRightOf="@+id/iv_activity_brand_store_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            />
+
+
+        <!--首页person条目右边视图-->
+
+
+
+        <ImageView
+            android:id="@+id/iv_activity_brand_store_touxiang"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/first_page_person_icon_touxiang"
+            android:scaleType="fitXY"
+            android:layout_marginRight="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="13dp"/>
+
+        <TextView
+            android:textColor="@color/colorNormal"
+            android:text="15988010163"
+            android:id="@+id/tv_activity_brand_store_person_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            />
+        <TextView
+            android:textColor="@color/colorNormal"
+            android:text="游客"
+            android:id="@+id/tv_activity_brand_store_person_identity"
+            android:layout_toLeftOf="@id/tv_activity_brand_store_person_tel"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            />
+    </RelativeLayout>
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator_brand_store"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_activity_brand_store"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+</LinearLayout>

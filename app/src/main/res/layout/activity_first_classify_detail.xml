@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_first_classify_detail"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.yumao.yumaosmart.activity.FirstClassifyDetail">
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_activity_first_classify_detail"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"></android.support.v7.widget.SearchView>
+
+    <com.yumao.yumaosmart.widgit.MyScrollview
+        android:id="@+id/sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--排序筛选-->
+       <LinearLayout
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <RadioGroup
+               android:id="@+id/radiogroup_first_classify_detail"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:orientation="horizontal">
+
+
+
+               <RadioButton
+                   android:id="@+id/btn_first_classify_detail_update"
+
+                   style="@style/redTextButton"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="1"
+                   android:button="@null"
+                   android:gravity="center"
+                   android:text="更新时间"/>
+
+               <RadioButton
+                   android:id="@+id/btn_first_classify_detail_price"
+                   style="@style/redTextButton"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="1"
+                   android:button="@null"
+                   android:drawableRight="@drawable/first_classify_detail_sortprice"
+                   android:gravity="center"
+                   android:text="价格"/>
+
+               <RadioButton
+                   android:id="@+id/btn_first_classify_detail_choose"
+                   style="@style/redTextButton"
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="1"
+                   android:button="@null"
+                   android:drawableRight="@drawable/first_classify_detail_choose"
+                   android:gravity="center"
+                   android:text="筛选"/>
+           </RadioGroup>
+           <!--分类筛选-->
+           <com.yumao.yumaosmart.widget.CustomRadioGroup
+               android:layout_marginLeft="30dp"
+               android:id="@+id/customRadioGroup"
+               android:layout_width="match_parent"
+               android:layout_height="80dp">
+
+           </com.yumao.yumaosmart.widget.CustomRadioGroup>
+           <com.yumao.yumaosmart.widgit.MyGridView
+               android:id="@+id/gv_first_classify_detail"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+           </com.yumao.yumaosmart.widgit.MyGridView>
+       </LinearLayout>
+    </com.yumao.yumaosmart.widgit.MyScrollview>
+
+</LinearLayout>
