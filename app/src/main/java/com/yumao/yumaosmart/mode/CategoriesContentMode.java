@@ -55,6 +55,8 @@ public    class CategoriesContentMode {
          * name : 白玉
          *
          *
+         *
+         *
          */
 
         private String picture;
