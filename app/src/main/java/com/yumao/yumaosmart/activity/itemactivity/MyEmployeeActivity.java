@@ -17,13 +17,11 @@ import butterknife.OnClick;
 
 public class MyEmployeeActivity extends BaseItemActivity {
 
-    @BindView(R.id.iv_activity_my_employee_touxiang)
+    @BindView(R.id.iv_personnal_fragment_touxiang)
     ImageView mIvActivityMyEmployeeTouxiang;
     @BindView(R.id.tv_personnal_petname)
     TextView mTvPersonnalPetname;
-    @BindView(R.id.tv_activity_my_employee_petname)
-    TextView mTvActivityMyEmployeePetname;
-    @BindView(R.id.tv_activity_my_employee_identity)
+    @BindView(R.id.tv_personnal_regist_time)
     TextView mTvActivityMyEmployeeIdentity;
     @BindView(R.id.tv_activity_my_employee_money_getted)
     TextView mTvActivityMyEmployeeMoneyGetted;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -93,12 +94,18 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     @Override
     protected void initView() {
 
+        // 竖直方向的网格样式，每行四个Item
 
-        mRvPersonalCenter.setLayoutManager(new GridLayoutManager(UiUtilities.getContex(), 4));
+        GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex() ,4,OrientationHelper.VERTICAL,false);
+        mRvPersonalCenter.setLayoutManager(mLayoutManager);
+        mRvPersonalCenter.setAdapter(mPersonnalcenterAdapter);
+
+
+        /*mRvPersonalCenter.setLayoutManager(new GridLayoutManager(UiUtilities.getContex(), 4));
         mPersonnalcenterAdapter = new PersonnalcenterAdapter(UiUtilities.getContex(), R.layout.item_personnal_rv, mData, getActivity());
 
 
-        mRvPersonalCenter.setAdapter(mPersonnalcenterAdapter);
+        mRvPersonalCenter.setAdapter(mPersonnalcenterAdapter);*/
 
     }
 
@@ -106,7 +113,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     @Override
     protected void init() {
         mData = new ArrayList<>();
-        mPersonnalBean = new PersonnalBean("我的资料", String.valueOf(R.mipmap.personnal_my_material));
+     /*   mPersonnalBean = new PersonnalBean("我的资料", String.valueOf(R.mipmap.personnal_my_material));
         mData.add(mPersonnalBean);
         mPersonnalBean = new PersonnalBean("我的佣金", String.valueOf(R.mipmap.personnal_my_employree));
         mData.add(mPersonnalBean);
@@ -123,7 +130,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         mPersonnalBean = new PersonnalBean("门店资料", String.valueOf(R.mipmap.personnal_my_material));
         mData.add(mPersonnalBean);
         mPersonnalBean = new PersonnalBean("服务中心", String.valueOf(R.mipmap.personnalcenter_my_partner));
-        mData.add(mPersonnalBean);
+        mData.add(mPersonnalBean);*/
 
 
         mItemList = new ArrayList<>();

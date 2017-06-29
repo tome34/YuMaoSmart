@@ -4,14 +4,14 @@
               android:orientation="vertical"
                 android:layout_centerVertical="true"
               android:layout_width="match_parent"
-              android:layout_height="90dp">
+              android:layout_height="65dp">
 <TextView
     android:id="@+id/tv_mymaterial_title"
     android:textColor="@color/colorNormal"
     android:gravity="center_vertical"
     android:text="头像"
     android:layout_marginLeft="10dp"
-    android:textSize="20sp"
+    android:textSize="13sp"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"/>
   <ImageView
@@ -21,8 +21,8 @@
       android:scaleType="fitXY"
       android:id="@+id/iv_my_material_touxiang"
       android:layout_alignParentRight="true"
-      android:layout_width="70dp"
-      android:layout_height="70dp"/>
+      android:layout_width="60dp"
+      android:layout_height="60dp"/>
 
     <ImageView
         android:scaleType="fitXY"
@@ -37,6 +37,6 @@
       android:layout_width="match_parent"
       android:layout_height="1dp"
       android:layout_alignParentBottom="true"
-      android:background="@color/grey"/>
+      android:background="@color/grey2"/>
 
 </RelativeLayout>

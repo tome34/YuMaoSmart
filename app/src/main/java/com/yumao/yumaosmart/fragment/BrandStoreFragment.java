@@ -24,6 +24,10 @@ public class BrandStoreFragment extends BaseFragment {
     GridView mGvFragmentBrandStore;
     private List<String> mData;
 
+    public BrandStoreFragment(){
+        super();
+    }
+
     public BrandStoreFragment(List<String> data) {
         mData = data;
     }

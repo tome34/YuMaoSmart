@@ -105,7 +105,8 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
 
             //性别
             TextView gender = (TextView) mActivityMyMaterialGender.findViewById(R.id.tv_my_material_other_content);
-            if (userBean.getGender().equals("M")) {
+
+            if ("M".equals(userBean.getGender())) {
                 gender.setText("男");
             } else {
                 gender.setText("女");

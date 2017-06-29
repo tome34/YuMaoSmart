@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="60dp">
+              android:layout_height="40dp">
     <TextView
         android:id="@+id/tv_mymaterial_other_title"
         android:textColor="@color/colorNormal"
@@ -10,7 +10,7 @@
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="20sp"
+        android:textSize="13sp"
         android:text="用户"/>
     <TextView
         android:id="@+id/tv_my_material_other_content"
@@ -21,8 +21,8 @@
         android:textColor="@color/colorNormal"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:textSize="20sp"
+        android:layout_height="match_parent"
+        android:textSize="13sp"
         android:text="名字"/>
 
     <ImageView
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/grey"/>
+        android:background="@color/grey2"/>
 
 
 </RelativeLayout>

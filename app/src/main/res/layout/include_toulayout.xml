@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@mipmap/personal_img_bg">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/personal_icon_sz"/>
+
+        <ImageView
+            android:id="@+id/iv_personnal_fragment_touxiang"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/first_page_person_icon_touxiang"/>
+
+        <TextView
+
+            android:id="@+id/tv_personnal_petname"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/iv_personnal_fragment_touxiang"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorNormal"
+            android:text="昵称"/>
+
+        <TextView
+            android:id="@+id/tv_personnal_regist_time"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_personnal_petname"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorNormal"
+            android:text="注册时间:2017-1-1"/>
+
+        <TextView
+            android:id="@+id/tv_personnal_identity"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_personnal_regist_time"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorNormal"
+            android:text="城市合伙人"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:background="#50484646"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="累计销量:168"
+                android:textColor="@color/colorPrimary"/>
+
+            <ImageView
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="累计资产:168"
+                android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
+    </RelativeLayout>
+
