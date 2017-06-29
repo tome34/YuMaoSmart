@@ -111,7 +111,7 @@ public class RegistActivity extends BaseItemActivity {
                 .addParams("phone", mPhoneNum)
                 .addParams("password", mPassWord)
                 .addParams("code",mTestCode)
-                .addParams("vendor_id","1")
+                .addParams("vendor_id","1")  //玉猫平台
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -176,12 +176,10 @@ public class RegistActivity extends BaseItemActivity {
 
     public static boolean isMobileNO(String mobiles){
 
-        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-
+        String telRegex = "[1][34578]\\d{9}";
+        //Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p = Pattern.compile(telRegex);
         Matcher m = p.matcher(mobiles);
-
-
-
         return m.matches();
 
         }
@@ -202,6 +200,7 @@ public class RegistActivity extends BaseItemActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         Toast.makeText(RegistActivity.this, "验证码已发送请注意查收", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 

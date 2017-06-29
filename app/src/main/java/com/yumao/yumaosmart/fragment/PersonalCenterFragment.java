@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.activity.LoginActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
@@ -24,6 +25,7 @@ import com.yumao.yumaosmart.bean.MyOrderlistBean;
 import com.yumao.yumaosmart.bean.PersonnalBean;
 import com.yumao.yumaosmart.callback.UserCallback;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
@@ -74,6 +76,10 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     private Intent mIntent;
     private Boolean mLoginState;
     private Boolean mIsCode;
+    private List<String> mNameDatas;
+    private List<Integer> mIconDatas;
+    private String mRolesString;
+    private List<String> mRoles;
 
     //    初始化监听
     @Override
@@ -95,9 +101,12 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     protected void initView() {
 
         // 竖直方向的网格样式，每行四个Item
-
         GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex() ,4,OrientationHelper.VERTICAL,false);
         mRvPersonalCenter.setLayoutManager(mLayoutManager);
+        //设置固定大小
+        //mRvPersonalCenter.setHasFixedSize(true);
+        //创建适配器，并且设置
+        mPersonnalcenterAdapter = new PersonnalcenterAdapter(UiUtilities.getContex(),mNameDatas,mIconDatas);
         mRvPersonalCenter.setAdapter(mPersonnalcenterAdapter);
 
 
@@ -109,10 +118,63 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
     }
 
+
+
     //    初始化数据
     @Override
     protected void init() {
-        mData = new ArrayList<>();
+
+
+        mNameDatas = new ArrayList<>();
+
+        mIconDatas = new ArrayList<>();
+        String userData = SPUtils.getString(UiUtilities.getContex(), Constant.USER_DATA);
+
+        //判断是否登录
+        if (!TextUtils.isEmpty(userData)) {
+        User userBean = new Gson().fromJson(userData, User.class);
+        //角色集合
+
+            mRoles = userBean.getRoles();
+
+            mRolesString = String.valueOf(mRoles);
+            LogUtils.d("tag","角色:"+ mRolesString);
+
+            if (mRolesString.contains("RegionalAgentOwner")){
+                LogUtils.d("tag","分公司");
+                String[] stringArr =new String[]{"我的佣金","我的货款","我的销售","会员订单","我的收藏","我的推广",
+                        "门店资料","中央仓","商品管理","城市总店","城市分店","城市V店"};
+                for (int i =0 ;i<stringArr.length ;i++){
+                    mNameDatas.add(stringArr[i]);
+                }
+                int[] intArr =new int[]{R.mipmap.personal_icon_yj,R.mipmap.personal_icon_dk,R.mipmap.personal_icon_xs,R.mipmap.personal_icon_dd,R.mipmap.personal_icon_scj,
+                        R.mipmap.personal_icon_tg,R.mipmap.personal_icon_md,R.mipmap.personal_icon_zyc,R.mipmap.personal_icon_gl,R.mipmap.personal_icon_zd,
+                        R.mipmap.personal_icon_fd,R.mipmap.personal_icon_vd};
+                for (int i =0 ;i<intArr.length ;i++){
+                    mIconDatas.add(intArr[i]);
+                }
+                return;
+
+        }else if (mRolesString.contains("StoreOwner")){
+            if (userBean.getVendor().getVendor_type() ==3){
+                LogUtils.d("tag","总店");
+                return;
+            }else if (userBean.getVendor().getVendor_type() ==2){
+                LogUtils.d("tag","城市分店");
+                return;
+             }else{
+                LogUtils.d("tag","无类型");
+                return;
+                    }
+        }else if (mRolesString.contains("SalesPerson")){
+            LogUtils.d("tag","合伙人");
+            return;
+        }else{
+            LogUtils.d("tag","普通会员");
+            return;
+        }
+
+
      /*   mPersonnalBean = new PersonnalBean("我的资料", String.valueOf(R.mipmap.personnal_my_material));
         mData.add(mPersonnalBean);
         mPersonnalBean = new PersonnalBean("我的佣金", String.valueOf(R.mipmap.personnal_my_employree));
@@ -131,14 +193,10 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         mData.add(mPersonnalBean);
         mPersonnalBean = new PersonnalBean("服务中心", String.valueOf(R.mipmap.personnalcenter_my_partner));
         mData.add(mPersonnalBean);*/
-
-
-        mItemList = new ArrayList<>();
-        mItemList.add("daifukuan");
-        mItemList.add("daifahuo");
-        mItemList.add("daishouhuo");
-        mItemList.add("yiwancheng");
-        mItemList.add("tuihuanhuo");
+        }else{
+            Intent intent = new Intent(getActivity() ,LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -160,7 +218,6 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         ButterKnife.bind(this, mRootView);
         return mRootView;
     }
-
 
     //点击事件
     @Override

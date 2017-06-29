@@ -1,67 +1,77 @@
 package com.yumao.yumaosmart.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.yumao.yumaosmart.R;
-import com.yumao.yumaosmart.activity.MyMaterialActivity;
-import com.yumao.yumaosmart.activity.itemactivity.MyEmployeeActivity;
-import com.yumao.yumaosmart.activity.itemactivity.ServiceCenterActivity;
-import com.yumao.yumaosmart.activity.itemactivity.MyPularityActvity;
-import com.yumao.yumaosmart.activity.itemactivity.MySpreadActivity;
-import com.yumao.yumaosmart.activity.itemactivity.MyStorsActivity;
-import com.yumao.yumaosmart.activity.itemactivity.MyVipActivity;
-import com.yumao.yumaosmart.activity.itemactivity.StoresMaterialActivity;
-import com.yumao.yumaosmart.activity.itemactivity.VIPActivity;
-import com.yumao.yumaosmart.bean.PersonnalBean;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
+
 
 /**
  * Created by kk on 2017/3/6.
  */
 
-public class PersonnalcenterAdapter extends CommonAdapter<PersonnalBean>  {
-    private ViewHolder mHolder;
-    private int mPostion;
-    private Class nameArr[] = {MyMaterialActivity.class,MyEmployeeActivity.class,VIPActivity.class,
-            MyPularityActvity.class,MySpreadActivity.class,
-    MyStorsActivity.class,MyVipActivity.class,StoresMaterialActivity.class,ServiceCenterActivity.class};
-    private Context mActivity;
-    public PersonnalcenterAdapter(Context context, int layoutId, List<PersonnalBean> datas , Activity activity) {
-        super(context, layoutId, datas);
-        mActivity=activity;
+public class PersonnalcenterAdapter extends RecyclerView.Adapter<PersonnalcenterAdapter.MyViewHolder> {
+
+
+    private List<String> mNameData ;
+    private List<Integer> mIconData ;
+    private Context mContext;
+    private LayoutInflater mInflater;
+
+    public PersonnalcenterAdapter() {
 
     }
 
+    public PersonnalcenterAdapter(Context context, List<String> mdata ,List<Integer> mdata2){
+        mNameData = mdata ;
+        mIconData = mdata2 ;
+        mContext = context;
+        mInflater=LayoutInflater.from(context);
+
+    }
+
+    //item显示类型
     @Override
-    protected void convert(ViewHolder holder, PersonnalBean personnalBean, int position) {
-        mHolder = holder;
-        mPostion = position;
-        holder.setImageResource(R.id.iv_personnal_item, Integer.parseInt(personnalBean.getBackSrc()));
-        holder.setText(R.id.tv_personnal_item, personnalBean.getName());
-        initListenner(mPostion);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.item_personnal_rv,parent,false);
+        MyViewHolder viewHolder = new MyViewHolder(view);
 
+        return viewHolder;
     }
 
-    private void initListenner(final int postion) {
+    //数据的绑定显示
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        View convertView = mHolder.getConvertView();
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mActivity.startActivity(new Intent(mActivity,nameArr[postion]));
-
-                }
-            });
+        holder.item_name.setText(mNameData.get(position));
+        holder.item_icon.setImageResource(mIconData.get(position));
     }
 
+    //总数
+    @Override
+    public int getItemCount() {
+        return mNameData.size();
+    }
 
+    //自定义的ViewHolder，持有每个Item的的所有界面元素
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
+        public TextView item_name;
+        public ImageView item_icon;
 
-
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            item_name = (TextView)itemView.findViewById(R.id.tv_personnal_item);
+            item_icon = (ImageView) itemView.findViewById(R.id.iv_personnal_item);
+        }
+    }
 }
+
+
