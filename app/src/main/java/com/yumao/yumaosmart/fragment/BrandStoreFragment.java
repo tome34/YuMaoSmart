@@ -1,5 +1,6 @@
 package com.yumao.yumaosmart.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class BrandStoreFragment extends BaseFragment {
         super();
     }
 
+    @SuppressLint({"NewApi", "ValidFragment"})
     public BrandStoreFragment(List<String> data) {
         mData = data;
     }

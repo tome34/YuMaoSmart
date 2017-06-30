@@ -40,4 +40,7 @@ dependencies {
     compile project(':magicindicatorlib')
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.8.0'
+
+    //微信登录
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

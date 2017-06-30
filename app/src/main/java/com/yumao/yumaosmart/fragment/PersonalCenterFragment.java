@@ -2,6 +2,7 @@ package com.yumao.yumaosmart.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -29,6 +30,7 @@ import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
+import com.yumao.yumaosmart.widgit.SpacesItemDecoration;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -101,8 +103,19 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     protected void initView() {
 
         // 竖直方向的网格样式，每行四个Item
-        GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex() ,4,OrientationHelper.VERTICAL,false);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex() ,4,OrientationHelper.VERTICAL,false){
+            @Override
+            public boolean canScrollVertically() {
+                //return super.canScrollVertically();
+                // 直接禁止垂直滑动
+                return false;
+            }
+        };
+        //设置布局管理器
         mRvPersonalCenter.setLayoutManager(mLayoutManager);
+        //设置分割线
+        mRvPersonalCenter.addItemDecoration(new SpacesItemDecoration(5));
+
         //设置固定大小
         //mRvPersonalCenter.setHasFixedSize(true);
         //创建适配器，并且设置
@@ -118,7 +131,12 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
     }
 
+ /*   @Override
+    public void onStart() {
+        super.onStart();
+        init();
 
+    }*/
 
     //    初始化数据
     @Override
@@ -158,19 +176,57 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         }else if (mRolesString.contains("StoreOwner")){
             if (userBean.getVendor().getVendor_type() ==3){
                 LogUtils.d("tag","总店");
+                String[] stringArr =new String[]{"我的佣金","我的货款","我的销售","会员订单","我的收藏","我的推广",
+                        "门店资料","中央仓","商品管理","城市分店","城市V店"};
+                for (int i =0 ;i<stringArr.length ;i++){
+                    mNameDatas.add(stringArr[i]);
+                }
+                int[] intArr =new int[]{R.mipmap.personal_icon_yj,R.mipmap.personal_icon_dk,R.mipmap.personal_icon_xs,R.mipmap.personal_icon_dd,R.mipmap.personal_icon_scj,
+                        R.mipmap.personal_icon_tg,R.mipmap.personal_icon_md,R.mipmap.personal_icon_zyc,R.mipmap.personal_icon_gl,
+                        R.mipmap.personal_icon_fd,R.mipmap.personal_icon_vd};
+                for (int i =0 ;i<intArr.length ;i++){
+                    mIconDatas.add(intArr[i]);
+                }
                 return;
             }else if (userBean.getVendor().getVendor_type() ==2){
                 LogUtils.d("tag","城市分店");
+                String[] stringArr =new String[]{"我的佣金","我的销售","会员订单","城市V店","我的收藏","我的推广",
+                        "门店资料"};
+                for (int i =0 ;i<stringArr.length ;i++){
+                    mNameDatas.add(stringArr[i]);
+                }
+                int[] intArr =new int[]{R.mipmap.personal_icon_yj,R.mipmap.personal_icon_xs,R.mipmap.personal_icon_dd,R.mipmap.personal_icon_vd,R.mipmap.personal_icon_scj,
+                        R.mipmap.personal_icon_tg,R.mipmap.personal_icon_md};
+                for (int i =0 ;i<intArr.length ;i++){
+                    mIconDatas.add(intArr[i]);
+                }
                 return;
              }else{
                 LogUtils.d("tag","无类型");
                 return;
                     }
         }else if (mRolesString.contains("SalesPerson")){
-            LogUtils.d("tag","合伙人");
+            LogUtils.d("tag","合伙人,v店");
+                String[] stringArr =new String[]{"我的佣金","我的销售","我的推广","我的收藏",
+                        "门店资料"};
+                for (int i =0 ;i<stringArr.length ;i++){
+                    mNameDatas.add(stringArr[i]);
+                }
+                int[] intArr =new int[]{R.mipmap.personal_icon_yj,R.mipmap.personal_icon_xs,R.mipmap.personal_icon_tg,R.mipmap.personal_icon_scj,R.mipmap.personal_icon_md};
+                for (int i =0 ;i<intArr.length ;i++){
+                    mIconDatas.add(intArr[i]);
+                }
             return;
         }else{
             LogUtils.d("tag","普通会员");
+                String[] stringArr =new String[]{"我的收藏"};
+                for (int i =0 ;i<stringArr.length ;i++){
+                    mNameDatas.add(stringArr[i]);
+                }
+                int[] intArr =new int[]{R.mipmap.personal_icon_scj};
+                for (int i =0 ;i<intArr.length ;i++){
+                    mIconDatas.add(intArr[i]);
+                }
             return;
         }
 
@@ -194,8 +250,19 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         mPersonnalBean = new PersonnalBean("服务中心", String.valueOf(R.mipmap.personnalcenter_my_partner));
         mData.add(mPersonnalBean);*/
         }else{
-            Intent intent = new Intent(getActivity() ,LoginActivity.class);
-            startActivity(intent);
+
+            mTvPersonnalPetname.setText("登录/注册");
+            mTvPersonnalPetname.setTextColor(Color.WHITE);
+            mTvPersonnalPetname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity() ,LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            mTvPersonnalRegistTime.setVisibility(View.GONE);
+            mTvPersonnalIdentity.setVisibility(View.GONE);
         }
     }
 

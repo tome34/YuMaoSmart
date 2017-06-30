@@ -1,5 +1,6 @@
 package com.yumao.yumaosmart.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ public class OrderListFragment extends BaseFragment {
     @BindView(R.id.lv_orderlist_activity)
     ListView mLvOrderlistActivity;
 
+    @SuppressLint({"NewApi", "ValidFragment"})
     public OrderListFragment(List<OrderListBean> list) {
         mList = list;
     }

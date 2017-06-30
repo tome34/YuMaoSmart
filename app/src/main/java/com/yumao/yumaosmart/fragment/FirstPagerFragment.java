@@ -77,6 +77,8 @@ public class FirstPagerFragment extends BaseFragment {
     private ViewGroup.LayoutParams mLayoutParams;
 
 
+
+
     @Override
 
     protected void initView() {

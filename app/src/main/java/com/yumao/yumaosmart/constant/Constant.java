@@ -15,4 +15,7 @@ public interface Constant  {
     public static final String TOKEN = "token";
 
     String USER_DATA = "user_data";
+
+    //appid
+    public static final String APP_ID = "wxc22e6c182ddd6959";
 }

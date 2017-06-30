@@ -67,7 +67,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="累计销量:168"
+                android:text="累计销量:0"
                 android:textColor="@color/colorPrimary"/>
 
             <ImageView
@@ -83,7 +83,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="累计资产:168"
+                android:text="累计资产:0"
                 android:textColor="@color/colorPrimary"/>
         </LinearLayout>
     </RelativeLayout>

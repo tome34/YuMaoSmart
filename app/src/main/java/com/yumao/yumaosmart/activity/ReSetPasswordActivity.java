@@ -1,6 +1,9 @@
 package com.yumao.yumaosmart.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +15,8 @@ import android.widget.Toast;
 
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
+import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.utils.LogUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -25,6 +30,9 @@ import okhttp3.Call;
 
 public class ReSetPasswordActivity extends BaseItemActivity {
 
+    private static final int TIME_MINUS = 1000;
+    private static final int TIME_IS_OUT = 1001;
+
     @BindView(R.id.tv_titlle)
     TextView mTvTitlle;
     @BindView(R.id.my_toolbar)
@@ -34,7 +42,7 @@ public class ReSetPasswordActivity extends BaseItemActivity {
     @BindView(R.id.et_activity_reset_testcode)
     EditText mEtActivityResetTestcode;
     @BindView(R.id.btn_activity_reset_gettestcode)
-    Button mBtnActivityResetGettestcode;
+    TextView mBtnActivityResetGettestcode;
     @BindView(R.id.et_activity_reset_password)
     EditText mEtActivityResetPassword;
     @BindView(R.id.et_activity_reset_password_again)
@@ -47,6 +55,11 @@ public class ReSetPasswordActivity extends BaseItemActivity {
     private String mTestCode;
     private String mPassWord;
     private String mPassWordAgain;
+    //private int mCode;
+    private int time = 60;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +76,10 @@ public class ReSetPasswordActivity extends BaseItemActivity {
                 mPhoneNum = mEtActivityResetUsername.getText().toString().trim();
                 if (testPhone()) {
                     getTestCode();
+                    //开启倒计时
+                    mBtnActivityResetGettestcode.setText("剩余时间（" + time + ")秒");
+                    mBtnActivityResetGettestcode.setEnabled(false);
+                    new Thread(new CutDownTask()){}.start();
                 }
                 break;
             case R.id.btn_activity_reset_finishregist:
@@ -90,25 +107,47 @@ public class ReSetPasswordActivity extends BaseItemActivity {
     private void resetReally() {
         OkHttpUtils
                 .post()
-                .url("https://dist.yumao168.com/api/reset-password")
+                .url(Constant.BASE_URL+"reset-password") //"https://dist.yumao168.com/api/reset-password"
                 .addParams("phone", mPhoneNum)
                 .addParams("password", mPassWord)
                 .addParams("code",mTestCode)
                 .build()
+                /*.execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
+                        String string = response.body().string();
+                            LogUtils.d("tag","返回码:"+string);
+                        return string;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(ReSetPasswordActivity.this, "重置密码失败,验证码错误", Toast.LENGTH_SHORT).show();
+                        LogUtils.d("tag","重置密码的错误信息:"+e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(Object response, int id) {
+
+                        LogUtils.d("tag","返回码2:"+response.toString());
+                    }
+                });*/
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
                         Toast.makeText(ReSetPasswordActivity.this, "重置密码失败,验证码错误", Toast.LENGTH_SHORT).show();
-
+                            LogUtils.d("tag","重置密码的错误信息:"+e.toString());
 
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+
                         Toast.makeText(ReSetPasswordActivity.this, "密码重置成功", Toast.LENGTH_SHORT).show();
                         finish();
-                    }
+                        }
+
                 });
     }
 
@@ -132,6 +171,7 @@ public class ReSetPasswordActivity extends BaseItemActivity {
                 }
 
             } else {
+                Toast.makeText(this, "您输入的手机号码格式不对,请重新输入", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -141,8 +181,9 @@ public class ReSetPasswordActivity extends BaseItemActivity {
 
     public static boolean isMobileNO(String mobiles){
 
-        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-
+        String telRegex = "[1][34578]\\d{9}";
+        //Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p = Pattern.compile(telRegex);
         Matcher m = p.matcher(mobiles);
 
 
@@ -154,7 +195,7 @@ public class ReSetPasswordActivity extends BaseItemActivity {
 
         OkHttpUtils
                 .post()
-                .url("https://test-dist.yumao168.com/api/sms-code")
+                .url(Constant.BASE_URL+"sms-code")
                 .addParams("phone", mPhoneNum)
                 .build()
 
@@ -171,4 +212,30 @@ public class ReSetPasswordActivity extends BaseItemActivity {
                 });
 
     }
+    private class CutDownTask implements Runnable {
+        @Override
+        public void run() {
+            for(;time>0;time--){
+                SystemClock.sleep(999);
+                mHandler.sendEmptyMessage(TIME_MINUS);
+            }
+            mHandler.sendEmptyMessage(TIME_IS_OUT);
+        }
+    }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case TIME_MINUS:
+                    mBtnActivityResetGettestcode.setText("剩余时间（" + time + ")秒");
+                    break;
+                case TIME_IS_OUT:
+                    mBtnActivityResetGettestcode.setText("重新获取验证码");
+                    mBtnActivityResetGettestcode.setEnabled(true);
+                    time = 60;
+                    break;
+            }
+        }
+    };
 }

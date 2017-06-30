@@ -7,8 +7,8 @@
 <ImageView
     android:layout_gravity="center"
    android:id="@+id/iv_personnal_item"
-    android:layout_width="90dp"
-    android:layout_height="90dp"/>
+    android:layout_width="70dp"
+    android:layout_height="70dp"/>
     <TextView
         android:textColor="@color/colorNormal"
         android:id="@+id/tv_personnal_item"

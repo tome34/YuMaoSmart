@@ -58,12 +58,17 @@
             android:layout_marginLeft="30dp"
             android:layout_width="match_parent"
             android:layout_height="140dp"/>
-        <Button
+        <TextView
             android:id="@+id/btn_activity_regist_gettestcode"
             android:layout_alignParentRight="true"
             android:text="获取短信验证码"
+            android:padding="5dp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/grey2"
+            android:layout_margin="5dp"
+
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
     </RelativeLayout>
     <RelativeLayout
         android:background="@drawable/shap_line"

@@ -1,5 +1,6 @@
 package com.yumao.yumaosmart.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ public class MyPopularityFragment extends BaseFragment {
     private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
     private LayoutInflater mInflater;
 
+    @SuppressLint({"NewApi", "ValidFragment"})
     public MyPopularityFragment(List<MyPopularityBean> list) {
         mList = list;
     }

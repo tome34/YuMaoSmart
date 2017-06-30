@@ -1,6 +1,9 @@
 package com.yumao.yumaosmart.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,10 +15,12 @@ import android.widget.Toast;
 
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
+import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.utils.LogUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +32,9 @@ import okhttp3.Response;
 
 public class RegistActivity extends BaseItemActivity {
 
+    private static final int TIME_MINUS = 1000;
+    private static final int TIME_IS_OUT = 1001;
+
     @BindView(R.id.tv_titlle)
     TextView mTvTitlle;
     @BindView(R.id.my_toolbar)
@@ -36,7 +44,7 @@ public class RegistActivity extends BaseItemActivity {
     @BindView(R.id.et_activity_regist_testcode)
     EditText mEtActivityRegistTestcode;
     @BindView(R.id.btn_activity_regist_gettestcode)
-    Button mBtnActivityRegistGettestcode;
+    TextView mBtnActivityRegistGettestcode;
     @BindView(R.id.et_activity_regist_password)
     EditText mEtActivityRegistPassword;
     @BindView(R.id.et_activity_regist_password_again)
@@ -52,6 +60,7 @@ public class RegistActivity extends BaseItemActivity {
     private String mPassWord;
     private String mPassWordAgain;
     private int mCode;
+    private int time = 60;
 
 
     @Override
@@ -73,9 +82,12 @@ public class RegistActivity extends BaseItemActivity {
             case R.id.et_activity_regist_testcode:
                 break;
             case R.id.btn_activity_regist_gettestcode:
-                mPhoneNum=mEtActivityRegistUsername.getText().toString().trim();
+                mPhoneNum = mEtActivityRegistUsername.getText().toString().trim();
                 if (testPhone()) {
                     getTestCode();
+                    mBtnActivityRegistGettestcode.setText("剩余时间（" + time + ")秒");
+                    mBtnActivityRegistGettestcode.setEnabled(false);
+                    new Thread(new CutDownTask()).start();
                 }
 
                 break;
@@ -104,19 +116,57 @@ public class RegistActivity extends BaseItemActivity {
         }
         return false;
     }
+
     private void registRealy() {
         OkHttpUtils
                 .post()
-                .url("https://test-dist.yumao168.com/api/regist")
+                .url(Constant.BASE_URL + "register")
                 .addParams("phone", mPhoneNum)
                 .addParams("password", mPassWord)
-                .addParams("code",mTestCode)
-                .addParams("vendor_id","1")  //玉猫平台
+                .addParams("code", mTestCode)
+                .addParams("vendor_id", "1")  //玉猫平台
                 .build()
-                .execute(new StringCallback() {
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
+                        //Toast.makeText(RegistActivity.this, "网络连接失败1", Toast.LENGTH_SHORT).show();
+                        LogUtils.d("tag", "1:" + response.code());
+                        mCode =  response.code();
+                        return true;
+                    }
+
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(RegistActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(RegistActivity.this, "网络连接失败2", Toast.LENGTH_SHORT).show();
+                        LogUtils.d("tag", "2:" + e);
+                        if (mCode ==403){
+                            Toast.makeText(RegistActivity.this, "账号已经存在", Toast.LENGTH_SHORT).show();
+                        }else if (mCode == 400) {
+                            Toast.makeText(RegistActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(RegistActivity.this, "账号已经存在或验证码错误", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(Object response, int id) {
+                        //Toast.makeText(RegistActivity.this, "网络连接失败3", Toast.LENGTH_SHORT).show();
+                        LogUtils.d("tag", "3:" + response.toString());
+                        if (mCode == 204) {
+                            Toast.makeText(RegistActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        } else if (mCode == 403) {
+                            Toast.makeText(RegistActivity.this, "账号已经存在", Toast.LENGTH_SHORT).show();
+                        } else if (mCode == 404) {
+                            Toast.makeText(RegistActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                /*.execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                       // Toast.makeText(RegistActivity.this, "网络连接失败1", Toast.LENGTH_SHORT).show();
+                            LogUtils.d("tag","1:"+e.toString());
                     }
 
                     @Override
@@ -129,19 +179,25 @@ public class RegistActivity extends BaseItemActivity {
                             Toast.makeText(RegistActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
                         }
 
+                       // Toast.makeText(RegistActivity.this, "成功", Toast.LENGTH_SHORT).show();
+                        LogUtils.d("tag","2:"+response.toString());
                     }
 
-                    @Override
+                    *//*@Override
                     public boolean validateReponse(Response response, int id) {
+                        response.code()
+                       // Toast.makeText(RegistActivity.this, "网络连接失败2", Toast.LENGTH_SHORT).show();
                         return  true;
-                    }
+                    }*//*
 
                     @Override
                     public String parseNetworkResponse(Response response, int id) throws IOException {
+                       // Toast.makeText(RegistActivity.this, "网络连接失败3", Toast.LENGTH_SHORT).show();
                         mCode =  response.code();
                         return super.parseNetworkResponse(response, id);
+
                     }
-                });
+                });*/
     }
 
     private boolean testBefore() {
@@ -187,10 +243,9 @@ public class RegistActivity extends BaseItemActivity {
 
         OkHttpUtils
                 .post()
-                .url("https://test-dist.yumao168.com/api/sms-code")
+                .url(Constant.BASE_URL+"sms-code")
                 .addParams("phone", mPhoneNum)
                 .build()
-
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
@@ -205,4 +260,33 @@ public class RegistActivity extends BaseItemActivity {
                 });
 
     }
+    private class CutDownTask implements Runnable {
+        @Override
+        public void run() {
+            for(;time>0;time--){
+                SystemClock.sleep(999);
+                mHandler.sendEmptyMessage(TIME_MINUS);
+            }
+            mHandler.sendEmptyMessage(TIME_IS_OUT);
+        }
+    }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+
+                case TIME_MINUS:
+                    mBtnActivityRegistGettestcode.setText("剩余时间（" + time + ")秒");
+                break;
+                case TIME_IS_OUT:
+                    mBtnActivityRegistGettestcode.setText("重新获取验证码");
+                    mBtnActivityRegistGettestcode.setEnabled(true);
+                    time = 60;
+                    break;
+            }
+
+        }
+    };
+
 }

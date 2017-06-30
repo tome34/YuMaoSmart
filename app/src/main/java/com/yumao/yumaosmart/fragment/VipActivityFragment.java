@@ -1,5 +1,6 @@
 package com.yumao.yumaosmart.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ public class VipActivityFragment extends BaseFragment {
    public ListView mLvFragmentVipactivity;
     private List<VipOrderListBean> mData;
 
+    @SuppressLint({"NewApi", "ValidFragment"})
     public VipActivityFragment(List<VipOrderListBean> data) {
         mData = data;
     }
