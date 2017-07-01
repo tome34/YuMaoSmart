@@ -24,9 +24,6 @@ import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -99,12 +96,13 @@ public class LoginActivity extends BaseItemActivity {
                 startActivity(new Intent(this, ReSetPasswordActivity.class));
                 break;
             case R.id.wx_login:
-                Toast.makeText(this,"微信登录",Toast.LENGTH_LONG).show();
+
+               // Toast.makeText(this,"微信登录",Toast.LENGTH_LONG).show();
                 SendAuth.Req req = new SendAuth.Req();
                 req.scope = "snsapi_userinfo"; //授权范围
                 req.state = "wechat1";
+                req.openId = Constant.APP_ID;
                 mApi.sendReq(req);
-
                 break;
         }
     }
@@ -149,8 +147,6 @@ public class LoginActivity extends BaseItemActivity {
                             Toast.makeText(LoginActivity.this, "token:" + token, Toast.LENGTH_SHORT).show();
                             SPUtils.putString(LoginActivity.this, Constant.TOKEN, token);
                             SPUtils.putString(LoginActivity.this, Constant.USER_DATA, response);
-
-
                             finish();
                         }
 
@@ -175,14 +171,4 @@ public class LoginActivity extends BaseItemActivity {
         return false;
     }
 
-    public static boolean isMobileNO(String mobiles) {
-
-        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-
-        Matcher m = p.matcher(mobiles);
-
-
-        return m.matches();
-
-    }
 }

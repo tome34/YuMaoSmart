@@ -14,14 +14,25 @@ import java.io.IOException;
  */
 public class StreamUtils {
 
-    public static void closeStream(Closeable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public StreamUtils() {
+    }
 
+    public static void close(Closeable... closeables) {
+        if (closeables != null && closeables.length != 0) {
+            Closeable[] var1 = closeables;
+            int var2 = closeables.length;
+
+            for (int var3 = 0; var3 < var2; ++var3) {
+                Closeable closeable = var1[var3];
+                if (closeable != null) {
+                    try {
+                        closeable.close();
+                    } catch (IOException var6) {
+                        var6.printStackTrace();
+                    }
+                }
+            }
+
+        }
     }
 }

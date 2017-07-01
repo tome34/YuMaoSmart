@@ -65,10 +65,12 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 LogUtils.d("toke="+UiUtilities.getUser().getToken());
             /*LogUtils.d("venderid="+UiUtilities.getUser().getVendor().getId());
                     LogUtils.d("gender="+UiUtilities.getUser().getGender());*/
-initStatusBar();
+        initStatusBar();
         init();
-
         initListenner();
+
+        //从微信界面跳转到个人中心界面,activity跳转fragment
+
 
     }
 

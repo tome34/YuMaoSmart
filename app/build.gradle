@@ -2,6 +2,16 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'com.jakewharton.butterknife'
 android {
+
+    // 签名
+    signingConfigs {
+        debug {
+            keyAlias 'yumao'
+            keyPassword '123456'
+            storeFile file('E:/IDE/WORKSPACE/YuMaoSmart/yumaokey.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -14,9 +24,29 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+      /*  debug {   //参考
+            zipAlignEnabled false
+            minifyEnabled false // 使用jdk1.8,debug需要把minifyEnabled置为false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (propertyHaveSigningConfigs) {
+                signingConfig signingConfigs.debug
+            }
+        }
+        release {
+            zipAlignEnabled true // zip压缩瘦身
+            minifyEnabled false // 开启混淆
+            shrinkResources false // 除去无用代码
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (propertyHaveSigningConfigs) {
+                signingConfig signingConfigs.release
+            }*/
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 }
@@ -30,17 +60,32 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
     compile 'com.zhy:okhttputils:2.6.2'
+    //万能的adapter
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile 'com.zhy:base-adapter:3.0.3'
+
+    //多种样式的弹出对话框
     compile 'com.orhanobut:dialogplus:1.11@aar'
+
     compile 'org.greenrobot:eventbus:3.0.0'
-//    compile 'com.contrarywind:Android-PickerView:3.0.8'
+    //    compile 'com.contrarywind:Android-PickerView:3.0.8'
+    //时间选择器、省市区三级联动，可以自定义
     compile 'com.contrarywind:Android-PickerView:3.2.4'
     compile project(':magicindicatorlib')
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.8.0'
-
     //微信登录
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
+    // banner
+    compile 'com.youth.banner:banner:1.4.9'
+
+    // 圆形图片
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    // 仿ios弹出警告窗体
+    compile 'com.bigkoo:alertview:1.0.3'
+
+
 }

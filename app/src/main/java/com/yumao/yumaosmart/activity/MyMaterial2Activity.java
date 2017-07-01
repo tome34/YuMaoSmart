@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
@@ -173,8 +174,7 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
 
             //退出当前登录
             case R.id.activity_my_material_button_back:
-                SPUtils.putString(mContext ,Constant.TOKEN,null);
-                SPUtils.putString(mContext ,Constant.USER_DATA,null);
+                LoginManager.getInstance().signOutLogin(mContext);
                 finish();
                 break;
 

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.yumao.yumaosmart.R;
@@ -26,6 +25,7 @@ import com.yumao.yumaosmart.bean.MyOrderlistBean;
 import com.yumao.yumaosmart.bean.PersonnalBean;
 import com.yumao.yumaosmart.callback.UserCallback;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
@@ -130,13 +130,6 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         mRvPersonalCenter.setAdapter(mPersonnalcenterAdapter);*/
 
     }
-
- /*   @Override
-    public void onStart() {
-        super.onStart();
-        init();
-
-    }*/
 
     //    初始化数据
     @Override
@@ -297,13 +290,12 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
                 break;
             case R.id.iv_personnal_fragment_touxiang:
 
-                Toast.makeText(UiUtilities.getContex(), "个人中心头像被点击", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(UiUtilities.getContex(), "个人中心头像被点击", Toast.LENGTH_SHORT).show();
                 //调转到登录界面
                 //判断是否登录
-                if (isLoginState()) {
+                if (LoginManager.getInstance().isLoginState(getActivity())) {
                     //跳转到我的资料
                     mIntent = new Intent(getActivity(), MyMaterial2Activity.class);
-
                     startActivity(mIntent);
 
                 } else {
@@ -349,24 +341,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         activity.startActivity(intent);
     }
 
-    public boolean isLoginState() {
 
-
-        String token = SPUtils.getString(getActivity(), Constant.TOKEN, null);
-        LogUtils.d("token:" + token);
-        if (!TextUtils.isEmpty(token) ) {
-
-            mLoginState = true;
-        } else {
-
-            mLoginState = false;
-
-        }
-        return mLoginState;
-
-
-
-    }
 
     public Boolean isNetQueue(String token) {
         OkHttpUtils.post().url(Constant.BASE_URL + "token").addParams("X-API-TOKEN", token).build().execute(new UserCallback() {

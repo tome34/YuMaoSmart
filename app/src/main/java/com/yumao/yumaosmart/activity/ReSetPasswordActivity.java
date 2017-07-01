@@ -17,6 +17,7 @@ import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.utils.LogUtils;
+import com.yumao.yumaosmart.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -161,12 +162,17 @@ public class ReSetPasswordActivity extends BaseItemActivity {
             Toast.makeText(this, "请输入完整信息", Toast.LENGTH_SHORT).show();
             return false;
         } else {
-            if (isMobileNO(mPhoneNum)) {
-                if (mPassWord.equals(mPassWordAgain)) {
+            if (StringUtils.isMobileNO(mPhoneNum)) {
+                if (isPassWorkFormat(mPassWord) ) {
+                    if (mPassWord.equals(mPassWordAgain)){
+                        return true;
+                    }else{
+                        Toast.makeText(this, "两次输入了密码不一致", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
 
-                    return true;
                 } else {
-                    Toast.makeText(this, "两次输入了密码不一致", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "密码必须是4-16位", Toast.LENGTH_SHORT).show();
                     return false;
                 }
 
@@ -177,6 +183,15 @@ public class ReSetPasswordActivity extends BaseItemActivity {
 
         }
 
+    }
+
+    //判断密码的格式 4-16位
+    public boolean isPassWorkFormat(String passWord){
+        String pwRegex = "\\w{4,16}";
+        Pattern p = Pattern.compile(pwRegex);
+        Matcher m = p.matcher(passWord);
+
+        return m.matches();
     }
 
     public static boolean isMobileNO(String mobiles){

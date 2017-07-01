@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:fitsSystemWindows="true"
+
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+
+     android:background="@mipmap/my_jewelry_store_background"
+        android:layout_width="match_parent"
+        android:layout_height="489dp">
+        <ImageView
+            android:background="@mipmap/four_my_jewelry_store"
+            android:id="@+id/iv_activity_myjewelry_store"
+            style="@style/normalImageView"
+            android:layout_marginLeft="46dp"
+            android:layout_marginTop="109dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+        <ImageView
+            android:background="@mipmap/four_my_jewelry_store_active"
+            android:layout_marginRight="46dp"
+            android:id="@+id/iv_activity_myjewelry_active_area"
+            style="@style/normalImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignTop="@+id/iv_activity_myjewelry_store"
+            android:layout_alignParentRight="true"
+            />
+
+        <ImageView
+            android:background="@mipmap/four_my_jewelry_store_order"
+            android:layout_marginLeft="46dp"
+            android:id="@+id/iv_activity_myjewelry_order_area"
+            style="@style/normalImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignTop="@+id/iv_activity_myjewelry_active_my_order"
+            />
+        <ImageView
+            android:background="@mipmap/four_my_jewelry_store_manage"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="46dp"
+            android:id="@+id/iv_activity_myjewelry_active_my_order"
+            style="@style/normalImageView"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="60dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>
