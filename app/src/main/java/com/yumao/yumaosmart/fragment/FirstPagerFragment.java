@@ -1,9 +1,9 @@
 package com.yumao.yumaosmart.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,17 +16,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.loader.ImageLoader;
 import com.yumao.yumaosmart.R;
+import com.yumao.yumaosmart.activity.LoginActivity;
 import com.yumao.yumaosmart.activity.MainActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
 import com.yumao.yumaosmart.adapter.FirstClassifyAdapter;
 import com.yumao.yumaosmart.adapter.FirstListAdaper;
-import com.yumao.yumaosmart.adapter.vp_adapter.FirstViewPagerAdapter;
 import com.yumao.yumaosmart.base.LoadingPager;
 import com.yumao.yumaosmart.bean.ClassifyBean;
 import com.yumao.yumaosmart.bean.FirstListBean;
 import com.yumao.yumaosmart.callback.ProductsCallback;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.manager.BannerManager;
 import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.manager.UserInformationManager;
 import com.yumao.yumaosmart.mode.ProductsMode;
@@ -61,14 +66,17 @@ public class FirstPagerFragment extends BaseFragment {
     ScrollView mFirstScrollView;
     @BindView(R.id.lv_first_list)
     ListView mLvFirstList;
-    @BindView(R.id.vp_fragment_firstager)
-    ViewPager mViewPager;
     @BindView(R.id.tv_first_list_user_name)
     TextView mTvFirstListUserName;
     @BindView(R.id.tv_first_page_shanjiajieshao)
     ImageView mTvFirstPageShanjiajieshao;
     @BindView(R.id.tv_first_page_person_tel)
     ImageView mTvFirstPagePersonTel;
+    @BindView(R.id.tv_first_text)
+    TextView mTvFirstText;
+    @BindView(R.id.banner)
+    Banner mBanner;
+
     private List<ClassifyBean> mClassifyData;
     private ClassifyBean mClassifyBeanFeiCui;
     private ClassifyBean mClassifyBeanCaiBao;
@@ -89,13 +97,16 @@ public class FirstPagerFragment extends BaseFragment {
     private ImageView mImageView;
     private ViewGroup.LayoutParams mLayoutParams;
 
+    private List<String> imageArray;  //轮播图图片集合
+    private List<String> imageTitle;  //轮播图标题集合
+
 
     @Override
 
     protected void initView() {
 
         boolean loginState = LoginManager.getInstance().isLoginState(UiUtilities.getContex());
-        if (loginState){
+        if (loginState) {
             User userBean = UserInformationManager.getInstance().getUserInformation();
             String logoUrl = userBean.getVendor().getLogo();
             //首页左边商城头像
@@ -106,29 +117,39 @@ public class FirstPagerFragment extends BaseFragment {
             Picasso.with(mContext).load(iconUrl).placeholder(R.mipmap.first_page_person_icon_touxiang).into(mIvFirstItemPersonTopright);
 
             //用户名
+            mTvFirstListUserName.setVisibility(View.VISIBLE);
             String niceName = SPUtils.getString(UiUtilities.getContex(), Constant.NICK_NAME);
             mTvFirstListUserName.setText(niceName);
 
+            //首页底部地址
+            String address = userBean.getVendor().getAddress();
+            mTvFirstText.setText("地址: " + address);
 
-
-
+        } else {
+            mIvFirstItemPersonTopright.setImageResource(R.mipmap.first_page_person_icon_touxiang);
+            mTvFirstListUserName.setVisibility(View.GONE);
         }
 
 
     }
 
 
-
-
     private void initData(List<ProductsMode> list) {
-        initViewPager();
-        initClassify();
-        initList(list);
+        //判断活动是否有数据,如果没有数据在判断栏目的数据
+
+        initViewPager(); //轮播图
+        //mBanner.setVisibility(View.GONE);
+        initClassify(); //分类
+        initList(list); //产品展示
+
+        BannerManager.isBannerData();
+
+
     }
 
     //        首页轮播图
     private void initViewPager() {
-        vpRes.add(String.valueOf(R.mipmap.first_page_picture));
+      /*  vpRes.add(String.valueOf(R.mipmap.first_page_picture));
         vpRes.add(String.valueOf(R.mipmap.first_page_picture));
         vpRes.add(String.valueOf(R.mipmap.first_page_picture));
 
@@ -141,8 +162,48 @@ public class FirstPagerFragment extends BaseFragment {
             views.add(mImageView);
         }
 
-        mViewPager.setAdapter(new FirstViewPagerAdapter(views));
+        mViewPager.setAdapter(new FirstViewPagerAdapter(views));*/
+
+        //设置图片加载集合
+        imageArray=new ArrayList<>();
+
+        imageArray.add("http://img3.imgtn.bdimg.com/it/u=2758743658,581437775&fm=15&gp=0.jpg");
+        imageArray.add("http://img3.imgtn.bdimg.com/it/u=2105877023,3759180926&fm=15&gp=0.jpg");
+        imageArray.add("http://img2.imgtn.bdimg.com/it/u=1876814088,3589919070&fm=15&gp=0.jpg");
+
+        //设置图片标题集合
+        imageTitle=new ArrayList<>();
+        imageTitle.add("aaaaaaaaa");
+        imageTitle.add("bbbbbbbbb");
+        imageTitle.add("ccccccccc");
+
+
+        //设置banner样式
+        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+        //设置图片加载器
+        mBanner.setImageLoader(new GlideImageLoader());
+        //设置图片集合
+        mBanner.setImages(imageArray);
+        //设置banner动画效果
+        mBanner.setBannerAnimation(Transformer.RotateDown);
+        //设置标题集合（当banner样式有显示title时）
+        mBanner.setBannerTitles(imageTitle);
+        //设置轮播时间
+        mBanner.setDelayTime(2000);
+        //设置指示器位置（当banner模式中有指示器时）
+        mBanner.setIndicatorGravity(BannerConfig.CENTER);
+        //banner设置方法全部调用完毕时最后调用
+        mBanner.start();
     }
+    private class GlideImageLoader extends ImageLoader {
+
+        @Override
+        public void displayImage(Context context, Object path, ImageView imageView) {
+            //Glide 加载图片简单用法
+            Picasso.with(context).load((String) path).into(imageView);
+        }
+    }
+
 
     //    首页列表初始化
     private void initList(List<ProductsMode> list) {
@@ -223,8 +284,8 @@ public class FirstPagerFragment extends BaseFragment {
 
 
     //首页个人中心点击事件
-    @OnClick({R.id.iv_first_item_person_topleft,R.id.iv_first_item_person_topright, R.id.tv_first_list_user_name,
-            R.id.tv_first_page_shanjiajieshao,R.id.tv_first_page_person_tel})
+    @OnClick({R.id.iv_first_item_person_topleft, R.id.iv_first_item_person_topright, R.id.tv_first_list_user_name,
+            R.id.tv_first_page_shanjiajieshao, R.id.tv_first_page_person_tel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_first_item_person_topleft:
@@ -233,29 +294,39 @@ public class FirstPagerFragment extends BaseFragment {
                 break;
 
             case R.id.iv_first_item_person_topright:
-                Toast.makeText(UiUtilities.getContex(), "首页头像点击事件收到", Toast.LENGTH_SHORT).show();
-                MainActivity activity = (MainActivity) getActivity();
-                activity.startActivity(new Intent(activity, MyMaterial2Activity.class));
+                // Toast.makeText(UiUtilities.getContex(), "首页头像点击事件收到", Toast.LENGTH_SHORT).show();
+                if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())) {
+                    MainActivity activity = (MainActivity) getActivity();
+                    activity.startActivity(new Intent(activity, MyMaterial2Activity.class));
+                } else {
+                    startActivity(new Intent(UiUtilities.getContex(), LoginActivity.class));
+                }
+
                 break;
 
             case R.id.tv_first_page_shanjiajieshao: //品牌介绍
-                Toast.makeText(UiUtilities.getContex(), "品牌介绍", Toast.LENGTH_SHORT).show();
-
+                if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())) {
+                    Toast.makeText(UiUtilities.getContex(), "品牌介绍", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(new Intent(UiUtilities.getContex(), LoginActivity.class));
+                }
                 break;
 
             case R.id.tv_first_page_person_tel:  //tell电话
                 boolean loginState = LoginManager.getInstance().isLoginState(UiUtilities.getContex());
-                if (loginState){
+                if (loginState) {
                     User userBean = UserInformationManager.getInstance().getUserInformation();
                     Object tel = userBean.getVendor().getTel();
 
-                    if (tel !=null){
+                    if (tel != null) {
                         //需要处理权限问题
-                        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+tel)));
+                        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tel)));
 
-                    }else{
+                    } else {
                         Toast.makeText(UiUtilities.getContex(), "未填写电话号码", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    startActivity(new Intent(UiUtilities.getContex(), LoginActivity.class));
                 }
 
                 break;

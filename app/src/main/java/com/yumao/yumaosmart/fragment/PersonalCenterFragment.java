@@ -28,6 +28,7 @@ import com.yumao.yumaosmart.bean.MyOrderlistBean;
 import com.yumao.yumaosmart.bean.PersonnalBean;
 import com.yumao.yumaosmart.callback.UserCallback;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.event.PersonalCenterEvent;
 import com.yumao.yumaosmart.inter.OnItemClickListener;
 import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.manager.UserInformationManager;
@@ -36,6 +37,10 @@ import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.zhy.http.okhttp.OkHttpUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,9 +100,9 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     private String mRolesString;
     private List<String> mRoles;
 
+
     //    初始化监听
     @Override
-
     protected void initListenner() {
         mIvPersonnalDaifahuo.setOnClickListener(this);
         mIvPersonnalDaifukuan.setOnClickListener(this);
@@ -114,6 +119,8 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     //初始化视图
     @Override
     protected void initView() {
+
+
 
         // 竖直方向的网格样式，每行四个Item
         GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(), 4, OrientationHelper.VERTICAL, false) {
@@ -158,6 +165,18 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
         mRvPersonalCenter.setAdapter(mPersonnalcenterAdapter);*/
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        EventBus.getDefault().unregister(UiUtilities.getContex());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnPersonalEvent(PersonalCenterEvent event){
+        init();
     }
 
     //    初始化数据
@@ -286,6 +305,15 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
             mTvPersonnalRegistTime.setVisibility(View.GONE);
             mIvPersonnalIdentity.setVisibility(View.GONE);
+            mTvPersonnalXiaoliang.setVisibility(View.INVISIBLE);
+            mTvPersonnalZichang.setVisibility(View.INVISIBLE);
+
+            //设置头像
+            mIvPersonnalFragmentTouxiang.setImageResource(R.mipmap.first_page_person_icon_touxiang);
+
+
+
+
         }
     }
 
@@ -357,6 +385,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         // TODO: inflate a fragment view
         View mRootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, mRootView);
+
         return mRootView;
     }
 

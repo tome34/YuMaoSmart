@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               xmlns:touxiang="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/tools"
               android:background="@color/graywhite"
               android:orientation="vertical">
 
@@ -42,7 +43,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
+                        android:src="@mipmap/yumao_mall"
                         />
                 </RelativeLayout>
 
@@ -66,8 +67,7 @@
                         android:scaleType="fitXY"
                         android:src="@mipmap/first_page_person_icon_touxiang"
                         touxiang:riv_oval="true"
-                        touxiang:riv_border_width="1dp"
-                        touxiang:riv_border_color="@color/gray"/>
+                        touxiang:riv_border_width="0dp"/>
                         <TextView
                             android:id="@+id/tv_first_list_user_name"
                             android:layout_width="50dp"
@@ -103,11 +103,19 @@
             </LinearLayout>
 
             <!--首页图片模块-->
-            <android.support.v4.view.ViewPager
+           <!-- <android.support.v4.view.ViewPager
                 android:id="@+id/vp_fragment_firstager"
                 android:layout_marginTop="5dp"
+                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="143dp"/>
+                android:layout_height="143dp"/>-->
+
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="170dp" />
+
 
             <!--首页分类RecyclereView模块-->
             <android.support.v7.widget.RecyclerView
@@ -124,7 +132,30 @@
                 android:layout_height="wrap_content">
 
             </com.yumao.yumaosmart.widgit.FirstListView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_qyzs"/>
+                <TextView
+                    android:id="@+id/tv_first_text"
+                    android:layout_marginBottom="15dp"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="地址: 深圳市罗湖区田贝四路水贝万山A座4006玉猫平台提供支持"/>
+
+            </LinearLayout>
+
         </LinearLayout>
+
     </com.yumao.yumaosmart.widgit.MyScrollview>
 
 </LinearLayout>

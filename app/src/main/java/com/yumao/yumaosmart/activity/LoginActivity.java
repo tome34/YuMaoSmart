@@ -2,6 +2,7 @@ package com.yumao.yumaosmart.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -50,6 +51,7 @@ public class LoginActivity extends BaseItemActivity {
     private String mPhoneNum;
     private User mUserBean;
     private IWXAPI mApi;
+    private boolean mB;
 
 
     @Override
@@ -82,6 +84,7 @@ public class LoginActivity extends BaseItemActivity {
                 } else {
 
                     login();
+
                 }
 
                 break;
@@ -113,10 +116,19 @@ public class LoginActivity extends BaseItemActivity {
 
     private void login() {
 
-        boolean b = LoginManager.getInstance().goLogin(mPhoneNum, mPassword);
-        if (b){//登录成功
-            finish();
-        }
+        mB = LoginManager.getInstance().goLogin(mPhoneNum, mPassword);
+
+        //有问题,第一次登陆不能finish
+        //DOTO
+      new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+              if (mB){//登录成功
+                  finish();
+              }
+          }
+      },1000);
+
 
     }
 

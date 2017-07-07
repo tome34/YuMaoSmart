@@ -60,6 +60,8 @@ public class LoginManager {
 
     }
 
+
+
     //退出当前登录
     public void  signOutLogin(Context context){
         //清楚sp所有数据

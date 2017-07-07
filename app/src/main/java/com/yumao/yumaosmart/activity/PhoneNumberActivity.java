@@ -16,12 +16,15 @@ import android.widget.Toast;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.event.GenderEvent;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.StringUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -201,6 +204,7 @@ public class PhoneNumberActivity extends BaseItemActivity {
                         LogUtils.d("号码 put完成");
                          user.setPhone(mNum);*/
                         SPUtils.putString(UiUtilities.getContex(),Constant.PHONE,mNum);
+                        EventBus.getDefault().post(new GenderEvent(mNum ,1));
                         finish();
 
                     }

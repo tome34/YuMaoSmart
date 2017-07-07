@@ -1,9 +1,11 @@
 package com.yumao.yumaosmart.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,12 +23,18 @@ import android.widget.Toast;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.bigkoo.pickerview.TimePickerView;
 import com.itheima.roundedimageview.RoundedImageView;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.event.BirthDayEvent;
+import com.yumao.yumaosmart.event.GenderEvent;
+import com.yumao.yumaosmart.event.PersonalCenterEvent;
+import com.yumao.yumaosmart.event.PhoneNumEvent;
+import com.yumao.yumaosmart.event.SweetNameEvent;
 import com.yumao.yumaosmart.manager.UserInformationManager;
 import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
@@ -36,6 +44,13 @@ import com.yumao.yumaosmart.utils.UiUtilities;
 import com.yumao.yumaosmart.widgit.MyMaterialItemView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,6 +96,8 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
     private Context mContext;
     private Intent mIntent;
     private String mGender;
+    public TimePickerView pvTime;
+    private Activity mActivity;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -88,7 +105,7 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
    // private GoogleApiClient mClient;
     private Uri mImageUri;
     private Uri mCropUri;
-    private boolean flag =true;
+    //private boolean flag =true;
 
 
     @Override
@@ -100,26 +117,52 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
         initToobar("我的资料");
 
         initData();
-        flag = false;
+
+
+        EventBus.getDefault().register(this);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
        // mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+
+
+
+
+
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (flag){
-            initData();
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        flag = true;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void  onSweetNameEvent (SweetNameEvent e) {
+        initData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void  onPhoneNumEvent (PhoneNumEvent e) {
+        initData();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGenderEvent(GenderEvent e){
+        initData();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBirthDayEvent(BirthDayEvent e){
+       /* mPostion = e.getPostion();
+        DisPlay disPlay = mList.get(mPostion);
+        mOtherBean= (MyMaterialOtherBean) disPlay;
+        mOtherBean.setContent(e.getBirthDay());
+        mList.remove(mPostion);
+        mList.add(mPostion,mOtherBean);
+        mMultiItemTypeAdapter.notifyDataSetChanged();*/
+        String birthDay = e.getBirthDay();
+        initData();
     }
 
 
@@ -251,7 +294,7 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
                 }).show();
                 break;
             case R.id.activity_my_material_data_of_birth: //生日
-
+                handBirthDay();
 
                 break;
             case R.id.activity_my_material_real_name:  //更换实名认证
@@ -267,10 +310,74 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
             //退出当前登录
             case R.id.activity_my_material_button_back:
                 SPUtils.clear(UiUtilities.getContex());
+                EventBus.getDefault().post(new PersonalCenterEvent());
                 finish();
                 break;
 
         }
+    }
+
+    //生日的时间选择器
+    private void handBirthDay() {
+        pvTime = new TimePickerView.Builder(MyMaterial2Activity.this, new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+               SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String time = format.format(date);
+                    LogUtils.d("tag","time:"+time);
+                putBirthDay(time); //更改生日
+
+                //UiUtilities.getUser().setDate_of_birth(time);
+               // EventBus.getDefault().post(new BirthDayEvent(time,5));
+            }
+
+        })
+                .setLabel("年", "月", "日", "", "", "")
+                .setType(TimePickerView.Type.YEAR_MONTH_DAY)//default is all
+                .setCancelText("取消")
+                .setSubmitText("确定")
+                .setContentSize(18)
+                .setTitleSize(20)
+                .setTitleColor(Color.WHITE)
+                .setTitleText("出生日期")
+                .setTitleBgColor(Color.argb(255,237,86,80))
+                .build();
+
+         pvTime.show();
+    }
+
+    //更改生日
+    private void putBirthDay(String time) {
+        final String times = time ;
+        FormBody.Builder builder = new FormBody.Builder();
+
+        FormBody body = builder
+                .add("date_of_birth", times)
+                .build();
+        OkHttpUtils
+                .put()
+                .url(Constant.BASE_URL + "customers/" + SPUtils.getInt(MyMaterial2Activity.this, Constant.USER_CID))
+                .addHeader("X-API-TOKEN", SPUtils.getString(MyMaterial2Activity.this, Constant.TOKEN))
+                .requestBody(body)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
+                        return null;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(UiUtilities.getContex(), "修改失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(Object response, int id) {
+                        Toast.makeText(UiUtilities.getContex(), "修改成功", Toast.LENGTH_SHORT).show();
+                        SPUtils.putString(UiUtilities.getContex(),Constant.DATA_OF_BIRTH,times);
+                        EventBus.getDefault().post(new BirthDayEvent(times,5));
+                    }
+                });
     }
 
     //尝试打开相机 无权限则申请权限
@@ -362,7 +469,7 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
                 if (resultCode == RESULT_OK) {
                         LogUtils.d("tag","裁剪图片成功:"+mCropUri);
                     //執行網絡請求,把圖片post上去
-                    //postImage(mCropUri);
+                    postImage(mCropUri);
                 }
                 break;
             default:
@@ -370,6 +477,34 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
         }
     }
 
+    //更改头像
+    private void postImage(Uri cropUri) {
+        Uri iconUri = cropUri;
+
+        OkHttpUtils
+                .post()
+                .url(Constant.BASE_URL+"customers/"+SPUtils.getInt(MyMaterial2Activity.this,Constant.USER_CID))
+                .addHeader("X-API-TOKEN", SPUtils.getString(MyMaterial2Activity.this, Constant.TOKEN))
+                //.addFile("avatar",iconUri+"")
+                .addParams("avatar",iconUri+"") //先把图片压缩,二进制文件
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
+                        return null;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response, int id) {
+
+                    }
+                });
+    }
 
 
     private void putGender(final String gender) {
@@ -399,6 +534,7 @@ public class MyMaterial2Activity extends BaseItemActivity implements View.OnClic
                     public void onResponse(Object response, int id) {
                         Toast.makeText(UiUtilities.getContex(), "修改成功", Toast.LENGTH_SHORT).show();
                         SPUtils.putString(UiUtilities.getContex(),Constant.GENDER,gender);
+                        EventBus.getDefault().post(new GenderEvent(gender ,1));
                     }
                 });
     }

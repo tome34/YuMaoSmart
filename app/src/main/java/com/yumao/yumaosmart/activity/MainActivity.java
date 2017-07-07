@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
 
     private void initListenner() {
 
+
         mTabhost.setup(this, mFragmentManager, android.R.id.tabcontent);
        mTabhost.setOnTabChangedListener(this);
         for (int i = 0; i < textArray.length; i++) {
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
 
     @Override
     public void onTabChanged(String tabId) {
+
 
     }
 }

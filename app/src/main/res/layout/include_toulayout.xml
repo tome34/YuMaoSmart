@@ -24,8 +24,7 @@
             android:scaleType="fitXY"
             android:src="@mipmap/first_page_person_icon_touxiang"
             touxiang:riv_oval="true"
-            touxiang:riv_border_width="1dp"
-            touxiang:riv_border_color="@color/gray"/>
+            touxiang:riv_border_width="0dp"/>
 
         <TextView
 

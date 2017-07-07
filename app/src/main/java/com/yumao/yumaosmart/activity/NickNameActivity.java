@@ -11,10 +11,13 @@ import android.widget.Toast;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.event.GenderEvent;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,6 +90,7 @@ public class NickNameActivity extends BaseItemActivity implements View.OnClickLi
                 LogUtils.d("tag","put完成");
                 user.setNick_name(mTrim);*/
                 SPUtils.putString(UiUtilities.getContex(),Constant.NICK_NAME,mTrim);
+                EventBus.getDefault().post(new GenderEvent(mTrim ,1));
                 finish();
 
 
