@@ -127,7 +127,7 @@ public class MyMaterialOtherDelegate implements ItemViewDelegate<DisPlay> {
 
     }
 
-    private void handgender() {
+    public void handgender() {
 
 
         DialogPlus dialog = DialogPlus.newDialog(mActivity)
@@ -165,7 +165,7 @@ public class MyMaterialOtherDelegate implements ItemViewDelegate<DisPlay> {
     }
 
 
-    private void handBirthDay() {
+    public void handBirthDay() {
         pvTime = new TimePickerView.Builder(mActivity, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调

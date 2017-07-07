@@ -60,12 +60,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
     compile 'com.zhy:okhttputils:2.6.2'
     //万能的adapter
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile 'com.zhy:base-adapter:3.0.3'
-
     //多种样式的弹出对话框
     compile 'com.orhanobut:dialogplus:1.11@aar'
 
@@ -73,19 +71,27 @@ dependencies {
     //    compile 'com.contrarywind:Android-PickerView:3.0.8'
     //时间选择器、省市区三级联动，可以自定义
     compile 'com.contrarywind:Android-PickerView:3.2.4'
+
     compile project(':magicindicatorlib')
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.8.0'
     //微信登录
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-
     // banner
     compile 'com.youth.banner:banner:1.4.9'
-
     // 圆形图片
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    //compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.github.open-android:RoundedImageView:v1.0.0'
     // 仿ios弹出警告窗体
     compile 'com.bigkoo:alertview:1.0.3'
+    //添加分割线
+    //compile 'com.dinuscxj:recycleritemdecoration:1.0.0'
 
+    // smartTabLayout
+    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 
+    //图片裁剪
+    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 }

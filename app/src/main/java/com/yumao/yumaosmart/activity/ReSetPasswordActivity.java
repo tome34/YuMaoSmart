@@ -5,7 +5,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,8 +48,6 @@ public class ReSetPasswordActivity extends BaseItemActivity {
     TextView mBtnActivityResetGettestcode;
     @BindView(R.id.et_activity_reset_password)
     EditText mEtActivityResetPassword;
-    @BindView(R.id.et_activity_reset_password_again)
-    EditText mEtActivityResetPasswordAgain;
     @BindView(R.id.btn_activity_reset_finishregist)
     Button mBtnActivityResetFinishregist;
     @BindView(R.id.activity_regist)
@@ -55,7 +55,6 @@ public class ReSetPasswordActivity extends BaseItemActivity {
     private String mPhoneNum;
     private String mTestCode;
     private String mPassWord;
-    private String mPassWordAgain;
     //private int mCode;
     private int time = 60;
 
@@ -68,6 +67,40 @@ public class ReSetPasswordActivity extends BaseItemActivity {
         ButterKnife.bind(this);
         initToobar(getString(R.string.title_reset_password));
 
+        mEtActivityResetUsername.addTextChangedListener(new UserEditTextChangeListener());
+    }
+
+    class UserEditTextChangeListener implements TextWatcher {
+
+        /**
+         * 编辑框的内容发生改变之前的回调方法
+         */
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+        /**
+         * 编辑框的内容正在发生改变时的回调方法 >>用户正在输入
+         * 我们可以在这里实时地 通过搜索匹配用户的输入
+         */
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (StringUtils.isMobileNO(s+"")){
+                mBtnActivityResetGettestcode.setEnabled(true);
+                mBtnActivityResetGettestcode.setBackgroundResource(R.drawable.shap_ring);
+            }else {
+                mBtnActivityResetGettestcode.setEnabled(false);
+                mBtnActivityResetGettestcode.setBackgroundResource(R.drawable.shap_ring_gray);
+            }
+
+        }
+        /**
+         * 编辑框的内容改变以后,用户没有继续输入时 的回调方法
+         */
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
     }
 
     @OnClick({R.id.btn_activity_reset_gettestcode, R.id.btn_activity_reset_finishregist})
@@ -80,6 +113,7 @@ public class ReSetPasswordActivity extends BaseItemActivity {
                     //开启倒计时
                     mBtnActivityResetGettestcode.setText("剩余时间（" + time + ")秒");
                     mBtnActivityResetGettestcode.setEnabled(false);
+                    mBtnActivityResetGettestcode.setBackgroundResource(R.drawable.shap_ring_gray);
                     new Thread(new CutDownTask()){}.start();
                 }
                 break;
@@ -156,23 +190,17 @@ public class ReSetPasswordActivity extends BaseItemActivity {
         mPhoneNum = mEtActivityResetUsername.getText().toString().trim();
         mTestCode = mEtActivityResetTestcode.getText().toString().trim();
         mPassWord = mEtActivityResetPassword.getText().toString().trim();
-        mPassWordAgain = mEtActivityResetPasswordAgain.getText().toString().trim();
         if (TextUtils.isEmpty(mPhoneNum) || TextUtils.isEmpty(mTestCode) ||
-                TextUtils.isEmpty(mPassWord) || TextUtils.isEmpty(mPassWordAgain)) {
+                TextUtils.isEmpty(mPassWord)) {
             Toast.makeText(this, "请输入完整信息", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             if (StringUtils.isMobileNO(mPhoneNum)) {
                 if (isPassWorkFormat(mPassWord) ) {
-                    if (mPassWord.equals(mPassWordAgain)){
                         return true;
-                    }else{
-                        Toast.makeText(this, "两次输入了密码不一致", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
 
                 } else {
-                    Toast.makeText(this, "密码必须是4-16位", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "密码必须是6-16位", Toast.LENGTH_SHORT).show();
                     return false;
                 }
 
@@ -187,7 +215,7 @@ public class ReSetPasswordActivity extends BaseItemActivity {
 
     //判断密码的格式 4-16位
     public boolean isPassWorkFormat(String passWord){
-        String pwRegex = "\\w{4,16}";
+        String pwRegex = "\\w{6,16}";
         Pattern p = Pattern.compile(pwRegex);
         Matcher m = p.matcher(passWord);
 

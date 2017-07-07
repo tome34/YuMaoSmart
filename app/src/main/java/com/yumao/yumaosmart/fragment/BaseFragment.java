@@ -22,8 +22,6 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         if (mLoadingPager == null) {
-
-
             mLoadingPager = new LoadingPager(UiUtilities.getContex()) {
                 @Override
                 public View initSuccessView() {

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_my_order"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.yumao.yumaosmart.activity.MyOrderActivity">
+
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/tab_smartlayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+
+        app:stl_clickable="true"
+        app:stl_defaultTabBackground="?attr/selectableItemBackground"
+        app:stl_defaultTabTextAllCaps="true"
+        app:stl_defaultTabTextColor="#FC000000"
+        app:stl_defaultTabTextHorizontalPadding="16dp"
+        app:stl_defaultTabTextMinWidth="0dp"
+        app:stl_defaultTabTextSize="12sp"
+        app:stl_distributeEvenly="true"
+
+        app:stl_dividerThickness="0dp"
+        app:stl_drawDecorationAfterTab="false"
+        app:stl_indicatorAlwaysInCenter="false"
+        app:stl_indicatorColor="#ed5650"
+        app:stl_indicatorThickness="4dp"
+        app:stl_indicatorInFront="false"
+        app:stl_indicatorWidth="50dp"
+        app:stl_indicatorWithoutPadding="false"
+
+        app:stl_customTabTextLayoutId="@layout/custom_tab"
+        app:stl_customTabTextViewId="@id/custom_text"
+        >
+
+    </com.ogaclejapan.smarttablayout.SmartTabLayout>
+
+    <com.yumao.yumaosmart.widgit.NoScrollViewPager
+        android:id="@+id/view_pager"
+        android:isScrollContainer="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.yumao.yumaosmart.widgit.NoScrollViewPager>
+
+</LinearLayout>

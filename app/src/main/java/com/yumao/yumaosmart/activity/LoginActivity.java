@@ -12,22 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
-import com.yumao.yumaosmart.callback.UserCallback;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.mode.User;
-import com.yumao.yumaosmart.utils.SPUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Call;
 
 /**
  * Created by kk on 2017/3/6.
@@ -117,42 +113,11 @@ public class LoginActivity extends BaseItemActivity {
 
     private void login() {
 
-        OkHttpUtils
-                .post()
-                .url(Constant.BASE_URL + "login")
-                .addParams("username", mPhoneNum)
-                .addParams("password", mPassword)
-                .build()
-                .execute(new UserCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
+        boolean b = LoginManager.getInstance().goLogin(mPhoneNum, mPassword);
+        if (b){//登录成功
+            finish();
+        }
 
-                        Toast.makeText(LoginActivity.this, "用户名或登录密码有误", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-
-                        //UiUtilities.setUser(response);
-                        if (mCode == 404) {
-                            Toast.makeText(LoginActivity.this, "该用户不存在,请先注册", Toast.LENGTH_SHORT).show();
-                        } else if (mCode == 400) {
-                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
-                        } else if (mCode == 403) {
-                            Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
-                        } else if (mCode == 200) {
-                            //UiUtilities.setUser(response);
-                            mUserBean = new Gson().fromJson(response, User.class);
-                            String token = mUserBean.getToken();
-                            Toast.makeText(LoginActivity.this, "token:" + token, Toast.LENGTH_SHORT).show();
-                            SPUtils.putString(LoginActivity.this, Constant.TOKEN, token);
-                            SPUtils.putString(LoginActivity.this, Constant.USER_DATA, response);
-                            finish();
-                        }
-
-                    }
-
-                });
     }
 
 

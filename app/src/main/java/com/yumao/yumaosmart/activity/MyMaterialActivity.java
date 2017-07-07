@@ -193,7 +193,7 @@ public class MyMaterialActivity extends BaseItemActivity {
         mList.add(mOtherBean);
 
         mOtherBean = new MyMaterialOtherBean();
-        mState = UiUtilities.getUser().getState();
+        //mState = UiUtilities.getUser().getState();
         switch (mState){
 
             case 1:

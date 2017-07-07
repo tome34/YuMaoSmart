@@ -75,11 +75,19 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     }
 
     public void initStatusBar() {
+        //设置状态栏为透明
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
+
+
     }
+
+    //透明状态栏无效果
+
+
     private void initListenner() {
 
         mTabhost.setup(this, mFragmentManager, android.R.id.tabcontent);

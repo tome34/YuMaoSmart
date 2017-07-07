@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:touxiang="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@mipmap/personal_img_bg">
 
         <ImageView
+            android:id="@+id/iv_personnal_fragment_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -13,14 +15,17 @@
             android:layout_marginTop="20dp"
             android:src="@mipmap/personal_icon_sz"/>
 
-        <ImageView
+        <com.itheima.roundedimageview.RoundedImageView
             android:id="@+id/iv_personnal_fragment_touxiang"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/first_page_person_icon_touxiang"/>
+            android:src="@mipmap/first_page_person_icon_touxiang"
+            touxiang:riv_oval="true"
+            touxiang:riv_border_width="1dp"
+            touxiang:riv_border_color="@color/gray"/>
 
         <TextView
 
@@ -43,25 +48,22 @@
             android:textColor="@color/colorNormal"
             android:text="注册时间:2017-1-1"/>
 
-        <TextView
-            android:id="@+id/tv_personnal_identity"
+        <ImageView
+            android:id="@+id/iv_personnal_identity"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="35dp"
             android:layout_marginTop="10dp"
             android:layout_below="@id/tv_personnal_regist_time"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/colorNormal"
-            android:text="城市合伙人"/>
+            android:layout_centerHorizontal="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:background="#50484646"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:background="#50484646">
 
             <TextView
+                android:id="@+id/tv_personnal_xiaoliang"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
@@ -70,14 +72,16 @@
                 android:text="累计销量:0"
                 android:textColor="@color/colorPrimary"/>
 
-            <ImageView
+           <View
+               android:layout_width="1dp"
+               android:layout_height="24dp"
+               android:layout_gravity="center_vertical"
+               android:background="@color/white"
+               />
 
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/tv_personnal_zichang"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"

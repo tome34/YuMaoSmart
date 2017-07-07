@@ -42,7 +42,7 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        mLvOrderlistActivity.setAdapter(new OrderListDataAdapter(UiUtilities.getContex(),R.layout.item_orderlist_activity,mList));
+        mLvOrderlistActivity.setAdapter(new OrderListDataAdapter(UiUtilities.getContex(), R.layout.item_orderlist_activity,mList));
     }
 
     @Override

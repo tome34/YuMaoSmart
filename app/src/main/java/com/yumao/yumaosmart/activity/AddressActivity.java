@@ -16,6 +16,7 @@ import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.event.MyAddressEvent;
 import com.yumao.yumaosmart.mode.MyAddressMode;
 import com.yumao.yumaosmart.utils.LogUtils;
+import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -99,9 +100,9 @@ public class AddressActivity extends BaseItemActivity  implements AddressAdapter
 
         OkHttpUtils
                 .get()
-                .url(Constant.BASE_URL+"customers/"+ UiUtilities.getUser().getId()+"/addresses")
-                .addHeader("X-API-TOKEN", UiUtilities.getUser().getToken())
-                .addParams("cid",String.valueOf(UiUtilities.getUser().getId()))
+                .url(Constant.BASE_URL+"customers/"+ SPUtils.getString(UiUtilities.getContex(),Constant.USER_CID)+"/addresses")
+                .addHeader("X-API-TOKEN", SPUtils.getString(UiUtilities.getContex(),Constant.TOKEN))
+                .addParams("cid",String.valueOf(SPUtils.getString(UiUtilities.getContex(),Constant.USER_CID)))
                 .build()
                 .execute(new Callback<List<MyAddressMode>>() {
                     @Override

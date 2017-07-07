@@ -11,14 +11,10 @@ import android.widget.Toast;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.constant.Constant;
-import com.yumao.yumaosmart.event.SweetNameEvent;
-import com.yumao.yumaosmart.mode.User;
-import com.yumao.yumaosmart.utils.LogUtils;
+import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,10 +41,6 @@ public class NickNameActivity extends BaseItemActivity implements View.OnClickLi
         initToobar(getString(R.string.title_sweetname));
         ButterKnife.bind(this);
 
-
-
-
-
         mBtnSweetactivitySave.setOnClickListener(this);
 
     }
@@ -63,9 +55,6 @@ public class NickNameActivity extends BaseItemActivity implements View.OnClickLi
             updateSweetName();
         }
 
-
-
-
 }
 
     private void updateSweetName() {
@@ -76,8 +65,8 @@ public class NickNameActivity extends BaseItemActivity implements View.OnClickLi
                 .build();
         OkHttpUtils
                 .put()
-                .url(Constant.BASE_URL+"customers/"+ UiUtilities.getUser().getId())
-                .addHeader("X-API-TOKEN",UiUtilities.getUser().getToken())
+                .url(Constant.BASE_URL+"customers/"+ SPUtils.getInt(NickNameActivity.this ,Constant.USER_CID))
+                .addHeader("X-API-TOKEN",SPUtils.getString(NickNameActivity.this,Constant.TOKEN))
                 .requestBody(body)
                 .build()
                 .execute(new Callback() {
@@ -93,11 +82,13 @@ public class NickNameActivity extends BaseItemActivity implements View.OnClickLi
 
             @Override
             public void onResponse(Object response, int id) {
-                EventBus.getDefault().post(new SweetNameEvent(mTrim,1));
+               /* EventBus.getDefault().post(new SweetNameEvent(mTrim,1));
                 User user = UiUtilities.getUser();
-                LogUtils.d("put完成");
-                user.setNick_name(mTrim);
+                LogUtils.d("tag","put完成");
+                user.setNick_name(mTrim);*/
+                SPUtils.putString(UiUtilities.getContex(),Constant.NICK_NAME,mTrim);
                 finish();
+
 
             }
         });

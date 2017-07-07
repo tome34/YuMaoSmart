@@ -80,4 +80,16 @@ public class SPUtils {
         editor.commit();
     }
 
+    /**
+     * 清除所有数据
+     *
+     * @param context
+     */
+    public static void clear(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(Constant.SP_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.clear();
+        editor.commit();
+    }
+
 }

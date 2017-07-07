@@ -43,8 +43,9 @@ public class MyOrderListActivity extends BaseItemActivity {
 
     @BindView(R.id.indicator_myorderlist)
     MagicIndicator mIndicatorMyorderlist;
+
     private List<String> mTitleDataList = new ArrayList<>();
-   private List<Fragment> mList = new ArrayList<>();
+    private List<Fragment> mList = new ArrayList<>();
     private  List<OrderListBean> mData = new ArrayList<>();
     private OrderListBean mOrderListBean;
 
@@ -57,7 +58,7 @@ public class MyOrderListActivity extends BaseItemActivity {
 
 
         setContentView(R.layout.activity_myorderlist);
-    initToobar(getString(R.string.title_myorderlist));
+        initToobar(getString(R.string.title_myorderlist));
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         MyOrderlistBean key = bundle.getParcelable("key");

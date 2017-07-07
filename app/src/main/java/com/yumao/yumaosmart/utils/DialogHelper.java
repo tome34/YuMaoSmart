@@ -2,6 +2,7 @@ package com.yumao.yumaosmart.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 
@@ -98,9 +99,9 @@ public final class DialogHelper {
      * @param message
      * @param dialogCallBack
      */
-  /*  public static AlertDialog.Builder getAlertDialog(Context context, String message, final DialogCallBack dialogCallBack) {
+    public static AlertDialog.Builder getAlertDialog(Context context, String message, final DialogCallBack dialogCallBack) {
         return getAlertDialog(context, "提示", message, dialogCallBack);
-    }*/
+    }
 
     /**
      * 获取带有确定按钮的对话框
@@ -109,17 +110,29 @@ public final class DialogHelper {
      * @param message
      * @param dialogCallBack
      */
-  /*  public static AlertDialog.Builder getAlertDialog(Context context, String title, String message, final DialogCallBack dialogCallBack) {
+    public static AlertDialog.Builder getAlertDialog(Context context, String title, String message, final DialogCallBack dialogCallBack) {
         return getDialog(context).setTitle(title)
                 .setCancelable(true)
                 .setMessage(message)
-                .setNegativeButton("取消", (dialog, which) -> {
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialogCallBack.pressCancle();
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialogCallBack.pressSure();
+                    }
+                });
+                /*.setNegativeButton("取消", (dialog, which) -> {
                     dialogCallBack.pressCancle();
                 })
                 .setPositiveButton("确定", (dialog, which) -> {
                     dialogCallBack.pressSure();
-                });
-    }*/
+                });*/
+    }
 
     /**
      * 获取一个没有取消按钮的信息对话框

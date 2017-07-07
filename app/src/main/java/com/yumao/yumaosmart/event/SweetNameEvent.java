@@ -11,6 +11,9 @@ public class SweetNameEvent {
         this.sweetName = sweetName;
         this.postion = postion;
     }
+    public SweetNameEvent(String sweetName) {
+        this.sweetName = sweetName;
+    }
 
     public int postion;
 
@@ -22,9 +25,7 @@ public class SweetNameEvent {
         this.postion = postion;
     }
 
-    public SweetNameEvent(String sweetName) {
-        this.sweetName = sweetName;
-    }
+
 
     public String getSweetName() {
         return sweetName;

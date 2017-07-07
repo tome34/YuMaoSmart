@@ -34,13 +34,13 @@ public class FirstListAdaper extends CommonAdapter<ProductsMode> {
     private ProductsMode.ProductsBean mLeftProductsBean;
     private ProductsMode.ProductsBean mMidProductsBean;
     private ProductsMode.ProductsBean mRightProductsBean;
-    private  int [] titleRes={R.mipmap.first_list_title_feicui,R.mipmap.first_list_title_feicui,
-            R.mipmap.first_list_title_zuanshi,
-            R.mipmap.first_list_title_caibao,
-            R.mipmap.first_list_title_huangbojin,
-            R.mipmap.first_list_title_zhenzhu,
-            R.mipmap.first_list_title_yinshi,
-            R.mipmap.first_list_title_hetianyu
+    private  int [] titleRes={R.mipmap.home_banner_fc,R.mipmap.home_banner_zs,
+            R.mipmap.home_banner_cb,
+            R.mipmap.home_banner_kj,
+            R.mipmap.home_banner_zz,
+            R.mipmap.home_banner_ys,
+            R.mipmap.home_banner_hty,
+            R.mipmap.home_banner_qt
 
     };
 

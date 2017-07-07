@@ -1,11 +1,14 @@
 package com.yumao.yumaosmart.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -48,18 +52,17 @@ public class RegistActivity extends BaseItemActivity {
     TextView mBtnActivityRegistGettestcode;
     @BindView(R.id.et_activity_regist_password)
     EditText mEtActivityRegistPassword;
-    @BindView(R.id.et_activity_regist_password_again)
-    EditText mEtActivityRegistPasswordAgain;
     @BindView(R.id.btn_activity_regist_finishregist)
     Button mBtnActivityRegistFinishregist;
     @BindView(R.id.activity_regist)
     LinearLayout mActivityRegist;
+    @BindView(R.id.activity_regist_Agreement)
+    LinearLayout mActivityRegistAgreement;
 
 
     private String mPhoneNum;
     private String mTestCode;
     private String mPassWord;
-    private String mPassWordAgain;
     private int mCode;
     private int time = 60;
 
@@ -71,14 +74,52 @@ public class RegistActivity extends BaseItemActivity {
         ButterKnife.bind(this);
         initToobar(getString(R.string.title_regist));
 
+        mEtActivityRegistUsername.addTextChangedListener(new UserEditTextChangeListener());
     }
+
+    class UserEditTextChangeListener implements TextWatcher {
+
+        /**
+         * 编辑框的内容发生改变之前的回调方法
+         */
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        /**
+         * 编辑框的内容正在发生改变时的回调方法 >>用户正在输入
+         * 我们可以在这里实时地 通过搜索匹配用户的输入
+         */
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (StringUtils.isMobileNO(s + "")) {
+                mBtnActivityRegistGettestcode.setEnabled(true);
+                mBtnActivityRegistGettestcode.setBackgroundResource(R.drawable.shap_ring);
+            } else {
+                mBtnActivityRegistGettestcode.setEnabled(false);
+                mBtnActivityRegistGettestcode.setBackgroundResource(R.drawable.shap_ring_gray);
+            }
+
+        }
+
+        /**
+         * 编辑框的内容改变以后,用户没有继续输入时 的回调方法
+         */
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    }
+
 
     @OnClick({R.id.et_activity_regist_username, R.id.et_activity_regist_testcode,
             R.id.btn_activity_regist_gettestcode, R.id.et_activity_regist_password,
-            R.id.et_activity_regist_password_again, R.id.btn_activity_regist_finishregist})
+            R.id.btn_activity_regist_finishregist,R.id.activity_regist_Agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.et_activity_regist_username:
+
                 break;
             case R.id.et_activity_regist_testcode:
                 break;
@@ -88,18 +129,20 @@ public class RegistActivity extends BaseItemActivity {
                     getTestCode();
                     mBtnActivityRegistGettestcode.setText("剩余时间（" + time + ")秒");
                     mBtnActivityRegistGettestcode.setEnabled(false);
+                    mBtnActivityRegistGettestcode.setBackgroundResource(R.drawable.shap_ring_gray);
                     new Thread(new CutDownTask()).start();
                 }
 
                 break;
             case R.id.et_activity_regist_password:
                 break;
-            case R.id.et_activity_regist_password_again:
-                break;
             case R.id.btn_activity_regist_finishregist:
                 if (testBefore()) {
                     registRealy();
                 }
+                break;
+            case R.id.activity_regist_Agreement: //用户注册协议
+                startActivity(new Intent(RegistActivity.this ,RegistAgreementActivity.class));
                 break;
         }
     }
@@ -111,6 +154,7 @@ public class RegistActivity extends BaseItemActivity {
 
         } else {
             if (StringUtils.isMobileNO(mPhoneNum)) {
+
                 return true;
             } else {
                 Toast.makeText(this, "您输入的手机号码格式不对", Toast.LENGTH_SHORT).show();
@@ -133,7 +177,7 @@ public class RegistActivity extends BaseItemActivity {
                     public Object parseNetworkResponse(Response response, int id) throws Exception {
                         //Toast.makeText(RegistActivity.this, "网络连接失败1", Toast.LENGTH_SHORT).show();
                         LogUtils.d("tag", "1:" + response.code());
-                        mCode =  response.code();
+                        mCode = response.code();
                         return true;
                     }
 
@@ -141,11 +185,11 @@ public class RegistActivity extends BaseItemActivity {
                     public void onError(Call call, Exception e, int id) {
                         //Toast.makeText(RegistActivity.this, "网络连接失败2", Toast.LENGTH_SHORT).show();
                         LogUtils.d("tag", "2:" + e);
-                        if (mCode ==403){
+                        if (mCode == 403) {
                             Toast.makeText(RegistActivity.this, "账号已经存在", Toast.LENGTH_SHORT).show();
-                        }else if (mCode == 400) {
+                        } else if (mCode == 400) {
                             Toast.makeText(RegistActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             Toast.makeText(RegistActivity.this, "账号已经存在或验证码错误", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -156,6 +200,14 @@ public class RegistActivity extends BaseItemActivity {
                         LogUtils.d("tag", "3:" + response.toString());
                         if (mCode == 204) {
                             Toast.makeText(RegistActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                            //执行登录
+                            boolean b = LoginManager.getInstance().goLogin(mPhoneNum, mPassWord);
+                            if (b){//登录成功
+                                finish();
+                                startActivity(new Intent(RegistActivity.this, MainActivity.class));
+                            }
+
+
                         } else if (mCode == 403) {
                             Toast.makeText(RegistActivity.this, "账号已经存在", Toast.LENGTH_SHORT).show();
                         } else if (mCode == 404) {
@@ -206,22 +258,17 @@ public class RegistActivity extends BaseItemActivity {
         mPhoneNum = mEtActivityRegistUsername.getText().toString().trim();
         mTestCode = mEtActivityRegistTestcode.getText().toString().trim();
         mPassWord = mEtActivityRegistPassword.getText().toString().trim();
-        mPassWordAgain = mEtActivityRegistPasswordAgain.getText().toString().trim();
         if (TextUtils.isEmpty(mPhoneNum) || TextUtils.isEmpty(mTestCode) ||
-                TextUtils.isEmpty(mPassWord) || TextUtils.isEmpty(mPassWordAgain)) {
+                TextUtils.isEmpty(mPassWord)) {
             Toast.makeText(this, "请输入完整信息", Toast.LENGTH_SHORT).show();
-                return false;
+            return false;
         } else {
             if (StringUtils.isMobileNO(mPhoneNum)) {
-                if (isPassWorkFormat(mPassWord) ) {
-                    if (mPassWord.equals(mPassWordAgain)){
-                        return true;
-                    }else{
-                        Toast.makeText(this, "两次输入了密码不一致", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
+                if (isPassWorkFormat(mPassWord)) {
+                    return true;
+
                 } else {
-                    Toast.makeText(this, "密码必须4-16位", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "密码必须6-16位", Toast.LENGTH_SHORT).show();
                     return false;
                 }
 
@@ -235,8 +282,8 @@ public class RegistActivity extends BaseItemActivity {
     }
 
     //判断密码的格式 4-16位
-    public boolean isPassWorkFormat(String passWord){
-        String pwRegex = "\\w{4,16}";
+    public boolean isPassWorkFormat(String passWord) {
+        String pwRegex = "\\w{6,16}";
         Pattern p = Pattern.compile(pwRegex);
         Matcher m = p.matcher(passWord);
 
@@ -244,21 +291,20 @@ public class RegistActivity extends BaseItemActivity {
     }
 
 
+    /*   public static boolean isMobileNO(String mobiles){
 
- /*   public static boolean isMobileNO(String mobiles){
+           String telRegex = "[1][34578]\\d{9}";
+           //Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+           Pattern p = Pattern.compile(telRegex);
+           Matcher m = p.matcher(mobiles);
+           return m.matches();
 
-        String telRegex = "[1][34578]\\d{9}";
-        //Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-        Pattern p = Pattern.compile(telRegex);
-        Matcher m = p.matcher(mobiles);
-        return m.matches();
-
-        }*/
+           }*/
     public void getTestCode() {
 
         OkHttpUtils
                 .post()
-                .url(Constant.BASE_URL+"sms-code")
+                .url(Constant.BASE_URL + "sms-code")
                 .addParams("phone", mPhoneNum)
                 .build()
                 .execute(new StringCallback() {
@@ -275,10 +321,11 @@ public class RegistActivity extends BaseItemActivity {
                 });
 
     }
+
     private class CutDownTask implements Runnable {
         @Override
         public void run() {
-            for(;time>0;time--){
+            for (; time > 0; time--) {
                 SystemClock.sleep(999);
                 mHandler.sendEmptyMessage(TIME_MINUS);
             }
@@ -286,14 +333,14 @@ public class RegistActivity extends BaseItemActivity {
         }
     }
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
 
                 case TIME_MINUS:
                     mBtnActivityRegistGettestcode.setText("剩余时间（" + time + ")秒");
-                break;
+                    break;
                 case TIME_IS_OUT:
                     mBtnActivityRegistGettestcode.setText("重新获取验证码");
                     mBtnActivityRegistGettestcode.setEnabled(true);

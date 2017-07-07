@@ -22,6 +22,7 @@ import com.yumao.yumaosmart.mode.OpenIdMode;
 import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
+import com.yumao.yumaosmart.utils.UiUtilities;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import okhttp3.Call;
@@ -114,9 +115,33 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     @Override
                     public void onResponse(String response, int id) {
                         Toast.makeText(WXEntryActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        User user = new Gson().fromJson(response, User.class);
-                        SPUtils.putString(WXEntryActivity.this, Constant.TOKEN,user.getToken() );
-                        SPUtils.putString(WXEntryActivity.this, Constant.USER_DATA, response);
+
+                        User mUserBean = new Gson().fromJson(response, User.class);
+                        String token = mUserBean.getToken();
+                        int cid = mUserBean.getId();
+                        String avatar_url = mUserBean.getAvatar_url();
+                        String nick_name = mUserBean.getNick_name();
+                        String phone = mUserBean.getPhone();
+                        String date_of_birth = mUserBean.getDate_of_birth();
+                        String gender = mUserBean.getGender();
+
+                        Toast.makeText(UiUtilities.getContex(),"登录成功", Toast.LENGTH_SHORT).show();
+                        SPUtils.putString(UiUtilities.getContex(), Constant.TOKEN, token);
+                        SPUtils.putString(UiUtilities.getContex(), Constant.USER_DATA, response);
+
+                        //保存用户头像
+                        SPUtils.putString(UiUtilities.getContex(),Constant.AVATAR_URL,avatar_url);
+                        LogUtils.d("tag","用户头像:"+avatar_url);
+                        //保存cid号
+                        SPUtils.putInt(UiUtilities.getContex(),Constant.USER_CID,cid);
+                        //保存用户昵称
+                        SPUtils.putString(UiUtilities.getContex(),Constant.NICK_NAME, nick_name);
+                        //保存用户手机号码
+                        SPUtils.putString(UiUtilities.getContex(),Constant.PHONE, phone);
+                        //保存生日
+                        SPUtils.putString(UiUtilities.getContex(),Constant.NICK_NAME, date_of_birth);
+                        //性别
+                        SPUtils.putString(UiUtilities.getContex(),Constant.GENDER, gender);
                             LogUtils.d("tag","微信登录回调:"+response);
 
                         Intent intent = new Intent(WXEntryActivity.this, MainActivity.class);

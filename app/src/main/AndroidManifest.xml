@@ -9,6 +9,15 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--获取相册,拍照权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <!--拨打电话-->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
 
     <application
         android:name=".base.MyApplication"
@@ -17,105 +26,98 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-            //旧的splash页
+        //旧的splash页
         <activity android:name=".activity.MyJewelrystore">
             //
         </activity>
-            //主页面
-        <activity android:name=".activity.MainActivity">
-            //新的splash页
+        //主页面
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/toumingStyle">
         </activity>
-        <activity android:name=".activity.SplashActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
+        //新的splash页
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/FullScreenStyle">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-            <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
-
         <activity android:name=".activity.NickNameActivity"/>
-
         <activity android:name=".activity.PhoneNumberActivity"/>
-
         <activity
             android:name=".activity.AddressActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".activity.MyAddressActivity"/>
-
         <activity android:name=".activity.RealNameActivity"/>
-
         <activity android:name=".activity.MyOrderListActivity"/>
-
         <activity
             android:name=".activity.MyMaterialActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".activity.itemactivity.MyEmployeeActivity">
-
         </activity>
         <activity android:name=".activity.itemactivity.VIPActivity"/>
-
         <activity android:name=".activity.itemactivity.MyPularityActvity">
         </activity>
-
         <activity android:name=".activity.itemactivity.MySpreadActivity">
         </activity>
-
         <activity android:name=".activity.itemactivity.MyStorsActivity">
         </activity>
-
         <activity android:name=".activity.itemactivity.MyVipActivity">
         </activity>
-
         <activity android:name=".activity.itemactivity.StoresMaterialActivity">
         </activity>
-
         <activity android:name=".activity.itemactivity.ServiceCenterActivity">
         </activity>
-
         <activity android:name=".activity.itemactivity.LockBandActivity"/>
+
         <activity android:name=".activity.itemactivity.MyErWeiMaActivity">
         </activity>
-
         <activity android:name=".activity.itemactivity.RecommendErWeiMaActivity">
         </activity>
-
         <activity
             android:name=".activity.GoodsDetailActivity"
             android:launchMode="singleTask">
         </activity>
-
         <activity android:name=".activity.FirstClassifyDetail">
         </activity>
-
         <activity android:name=".activity.itemactivity.BrandStoreActivity">
         </activity>
-
         <activity android:name=".activity.UpLoadActivity">
         </activity>
-
         <activity android:name=".activity.GoodsStandardActivity">
         </activity>
-
         <activity android:name=".activity.LoginActivity"/>
         <activity android:name=".activity.RegistActivity">
         </activity>
-
         <activity android:name=".activity.ReSetPasswordActivity">
         </activity>
-
         <activity android:name=".activity.ConfirmOrderActivity">
         </activity>
-
         <activity android:name=".activity.itemactivity.OrderDetailActivity">
         </activity>
-
         <activity android:name=".activity.MyMaterial2Activity">
         </activity>
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name"/>
+        //我的订单
+        <activity android:name=".activity.MyOrderActivity">
+        </activity>
+        //用户注册协议
+        <activity android:name=".activity.RegistAgreementActivity">
+
+        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
+        //图片裁剪
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
     </application>
 

@@ -15,9 +15,9 @@ import com.yumao.yumaosmart.utils.UiUtilities;
 public abstract class LoadingPager extends FrameLayout {
     public  int  mCurrentState=STATE_LOADING;
     public static final int STATE_LOADING=0;
-    public static final int  STATE_EMPTY=1;
-    public static final int  STATE_ERROR=2;
-    public static final int STATE_SUCCESS=3;
+    public static final int  STATE_EMPTY=1;  //空
+    public static final int  STATE_ERROR=2;  //失败
+    public static final int STATE_SUCCESS=3;  //成功
 
     private View mErrorViw;
     private View mEmptyView;

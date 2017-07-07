@@ -7,17 +7,20 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.itheima.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.activity.LoginActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
+import com.yumao.yumaosmart.activity.MyOrderActivity;
 import com.yumao.yumaosmart.activity.MyOrderListActivity;
 import com.yumao.yumaosmart.adapter.PersonnalcenterAdapter;
 import com.yumao.yumaosmart.base.LoadingPager;
@@ -25,12 +28,13 @@ import com.yumao.yumaosmart.bean.MyOrderlistBean;
 import com.yumao.yumaosmart.bean.PersonnalBean;
 import com.yumao.yumaosmart.callback.UserCallback;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.inter.OnItemClickListener;
 import com.yumao.yumaosmart.manager.LoginManager;
+import com.yumao.yumaosmart.manager.UserInformationManager;
 import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
-import com.yumao.yumaosmart.widgit.SpacesItemDecoration;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -45,14 +49,13 @@ import okhttp3.Call;
  */
 
 public class PersonalCenterFragment extends BaseFragment implements View.OnClickListener {
-    @BindView(R.id.iv_personnal_fragment_touxiang)
-    ImageView mIvPersonnalFragmentTouxiang;
+
     @BindView(R.id.tv_personnal_petname)
     TextView mTvPersonnalPetname;
     @BindView(R.id.tv_personnal_regist_time)
     TextView mTvPersonnalRegistTime;
-    @BindView(R.id.tv_personnal_identity)
-    TextView mTvPersonnalIdentity;
+    @BindView(R.id.iv_personnal_identity)
+    ImageView mIvPersonnalIdentity;
     @BindView(R.id.iv_personnal_daifukuan)
     ImageView mIvPersonnalDaifukuan;
     @BindView(R.id.iv_personnal_daifahuo)
@@ -69,6 +72,15 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     TextView mIvPersonnalFragmentLookfororder1;
     @BindView(R.id.iv_personnal_fragment_lookfororder2)
     ImageView mIvPersonnalFragmentLookfororder2;
+    @BindView(R.id.iv_personnal_fragment_touxiang)
+    RoundedImageView mIvPersonnalFragmentTouxiang;
+    @BindView(R.id.tv_personnal_xiaoliang)
+    TextView mTvPersonnalXiaoliang;
+    @BindView(R.id.tv_personnal_zichang)
+    TextView mTvPersonnalZichang;
+    @BindView(R.id.iv_personnal_fragment_setting)
+    ImageView mIvPersonnalFragmentSetting;
+
     private PersonnalcenterAdapter mPersonnalcenterAdapter;
     private List<PersonnalBean> mData;
     private List<String> mItemList;
@@ -95,6 +107,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         mIvPersonnalYiwancheng.setOnClickListener(this);
         mIvPersonnalFragmentLookfororder1.setOnClickListener(this);
         mIvPersonnalFragmentLookfororder2.setOnClickListener(this);
+        mIvPersonnalFragmentSetting.setOnClickListener(this);
 
     }
 
@@ -103,7 +116,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     protected void initView() {
 
         // 竖直方向的网格样式，每行四个Item
-        GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex() ,4,OrientationHelper.VERTICAL,false){
+        GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(), 4, OrientationHelper.VERTICAL, false) {
             @Override
             public boolean canScrollVertically() {
                 //return super.canScrollVertically();
@@ -111,16 +124,32 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
                 return false;
             }
         };
+        //添加分割线(需要依赖recycleritemdecoration第三方库)
+        // mRvPersonalCenter.addItemDecoration(new LinearDividerItemDecoration(UiUtilities.getContex(),LinearDividerItemDecoration.LINEAR_DIVIDER_VERTICAL));
+
         //设置布局管理器
         mRvPersonalCenter.setLayoutManager(mLayoutManager);
         //设置分割线
-        mRvPersonalCenter.addItemDecoration(new SpacesItemDecoration(5));
+        //mRvPersonalCenter.addItemDecoration(new SpacesItemDecoration());
 
         //设置固定大小
-        //mRvPersonalCenter.setHasFixedSize(true);
+        // mRvPersonalCenter.setHasFixedSize(true);
         //创建适配器，并且设置
-        mPersonnalcenterAdapter = new PersonnalcenterAdapter(UiUtilities.getContex(),mNameDatas,mIconDatas);
+        mPersonnalcenterAdapter = new PersonnalcenterAdapter(UiUtilities.getContex(), mNameDatas, mIconDatas);
         mRvPersonalCenter.setAdapter(mPersonnalcenterAdapter);
+
+        //条目的点击事件
+        mPersonnalcenterAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItenClick(View view, int position) {
+                Toast.makeText(UiUtilities.getContex(), "被点击了"+position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemLongCllick(View view, int position) {
+
+            }
+        });
 
 
         /*mRvPersonalCenter.setLayoutManager(new GridLayoutManager(UiUtilities.getContex(), 4));
@@ -135,11 +164,10 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     @Override
     protected void init() {
 
-
-        mNameDatas = new ArrayList<>();
+    mNameDatas = new ArrayList<>();
 
         mIconDatas = new ArrayList<>();
-        String userData = SPUtils.getString(UiUtilities.getContex(), Constant.USER_DATA);
+        /*String userData = SPUtils.getString(UiUtilities.getContex(), Constant.USER_DATA);
 
         //判断是否登录
         if (!TextUtils.isEmpty(userData)) {
@@ -149,79 +177,81 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
             mRoles = userBean.getRoles();
 
             mRolesString = String.valueOf(mRoles);
-            LogUtils.d("tag","角色:"+ mRolesString);
+        LogUtils.d("tag","角色:"+ mRolesString);*/
+        //判断是否登录,如果登录就显示数据
+        if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())) {
+            //显示头像数据
+            showTouXiangData();
 
-            if (mRolesString.contains("RegionalAgentOwner")){
-                LogUtils.d("tag","分公司");
-                String[] stringArr =new String[]{"我的佣金","我的货款","我的销售","会员订单","我的收藏","我的推广",
-                        "门店资料","中央仓","商品管理","城市总店","城市分店","城市V店"};
-                for (int i =0 ;i<stringArr.length ;i++){
+            int grade = UserInformationManager.getInstance().userGrade();
+            if (grade == 1) {
+                //LogUtils.d("tag","分公司");
+                String[] stringArr = new String[]{"我的佣金", "我的货款", "我的销售", "会员订单", "我的收藏", "我的推广",
+                        "门店资料", "中央仓", "商品管理", "城市总店", "城市分店", "城市V店"};
+                for (int i = 0; i < stringArr.length; i++) {
                     mNameDatas.add(stringArr[i]);
                 }
-                int[] intArr =new int[]{R.mipmap.personal_icon_yj,R.mipmap.personal_icon_dk,R.mipmap.personal_icon_xs,R.mipmap.personal_icon_dd,R.mipmap.personal_icon_scj,
-                        R.mipmap.personal_icon_tg,R.mipmap.personal_icon_md,R.mipmap.personal_icon_zyc,R.mipmap.personal_icon_gl,R.mipmap.personal_icon_zd,
-                        R.mipmap.personal_icon_fd,R.mipmap.personal_icon_vd};
-                for (int i =0 ;i<intArr.length ;i++){
+                int[] intArr = new int[]{R.mipmap.personal_icon_yj, R.mipmap.personal_icon_dk, R.mipmap.personal_icon_xs, R.mipmap.personal_icon_dd, R.mipmap.personal_icon_scj,
+                        R.mipmap.personal_icon_tg, R.mipmap.personal_icon_md, R.mipmap.personal_icon_zyc, R.mipmap.personal_icon_gl, R.mipmap.personal_icon_zd,
+                        R.mipmap.personal_icon_fd, R.mipmap.personal_icon_vd};
+                for (int i = 0; i < intArr.length; i++) {
                     mIconDatas.add(intArr[i]);
                 }
                 return;
 
-        }else if (mRolesString.contains("StoreOwner")){
-            if (userBean.getVendor().getVendor_type() ==3){
-                LogUtils.d("tag","总店");
-                String[] stringArr =new String[]{"我的佣金","我的货款","我的销售","会员订单","我的收藏","我的推广",
-                        "门店资料","中央仓","商品管理","城市分店","城市V店"};
-                for (int i =0 ;i<stringArr.length ;i++){
+            } else if (grade == 2) {
+                LogUtils.d("tag", "总店");
+                String[] stringArr = new String[]{"我的佣金", "我的货款", "我的销售", "会员订单", "我的收藏", "我的推广",
+                        "门店资料", "中央仓", "商品管理", "城市分店", "城市V店"};
+                for (int i = 0; i < stringArr.length; i++) {
                     mNameDatas.add(stringArr[i]);
                 }
-                int[] intArr =new int[]{R.mipmap.personal_icon_yj,R.mipmap.personal_icon_dk,R.mipmap.personal_icon_xs,R.mipmap.personal_icon_dd,R.mipmap.personal_icon_scj,
-                        R.mipmap.personal_icon_tg,R.mipmap.personal_icon_md,R.mipmap.personal_icon_zyc,R.mipmap.personal_icon_gl,
-                        R.mipmap.personal_icon_fd,R.mipmap.personal_icon_vd};
-                for (int i =0 ;i<intArr.length ;i++){
+                int[] intArr = new int[]{R.mipmap.personal_icon_yj, R.mipmap.personal_icon_dk, R.mipmap.personal_icon_xs, R.mipmap.personal_icon_dd, R.mipmap.personal_icon_scj,
+                        R.mipmap.personal_icon_tg, R.mipmap.personal_icon_md, R.mipmap.personal_icon_zyc, R.mipmap.personal_icon_gl,
+                        R.mipmap.personal_icon_fd, R.mipmap.personal_icon_vd};
+                for (int i = 0; i < intArr.length; i++) {
                     mIconDatas.add(intArr[i]);
                 }
                 return;
-            }else if (userBean.getVendor().getVendor_type() ==2){
-                LogUtils.d("tag","城市分店");
-                String[] stringArr =new String[]{"我的佣金","我的销售","会员订单","城市V店","我的收藏","我的推广",
+
+            } else if (grade == 3) {
+                LogUtils.d("tag", "城市分店");
+                String[] stringArr = new String[]{"我的佣金", "我的销售", "会员订单", "城市V店", "我的收藏", "我的推广",
                         "门店资料"};
-                for (int i =0 ;i<stringArr.length ;i++){
+                for (int i = 0; i < stringArr.length; i++) {
                     mNameDatas.add(stringArr[i]);
                 }
-                int[] intArr =new int[]{R.mipmap.personal_icon_yj,R.mipmap.personal_icon_xs,R.mipmap.personal_icon_dd,R.mipmap.personal_icon_vd,R.mipmap.personal_icon_scj,
-                        R.mipmap.personal_icon_tg,R.mipmap.personal_icon_md};
-                for (int i =0 ;i<intArr.length ;i++){
+                int[] intArr = new int[]{R.mipmap.personal_icon_yj, R.mipmap.personal_icon_xs, R.mipmap.personal_icon_dd, R.mipmap.personal_icon_vd, R.mipmap.personal_icon_scj,
+                        R.mipmap.personal_icon_tg, R.mipmap.personal_icon_md};
+                for (int i = 0; i < intArr.length; i++) {
                     mIconDatas.add(intArr[i]);
                 }
                 return;
-             }else{
-                LogUtils.d("tag","无类型");
-                return;
-                    }
-        }else if (mRolesString.contains("SalesPerson")){
-            LogUtils.d("tag","合伙人,v店");
-                String[] stringArr =new String[]{"我的佣金","我的销售","我的推广","我的收藏",
+
+            } else if (grade == 4) {
+                LogUtils.d("tag", "合伙人,v店");
+                String[] stringArr = new String[]{"我的佣金", "我的销售", "我的推广", "我的收藏",
                         "门店资料"};
-                for (int i =0 ;i<stringArr.length ;i++){
+                for (int i = 0; i < stringArr.length; i++) {
                     mNameDatas.add(stringArr[i]);
                 }
-                int[] intArr =new int[]{R.mipmap.personal_icon_yj,R.mipmap.personal_icon_xs,R.mipmap.personal_icon_tg,R.mipmap.personal_icon_scj,R.mipmap.personal_icon_md};
-                for (int i =0 ;i<intArr.length ;i++){
+                int[] intArr = new int[]{R.mipmap.personal_icon_yj, R.mipmap.personal_icon_xs, R.mipmap.personal_icon_tg, R.mipmap.personal_icon_scj, R.mipmap.personal_icon_md};
+                for (int i = 0; i < intArr.length; i++) {
                     mIconDatas.add(intArr[i]);
                 }
-            return;
-        }else{
-            LogUtils.d("tag","普通会员");
-                String[] stringArr =new String[]{"我的收藏"};
-                for (int i =0 ;i<stringArr.length ;i++){
+                return;
+            } else {
+                LogUtils.d("tag", "普通会员");
+                String[] stringArr = new String[]{"我的收藏"};
+                for (int i = 0; i < stringArr.length; i++) {
                     mNameDatas.add(stringArr[i]);
                 }
-                int[] intArr =new int[]{R.mipmap.personal_icon_scj};
-                for (int i =0 ;i<intArr.length ;i++){
+                int[] intArr = new int[]{R.mipmap.personal_icon_scj};
+                for (int i = 0; i < intArr.length; i++) {
                     mIconDatas.add(intArr[i]);
                 }
-            return;
-        }
+                return;
+            }
 
 
      /*   mPersonnalBean = new PersonnalBean("我的资料", String.valueOf(R.mipmap.personnal_my_material));
@@ -242,21 +272,71 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         mData.add(mPersonnalBean);
         mPersonnalBean = new PersonnalBean("服务中心", String.valueOf(R.mipmap.personnalcenter_my_partner));
         mData.add(mPersonnalBean);*/
-        }else{
+        } else {
 
             mTvPersonnalPetname.setText("登录/注册");
             mTvPersonnalPetname.setTextColor(Color.WHITE);
             mTvPersonnalPetname.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity() ,LoginActivity.class);
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
                 }
             });
 
             mTvPersonnalRegistTime.setVisibility(View.GONE);
-            mTvPersonnalIdentity.setVisibility(View.GONE);
+            mIvPersonnalIdentity.setVisibility(View.GONE);
         }
+    }
+
+    //显示个人中心头像数据
+    private void showTouXiangData() {
+
+        mTvPersonnalRegistTime.setVisibility(View.VISIBLE);
+        mIvPersonnalIdentity.setVisibility(View.VISIBLE);
+
+        //User userInformation = UserInformationManager.getInstance().getUserInformation();
+        String userData = SPUtils.getString(UiUtilities.getContex(), Constant.USER_DATA);
+        User userInformation = new Gson().fromJson(userData, User.class);
+        //设置个人中心的头像
+        String touxiangUrl = SPUtils.getString(UiUtilities.getContex(),Constant.AVATAR_URL);
+        LogUtils.d("tag", "url:" + touxiangUrl);
+        Picasso.with(UiUtilities.getContex()).load(touxiangUrl).placeholder(R.mipmap.first_page_person_icon_touxiang).into(mIvPersonnalFragmentTouxiang);
+
+        //用户名称
+        String nick_name = SPUtils.getString(UiUtilities.getContex(),Constant.NICK_NAME);
+        LogUtils.d("tag", "名称:" + nick_name);
+        mTvPersonnalPetname.setText(nick_name);
+
+        //注册时间
+        String created_on_utc = userInformation.getCreated_on_utc();
+        LogUtils.d("tag", "时间:" + created_on_utc);
+        String createdOnUtc = created_on_utc.substring(0, 10);
+        mTvPersonnalRegistTime.setText("注册时间:" + createdOnUtc);
+        LogUtils.d("tag", "全部:" + userData);
+
+        //累计销量
+        int cumulative_sales = userInformation.getCumulative_sales();
+        mTvPersonnalXiaoliang.setText("累计销量: " + cumulative_sales);
+
+        //累计资产
+        int cumulative_assets = userInformation.getCumulative_assets();
+        mTvPersonnalZichang.setText("累计资产: " + cumulative_assets);
+
+        //用户等级
+        int anInt = SPUtils.getInt(UiUtilities.getContex(), Constant.USER_GRADE);
+        if (anInt == 1) {
+            mIvPersonnalIdentity.setImageResource(R.mipmap.personal_btn_fgs);
+        } else if (anInt == 2) {
+            mIvPersonnalIdentity.setImageResource(R.mipmap.personal_btn_cszd);
+        } else if (anInt == 3) {
+            mIvPersonnalIdentity.setImageResource(R.mipmap.personal_btn_csfd);
+        } else if (anInt == 4) {
+            mIvPersonnalIdentity.setImageResource(R.mipmap.personal_btn_pphhr);
+        } else {
+            mIvPersonnalIdentity.setImageResource(R.mipmap.personal_btn_zchh);
+        }
+
     }
 
     @Override
@@ -266,6 +346,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
     @Override
     public View onInitView() {
+
         View view = View.inflate(UiUtilities.getContex(), R.layout.fragment_personal_center, null);
 
         return view;
@@ -285,9 +366,13 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.iv_personnal_fragment_lookfororder1:
             case R.id.iv_personnal_fragment_lookfororder2:
-                itemPostion = 0;
-                jump2OrderListActivity();
+                /*itemPostion = 0;
+                jump2OrderListActivity();*/
+                mIntent = new Intent(getActivity(), MyOrderActivity.class);
+                startActivity(mIntent);
                 break;
+            case R.id.iv_personnal_fragment_setting:  //个人中心的设置
+
             case R.id.iv_personnal_fragment_touxiang:
 
                 //Toast.makeText(UiUtilities.getContex(), "个人中心头像被点击", Toast.LENGTH_SHORT).show();
@@ -304,29 +389,42 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
                 }
 
                 break;
+
+
             case R.id.iv_personnal_daifukuan:
 //                待付款
-                itemPostion = 1;
-                jump2OrderListActivity();
+               /* itemPostion = 1;
+                jump2OrderListActivity();*/
+                mIntent = new Intent(getActivity(), MyOrderActivity.class);
+                startActivity(mIntent);
 
 
                 break;
             case R.id.iv_personnal_daifahuo:
-                itemPostion = 2;
-                jump2OrderListActivity();
+                /*itemPostion = 2;
+                jump2OrderListActivity();*/
+                mIntent = new Intent(getActivity(), MyOrderActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.iv_personnal_daishouhuo:
-                itemPostion = 3;
-                jump2OrderListActivity();
+                /*itemPostion = 3;
+                jump2OrderListActivity();*/
+                mIntent = new Intent(getActivity(), MyOrderActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.iv_personnal_yiwancheng:
-                itemPostion = 4;
-                jump2OrderListActivity();
+               /* itemPostion = 4;
+                jump2OrderListActivity();*/
+                mIntent = new Intent(getActivity(), MyOrderActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.iv_personnal_tuihuanhuo:
-                itemPostion = 0;
-                jump2OrderListActivity();
+                /*itemPostion = 0;
+                jump2OrderListActivity();*/
+                Toast.makeText(UiUtilities.getContex(), "退换货", Toast.LENGTH_SHORT).show();
                 break;
+
+
 
         }
     }
@@ -342,22 +440,21 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     }
 
 
-
     public Boolean isNetQueue(String token) {
         OkHttpUtils.post().url(Constant.BASE_URL + "token").addParams("X-API-TOKEN", token).build().execute(new UserCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                    LogUtils.d("tag",e);
-                mIsCode=false;
+                LogUtils.d("tag", e);
+                mIsCode = false;
             }
 
             @Override
             public void onResponse(String response, int id) {
 
-                if (mCode ==200){
-                    mIsCode = true ;
-                }else {
-                    mIsCode=false ;
+                if (mCode == 200) {
+                    mIsCode = true;
+                } else {
+                    mIsCode = false;
                 }
             }
         });

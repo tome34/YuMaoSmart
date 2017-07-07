@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:background="@color/graywhite"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <include layout="@layout/item_toolbar"></include>
     <RelativeLayout
-
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="44dp">
         <TextView
             android:id="@+id/tv_testidentity_activity_name"
             style="@style/normalTextView"
             android:text="真实姓名"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
         <EditText
@@ -23,15 +26,23 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/graywhite"/>
+
     <RelativeLayout
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="44dp">
         <TextView
             android:id="@+id/tv_testidentity_activity_num"
             style="@style/normalTextView"
-            android:text="真实姓名"
+            android:text="证件号码"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
         <EditText
@@ -43,9 +54,17 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/graywhite"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="280dp"
+        android:background="@color/white">
         <TextView
             android:layout_marginTop="10dp"
             style="@style/normalTextView"
@@ -72,7 +91,16 @@
             android:layout_width="178dp"
             android:layout_height="100dp"/>
 
-
-
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_activity_real_name"
+        android:text="提交审核"
+        android:textColor="@color/colorLight"
+        android:background="@drawable/shap_ring"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        />
 </LinearLayout>
