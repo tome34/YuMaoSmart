@@ -2,7 +2,7 @@ package com.yumao.yumaosmart.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,6 +21,8 @@ import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.mode.User;
+import com.yumao.yumaosmart.utils.LogUtils;
+import com.yumao.yumaosmart.utils.UiUtilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,25 +34,25 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseItemActivity {
     @BindView(R.id.tv_titlle)
-    TextView mTvTitlle;
+    TextView  mTvTitlle;
     @BindView(R.id.my_toolbar)
-    Toolbar mMyToolbar;
+    Toolbar   mMyToolbar;
     @BindView(R.id.et_activity_lonin_username)
-    EditText mEtActivityLoninUsername;
+    EditText  mEtActivityLoninUsername;
     @BindView(R.id.et_activity_lonin_password)
-    EditText mEtActivityLoninPassword;
+    EditText  mEtActivityLoninPassword;
     @BindView(R.id.btn_activity_login)
-    Button mBtnActivityLogin;
+    Button    mBtnActivityLogin;
     @BindView(R.id.tv_activity_login_quikly_login)
-    TextView mTvActivityLoginQuiklyLogin;
+    TextView  mTvActivityLoginQuiklyLogin;
     @BindView(R.id.tv_activity_login_forget_password)
-    TextView mTvActivityLoginForgetPassword;
+    TextView  mTvActivityLoginForgetPassword;
     @BindView(R.id.wx_login)
     ImageView mWxLogin;
-    private String mPassword;
-    private String mPhoneNum;
-    private User mUserBean;
-    private IWXAPI mApi;
+    private String  mPassword;
+    private String  mPhoneNum;
+    private User    mUserBean;
+    private IWXAPI  mApi;
     private boolean mB;
 
 
@@ -63,7 +65,7 @@ public class LoginActivity extends BaseItemActivity {
 
         //应用id注册到微信,实现微信登录功能
         //通过wxapiFactory 工厂,获取iwapi的实例
-        mApi = WXAPIFactory.createWXAPI(this , Constant.APP_ID,true);
+        mApi = WXAPIFactory.createWXAPI(this, Constant.APP_ID, true);
         //将应用的appid注册到微信
         mApi.registerApp(Constant.APP_ID);
     }
@@ -72,6 +74,7 @@ public class LoginActivity extends BaseItemActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.et_activity_lonin_username:
+                LogUtils.d("文件夹路径"+Environment.getExternalStorageState().toString());
                 break;
             case R.id.et_activity_lonin_password:
                 break;
@@ -89,14 +92,14 @@ public class LoginActivity extends BaseItemActivity {
 
                 break;
             case R.id.tv_activity_login_quikly_login:
-                startActivity(new Intent(this, RegistActivity.class));
+                startActivityForResult(new Intent(this, RegistActivity.class), 110);
                 break;
             case R.id.tv_activity_login_forget_password:
                 startActivity(new Intent(this, ReSetPasswordActivity.class));
                 break;
             case R.id.wx_login:
 
-               // Toast.makeText(this,"微信登录",Toast.LENGTH_LONG).show();
+                // Toast.makeText(this,"微信登录",Toast.LENGTH_LONG).show();
                 SendAuth.Req req = new SendAuth.Req();
                 req.scope = "snsapi_userinfo"; //授权范围
                 req.state = "wechat1";
@@ -116,20 +119,32 @@ public class LoginActivity extends BaseItemActivity {
 
     private void login() {
 
-        mB = LoginManager.getInstance().goLogin(mPhoneNum, mPassword);
+        LoginManager.getInstance().goLogin(mPhoneNum, mPassword, new LoginManager.CallBack() {
+            @Override
+            public void loginSuccess() {
+                Toast.makeText(UiUtilities.getContex(), "登录成功", Toast.LENGTH_SHORT).show();
+                finish();
+            }
 
-        //有问题,第一次登陆不能finish
-        //DOTO
-      new Handler().postDelayed(new Runnable() {
-          @Override
-          public void run() {
-              if (mB){//登录成功
-                  finish();
-              }
-          }
-      },1000);
+            @Override
+            public void loginFail(int code) {
+                switch (code) {
+                    case 404:
+                        break;
+                    case 401:
+                        break;
+                    case 402:
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-
+            @Override
+            public void loginError() {
+                Toast.makeText(UiUtilities.getContex(), "用户名或登录密码有误", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -148,4 +163,14 @@ public class LoginActivity extends BaseItemActivity {
         return false;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 110) {
+            if (resultCode == RESULT_OK) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        }
+    }
 }

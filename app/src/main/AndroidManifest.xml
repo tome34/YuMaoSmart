@@ -9,15 +9,14 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!--获取相册,拍照权限-->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 获取相册,拍照权限 -->
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 
-    <!--拨打电话-->
+    <!-- 拨打电话 -->
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-
 
     <application
         android:name=".base.MyApplication"
@@ -38,7 +37,7 @@
         //新的splash页
         <activity
             android:name=".activity.SplashActivity"
-            android:theme="@style/FullScreenStyle">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -72,7 +71,6 @@
         <activity android:name=".activity.itemactivity.ServiceCenterActivity">
         </activity>
         <activity android:name=".activity.itemactivity.LockBandActivity"/>
-
         <activity android:name=".activity.itemactivity.MyErWeiMaActivity">
         </activity>
         <activity android:name=".activity.itemactivity.RecommendErWeiMaActivity">
@@ -109,16 +107,20 @@
         </activity>
         //用户注册协议
         <activity android:name=".activity.RegistAgreementActivity">
-
-        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        </activity>
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
-
         //图片裁剪
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity"/>
+        <activity android:name=".web.FristBannerWebActivity">
+        </activity>
+        <activity android:name=".activity.LanMujingxuanActivity">
+        </activity>
     </application>
 
 </manifest>

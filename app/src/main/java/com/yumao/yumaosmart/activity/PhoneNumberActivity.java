@@ -194,7 +194,9 @@ public class PhoneNumberActivity extends BaseItemActivity {
 
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(PhoneNumberActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(PhoneNumberActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+                            LogUtils.d("tag",e.toString());
                     }
 
                     @Override
@@ -205,6 +207,7 @@ public class PhoneNumberActivity extends BaseItemActivity {
                          user.setPhone(mNum);*/
                         SPUtils.putString(UiUtilities.getContex(),Constant.PHONE,mNum);
                         EventBus.getDefault().post(new GenderEvent(mNum ,1));
+                        Toast.makeText(PhoneNumberActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                         finish();
 
                     }

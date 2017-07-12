@@ -37,23 +37,23 @@ import okhttp3.Response;
 
 public class RegistActivity extends BaseItemActivity {
 
-    private static final int TIME_MINUS = 1000;
+    private static final int TIME_MINUS  = 1000;
     private static final int TIME_IS_OUT = 1001;
 
     @BindView(R.id.tv_titlle)
-    TextView mTvTitlle;
+    TextView     mTvTitlle;
     @BindView(R.id.my_toolbar)
-    Toolbar mMyToolbar;
+    Toolbar      mMyToolbar;
     @BindView(R.id.et_activity_regist_username)
-    EditText mEtActivityRegistUsername;
+    EditText     mEtActivityRegistUsername;
     @BindView(R.id.et_activity_regist_testcode)
-    EditText mEtActivityRegistTestcode;
+    EditText     mEtActivityRegistTestcode;
     @BindView(R.id.btn_activity_regist_gettestcode)
-    TextView mBtnActivityRegistGettestcode;
+    TextView     mBtnActivityRegistGettestcode;
     @BindView(R.id.et_activity_regist_password)
-    EditText mEtActivityRegistPassword;
+    EditText     mEtActivityRegistPassword;
     @BindView(R.id.btn_activity_regist_finishregist)
-    Button mBtnActivityRegistFinishregist;
+    Button       mBtnActivityRegistFinishregist;
     @BindView(R.id.activity_regist)
     LinearLayout mActivityRegist;
     @BindView(R.id.activity_regist_Agreement)
@@ -63,7 +63,7 @@ public class RegistActivity extends BaseItemActivity {
     private String mPhoneNum;
     private String mTestCode;
     private String mPassWord;
-    private int mCode;
+    private int    mCode;
     private int time = 60;
 
 
@@ -115,7 +115,7 @@ public class RegistActivity extends BaseItemActivity {
 
     @OnClick({R.id.et_activity_regist_username, R.id.et_activity_regist_testcode,
             R.id.btn_activity_regist_gettestcode, R.id.et_activity_regist_password,
-            R.id.btn_activity_regist_finishregist,R.id.activity_regist_Agreement})
+            R.id.btn_activity_regist_finishregist, R.id.activity_regist_Agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.et_activity_regist_username:
@@ -142,7 +142,7 @@ public class RegistActivity extends BaseItemActivity {
                 }
                 break;
             case R.id.activity_regist_Agreement: //用户注册协议
-                startActivity(new Intent(RegistActivity.this ,RegistAgreementActivity.class));
+                startActivity(new Intent(RegistActivity.this, RegistAgreementActivity.class));
                 break;
         }
     }
@@ -201,20 +201,34 @@ public class RegistActivity extends BaseItemActivity {
                         if (mCode == 204) {
                             Toast.makeText(RegistActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                             //执行登录
-                            boolean b = LoginManager.getInstance().goLogin(mPhoneNum, mPassWord);
-                            if (b){//登录成功
-                                finish();
-                                startActivity(new Intent(RegistActivity.this, MainActivity.class));
-                            }
+                            LoginManager.getInstance().goLogin(mPhoneNum, mPassWord, new LoginManager.CallBack() {
+                                @Override
+                                public void loginSuccess() {
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }
 
+                                @Override
+                                public void loginFail(int code) {
+                                    switch (code) {
+                                        case 403:
+                                            Toast.makeText(RegistActivity.this, "账号已经存在", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 404:
+                                            Toast.makeText(RegistActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
 
-                        } else if (mCode == 403) {
-                            Toast.makeText(RegistActivity.this, "账号已经存在", Toast.LENGTH_SHORT).show();
-                        } else if (mCode == 404) {
-                            Toast.makeText(RegistActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+                                @Override
+                                public void loginError() {
+
+                                }
+                            });
                         }
                     }
-                });
 
                 /*.execute(new StringCallback() {
                     @Override
@@ -252,6 +266,7 @@ public class RegistActivity extends BaseItemActivity {
 
                     }
                 });*/
+                });
     }
 
     private boolean testBefore() {

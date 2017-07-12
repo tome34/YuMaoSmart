@@ -36,6 +36,7 @@
     <string name="title_confirm_order">确认订单</string>
     <string name="title_order_detail">订单详情</string>
     <string name="very_personnal">保密</string>
+    <string name="clasify_title">分类</string>
 
 
 </resources>

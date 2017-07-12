@@ -159,8 +159,12 @@ public class UserInformationManager {
      * @return
      */
     public Uri getImageUri(String fileName) {
-        File file = new File(getImageDir(), fileName);
-        //  LogUtils.e(file.toString());
+        File avatar = new File(Environment.getExternalStorageDirectory(), "avatar");
+        if (!avatar.exists()) {
+            avatar.mkdirs();
+        }
+        File file = new File(avatar, fileName);
+         LogUtils.e("文件路径"+file.toString());
         // 檢查文件是否存在
         if (file.exists()) {
             file.delete();

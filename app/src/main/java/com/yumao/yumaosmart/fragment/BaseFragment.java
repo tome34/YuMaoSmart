@@ -20,8 +20,7 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
+       onCreateViewBefore();
 
         if (mLoadingPager == null) {
             mLoadingPager = new LoadingPager(UiUtilities.getContex()) {
@@ -43,6 +42,10 @@ public abstract class BaseFragment extends Fragment {
         }
 
         return mLoadingPager;
+
+    }
+
+    protected  void onCreateViewBefore(){
 
     }
 

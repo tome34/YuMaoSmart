@@ -2,6 +2,7 @@ package com.yumao.yumaosmart.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.activity.LoginActivity;
@@ -29,15 +31,20 @@ import com.yumao.yumaosmart.adapter.FirstListAdaper;
 import com.yumao.yumaosmart.base.LoadingPager;
 import com.yumao.yumaosmart.bean.ClassifyBean;
 import com.yumao.yumaosmart.bean.FirstListBean;
+import com.yumao.yumaosmart.callback.FirstBannerCallback;
+import com.yumao.yumaosmart.callback.FirstBannerLMCallback;
 import com.yumao.yumaosmart.callback.ProductsCallback;
 import com.yumao.yumaosmart.constant.Constant;
-import com.yumao.yumaosmart.manager.BannerManager;
 import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.manager.UserInformationManager;
+import com.yumao.yumaosmart.mode.FristBannerBean;
+import com.yumao.yumaosmart.mode.FristBannerLMBean;
 import com.yumao.yumaosmart.mode.ProductsMode;
 import com.yumao.yumaosmart.mode.User;
+import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
+import com.yumao.yumaosmart.web.FristBannerWebActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -97,8 +104,11 @@ public class FirstPagerFragment extends BaseFragment {
     private ImageView mImageView;
     private ViewGroup.LayoutParams mLayoutParams;
 
-    private List<String> imageArray;  //轮播图图片集合
-    private List<String> imageTitle;  //轮播图标题集合
+    private List<String> imageArray = new ArrayList<>();  //轮播图图片集合
+    private List<String> imageTitle = new ArrayList<>();  //轮播图标题集合
+    private List<String> imageWebView = new ArrayList<>(); //轮播图的点击详情页
+
+    private boolean mFlag;
 
 
     @Override
@@ -107,19 +117,22 @@ public class FirstPagerFragment extends BaseFragment {
 
         boolean loginState = LoginManager.getInstance().isLoginState(UiUtilities.getContex());
         if (loginState) {
+            mTvFirstListUserName.setVisibility(View.VISIBLE);
+
             User userBean = UserInformationManager.getInstance().getUserInformation();
             String logoUrl = userBean.getVendor().getLogo();
             //首页左边商城头像
-            Picasso.with(mContext).load(logoUrl).placeholder(R.mipmap.yumao_mall).into(mIvFirstItemPersonTopleft);
+            Picasso.with(mContext).load(logoUrl).resize(180,180).placeholder(R.mipmap.yumao_mall).into(mIvFirstItemPersonTopleft);
 
             //用户头像
             String iconUrl = SPUtils.getString(UiUtilities.getContex(), Constant.AVATAR_URL);
             Picasso.with(mContext).load(iconUrl).placeholder(R.mipmap.first_page_person_icon_touxiang).into(mIvFirstItemPersonTopright);
 
             //用户名
-            mTvFirstListUserName.setVisibility(View.VISIBLE);
+
             String niceName = SPUtils.getString(UiUtilities.getContex(), Constant.NICK_NAME);
             mTvFirstListUserName.setText(niceName);
+            mTvFirstListUserName.setTextColor(Color.BLACK);
 
             //首页底部地址
             String address = userBean.getVendor().getAddress();
@@ -136,13 +149,96 @@ public class FirstPagerFragment extends BaseFragment {
 
     private void initData(List<ProductsMode> list) {
         //判断活动是否有数据,如果没有数据在判断栏目的数据
+        isBannerData();
 
-        initViewPager(); //轮播图
         //mBanner.setVisibility(View.GONE);
         initClassify(); //分类
         initList(list); //产品展示
 
-        BannerManager.isBannerData();
+    }
+
+    //判断活动是否有数据
+    public void isBannerData(){
+
+        mFlag = false;
+
+        int vId ;
+        //判断是否登录
+        if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())){
+            User userInformation = UserInformationManager.getInstance().getUserInformation();
+            int id = userInformation.getVendor().getId();
+            LogUtils.d("tag",""+id);
+            vId = id;
+        }else {
+            vId = 1;
+        }
+        OkHttpUtils
+                .get()
+                .url(Constant.BASE_URL+"vendor-sections")
+                .addParams("vendor_id",vId+"")
+                .build()
+                .execute(new FirstBannerCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.d("tag","轮播图无图片");
+                        //隐藏轮播图
+                        mBanner.setVisibility(View.GONE);
+                        mFlag = true ;
+
+                    }
+
+                    @Override
+                    public void onResponse(List<FristBannerBean> response, int id) {
+                        LogUtils.d("tag","成功");
+
+                        for (int i =0 ;i<response.size();i++){
+
+                            FristBannerBean fristBannerBean = response.get(i);
+                            imageArray.add(fristBannerBean.getPicture());
+                            imageTitle.add(fristBannerBean.getSection_name());
+                                LogUtils.d("tag","图片:"+fristBannerBean.getPicture());
+                            imageWebView.add(fristBannerBean.getSection_href());
+
+                        }
+                        initViewPager(); //轮播图
+
+                    }
+                });
+
+
+
+        OkHttpUtils
+                .get()
+                .url(Constant.BASE_URL+"vendors/"+vId+"/section-recommended/products")
+                .build()
+                .execute(new FirstBannerLMCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                            LogUtils.d("tag","栏目无图片");
+
+                    }
+
+                    @Override
+                    public void onResponse(List<FristBannerLMBean> response, int id) {
+                        LogUtils.d("tag","栏目有图片");
+                        if (mFlag){
+                            mBanner.setVisibility(View.VISIBLE);
+                        }
+
+                        for (int i =0; i<response.size();i++){
+                            FristBannerLMBean fristBannerLMBean = response.get(i);
+                            imageArray.add(fristBannerLMBean.getVendor_section().getPicture());
+                            imageTitle.add(fristBannerLMBean.getVendor_section().getSection_name());
+
+                            //imageWebView.add(fristBannerLMBean.)
+
+                        }
+
+                        initViewPager(); //轮播图
+
+                    }
+                });
+
 
 
     }
@@ -165,18 +261,14 @@ public class FirstPagerFragment extends BaseFragment {
         mViewPager.setAdapter(new FirstViewPagerAdapter(views));*/
 
         //设置图片加载集合
-        imageArray=new ArrayList<>();
-
-        imageArray.add("http://img3.imgtn.bdimg.com/it/u=2758743658,581437775&fm=15&gp=0.jpg");
-        imageArray.add("http://img3.imgtn.bdimg.com/it/u=2105877023,3759180926&fm=15&gp=0.jpg");
-        imageArray.add("http://img2.imgtn.bdimg.com/it/u=1876814088,3589919070&fm=15&gp=0.jpg");
-
+        //imageArray=new ArrayList<>();
+       // imageArray.add("http://img3.imgtn.bdimg.com/it/u=2758743658,581437775&fm=15&gp=0.jpg");
         //设置图片标题集合
-        imageTitle=new ArrayList<>();
-        imageTitle.add("aaaaaaaaa");
-        imageTitle.add("bbbbbbbbb");
-        imageTitle.add("ccccccccc");
+        //imageTitle=new ArrayList<>();
+        //imageTitle.add("aaaaaaaaa");
 
+
+            //LogUtils.d("tag","图片个数:"+imageArray.size());
 
         //设置banner样式
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
@@ -192,6 +284,20 @@ public class FirstPagerFragment extends BaseFragment {
         mBanner.setDelayTime(2000);
         //设置指示器位置（当banner模式中有指示器时）
         mBanner.setIndicatorGravity(BannerConfig.CENTER);
+        //轮播图的点击事件
+        mBanner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Toast.makeText(UiUtilities.getContex(), "点击了"+position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), FristBannerWebActivity.class);
+                intent.putExtra("uriWeb",imageWebView.get(position));
+                intent.putExtra("titles",imageTitle.get(position));
+                getActivity().startActivity(intent);
+
+
+
+            }
+        });
         //banner设置方法全部调用完毕时最后调用
         mBanner.start();
     }

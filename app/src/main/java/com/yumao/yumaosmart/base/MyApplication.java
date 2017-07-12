@@ -64,10 +64,13 @@ public class MyApplication extends Application {
             super.onCreate();
 
             //.addInterceptor(new LoggerInterceptor("TAG"))
-//其他配置00
+            //其他配置00
+           // HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            // 設置攔截等級
+           // logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             mClient = new OkHttpClient.Builder()
-//                .addInterceptor(new LoggerInterceptor("TAG"))
+                   // .addInterceptor(logging)  // 日誌攔截器,用於日誌的打印
                     .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                     .readTimeout(10000L, TimeUnit.MILLISECONDS)
 

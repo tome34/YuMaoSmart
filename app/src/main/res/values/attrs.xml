@@ -17,5 +17,8 @@
         <!--指定是否有图标>-->
         <attr name="materialToggle" format="boolean"/>
     </declare-styleable>
-
+    <declare-styleable name="TitleBar">
+        <attr name="aTitle" format="string"/>
+        <attr name="aIcon" format="reference"/>
+    </declare-styleable>
 </resources>

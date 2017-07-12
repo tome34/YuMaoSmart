@@ -20,7 +20,6 @@ import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.activity.LoginActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
-import com.yumao.yumaosmart.activity.MyOrderActivity;
 import com.yumao.yumaosmart.activity.MyOrderListActivity;
 import com.yumao.yumaosmart.adapter.PersonnalcenterAdapter;
 import com.yumao.yumaosmart.base.LoadingPager;
@@ -36,6 +35,7 @@ import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
+import com.yumao.yumaosmart.widgit.CustomUItraRefreshHeader;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,7 +47,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 import okhttp3.Call;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by kk on 2017/2/24.
@@ -85,6 +91,8 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     TextView mTvPersonnalZichang;
     @BindView(R.id.iv_personnal_fragment_setting)
     ImageView mIvPersonnalFragmentSetting;
+    @BindView(R.id.ultra_ptr_frame)
+    PtrClassicFrameLayout mUltraPtrFrame;
 
     private PersonnalcenterAdapter mPersonnalcenterAdapter;
     private List<PersonnalBean> mData;
@@ -119,8 +127,41 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     //初始化视图
     @Override
     protected void initView() {
+        /**
+         * 经典 风格的头部实现
+         */
+        //final PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(UiUtilities.getContex());
+       // header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, 0);
 
+        CustomUItraRefreshHeader header = new CustomUItraRefreshHeader(UiUtilities.getContex());
 
+        mUltraPtrFrame.setHeaderView(header);
+        mUltraPtrFrame.addPtrUIHandler(header);
+        mUltraPtrFrame.setLastUpdateTimeRelateObject(this);
+        mUltraPtrFrame.setPtrHandler(new PtrHandler() {
+            /**
+             * 检查是否可以执行下来刷新，比如列表为空或者列表第一项在最上面时。
+             */
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+
+            }
+            //需要加载数据时触发
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+
+                mUltraPtrFrame.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mUltraPtrFrame.refreshComplete();
+                        updateView();
+
+                    }
+                },2500);
+            }
+
+        });
 
         // 竖直方向的网格样式，每行四个Item
         GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(), 4, OrientationHelper.VERTICAL, false) {
@@ -149,7 +190,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         mPersonnalcenterAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItenClick(View view, int position) {
-                Toast.makeText(UiUtilities.getContex(), "被点击了"+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UiUtilities.getContex(), "被点击了" + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -174,8 +215,14 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         EventBus.getDefault().unregister(UiUtilities.getContex());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateView();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void OnPersonalEvent(PersonalCenterEvent event){
+    public void OnPersonalEvent(PersonalCenterEvent event) {
         init();
     }
 
@@ -183,7 +230,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     @Override
     protected void init() {
 
-    mNameDatas = new ArrayList<>();
+        mNameDatas = new ArrayList<>();
 
         mIconDatas = new ArrayList<>();
         /*String userData = SPUtils.getString(UiUtilities.getContex(), Constant.USER_DATA);
@@ -201,6 +248,8 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())) {
             //显示头像数据
             showTouXiangData();
+            //显示recyclerview
+            mRvPersonalCenter.setVisibility(View.VISIBLE);
 
             int grade = UserInformationManager.getInstance().userGrade();
             if (grade == 1) {
@@ -307,11 +356,12 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
             mIvPersonnalIdentity.setVisibility(View.GONE);
             mTvPersonnalXiaoliang.setVisibility(View.INVISIBLE);
             mTvPersonnalZichang.setVisibility(View.INVISIBLE);
+            //隐藏recyclerview
+            mRvPersonalCenter.setVisibility(View.GONE);
+
 
             //设置头像
             mIvPersonnalFragmentTouxiang.setImageResource(R.mipmap.first_page_person_icon_touxiang);
-
-
 
 
         }
@@ -322,17 +372,19 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
         mTvPersonnalRegistTime.setVisibility(View.VISIBLE);
         mIvPersonnalIdentity.setVisibility(View.VISIBLE);
+        mTvPersonnalXiaoliang.setVisibility(View.VISIBLE);
+        mTvPersonnalZichang.setVisibility(View.VISIBLE);
 
         //User userInformation = UserInformationManager.getInstance().getUserInformation();
         String userData = SPUtils.getString(UiUtilities.getContex(), Constant.USER_DATA);
         User userInformation = new Gson().fromJson(userData, User.class);
         //设置个人中心的头像
-        String touxiangUrl = SPUtils.getString(UiUtilities.getContex(),Constant.AVATAR_URL);
+        String touxiangUrl = SPUtils.getString(UiUtilities.getContex(), Constant.AVATAR_URL);
         LogUtils.d("tag", "url:" + touxiangUrl);
         Picasso.with(UiUtilities.getContex()).load(touxiangUrl).placeholder(R.mipmap.first_page_person_icon_touxiang).into(mIvPersonnalFragmentTouxiang);
 
         //用户名称
-        String nick_name = SPUtils.getString(UiUtilities.getContex(),Constant.NICK_NAME);
+        String nick_name = SPUtils.getString(UiUtilities.getContex(), Constant.NICK_NAME);
         LogUtils.d("tag", "名称:" + nick_name);
         mTvPersonnalPetname.setText(nick_name);
 
@@ -368,6 +420,22 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     }
 
     @Override
+    protected void onCreateViewBefore() {
+       /* ((MainActivity)getContext()).getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = ((MainActivity)getContext()).getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(Color.TRANSPARENT);
+        window.setNavigationBarColor(Color.TRANSPARENT);
+    }*/
+    }
+
+    @Override
     public LoadingPager.LoadingPagerEnum onInitData() {
         return LoadingPager.LoadingPagerEnum.SUCCESS;
     }
@@ -395,10 +463,9 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.iv_personnal_fragment_lookfororder1:
             case R.id.iv_personnal_fragment_lookfororder2:
-                /*itemPostion = 0;
-                jump2OrderListActivity();*/
-                mIntent = new Intent(getActivity(), MyOrderActivity.class);
-                startActivity(mIntent);
+                itemPostion = 0;
+                jump2OrderListActivity();
+
                 break;
             case R.id.iv_personnal_fragment_setting:  //个人中心的设置
 
@@ -413,8 +480,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
                     startActivity(mIntent);
 
                 } else {
-                    mIntent = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(mIntent);
+                    startActivityForResult(new Intent(getActivity(), LoginActivity.class), 111);
                 }
 
                 break;
@@ -422,37 +488,29 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
             case R.id.iv_personnal_daifukuan:
 //                待付款
-               /* itemPostion = 1;
-                jump2OrderListActivity();*/
-                mIntent = new Intent(getActivity(), MyOrderActivity.class);
-                startActivity(mIntent);
-
-
+                itemPostion = 1;
+                jump2OrderListActivity();
                 break;
             case R.id.iv_personnal_daifahuo:
-                /*itemPostion = 2;
-                jump2OrderListActivity();*/
-                mIntent = new Intent(getActivity(), MyOrderActivity.class);
-                startActivity(mIntent);
+                itemPostion = 2;
+                jump2OrderListActivity();
+
                 break;
             case R.id.iv_personnal_daishouhuo:
-                /*itemPostion = 3;
-                jump2OrderListActivity();*/
-                mIntent = new Intent(getActivity(), MyOrderActivity.class);
-                startActivity(mIntent);
+                itemPostion = 3;
+                jump2OrderListActivity();
+
                 break;
             case R.id.iv_personnal_yiwancheng:
-               /* itemPostion = 4;
-                jump2OrderListActivity();*/
-                mIntent = new Intent(getActivity(), MyOrderActivity.class);
-                startActivity(mIntent);
+                itemPostion = 4;
+                jump2OrderListActivity();
+
                 break;
             case R.id.iv_personnal_tuihuanhuo:
-                /*itemPostion = 0;
-                jump2OrderListActivity();*/
+                itemPostion = 0;
+                jump2OrderListActivity();
                 Toast.makeText(UiUtilities.getContex(), "退换货", Toast.LENGTH_SHORT).show();
                 break;
-
 
 
         }
@@ -490,5 +548,20 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
         return mIsCode;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 111) {
+            if (resultCode == RESULT_OK) {
+                updateView();
+            }
+        }
+    }
+
+    private void updateView() {
+        init();
+    }
+
 
 }

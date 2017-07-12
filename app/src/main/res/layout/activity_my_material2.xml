@@ -106,7 +106,7 @@
         android:id="@+id/activity_my_material_button_back"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_margin="5dp"
+        android:layout_margin="0dp"
         android:background="@drawable/shap_ring"
         android:textColor="#ffff"
         android:textSize="20sp"

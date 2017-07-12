@@ -1,6 +1,82 @@
 [
     {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_switch_track.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_switch_track.xml"
+    },
+    {
         "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_color_highlight_material.xml",
-        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\color-v23\\abc_color_highlight_material.xml"
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_color_highlight_material.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_edittext.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_edittext.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_btn_checkable.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_default.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_default.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_seek_thumb.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_color_highlight_material.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_color_highlight_material.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_default.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_default.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_switch_track.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_switch_track.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_btn_colored_borderless_text_material.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_seek_thumb.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_spinner.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_spinner.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_edittext.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_edittext.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_btn_checkable.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_switch_thumb.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_switch_thumb.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_btn_colored_text_material.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_btn_colored_text_material.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_btn_colored_borderless_text_material.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_spinner.xml",
+        "source": "D:\\IDE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_spinner.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_btn_colored_text_material.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_btn_colored_text_material.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_tint_switch_thumb.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\color-v23\\abc_tint_switch_thumb.xml"
     }
 ]

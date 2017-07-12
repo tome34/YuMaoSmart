@@ -10,7 +10,29 @@
         <!--<item name= "android:listDivider">@drawable/divideritem </item >-->
 
     </style>
+    <!--自定义基类主题-->
+    <style name="BaseLightTheme" parent="@style/Theme.AppCompat.Light">
 
+    </style>
+    <!--去掉actionbar的主題-->
+    <style name="NoActionBarTheme" parent="BaseLightTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <!--全屏主題-->
+    <style name="FullScreenTheme" parent="NoActionBarTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <!-- 全透明的背景 -->
+    <style name="TransparentTheme" parent="FullScreenTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    <!--使用背景图片解决开启app瞬间白屏的问题,原来打算使用透明色,但是响应还是慢-->
+    <style name="SplashTheme" parent="FullScreenTheme">
+        <item name="android:windowBackground">@mipmap/splash_3</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
     <style name="textSizeNormal">
         <item name="android:textSize">18sp</item>
     </style>
