@@ -8,7 +8,7 @@
               android:layout_height="90dp">
 <ImageView
     android:layout_gravity="center"
-   android:id="@+id/iv_personnal_item"
+    android:id="@+id/iv_personnal_item"
     android:layout_marginTop="10dp"
     android:layout_width="40dp"
     android:layout_height="40dp"/>

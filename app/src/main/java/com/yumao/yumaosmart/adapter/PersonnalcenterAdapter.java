@@ -2,6 +2,7 @@ package com.yumao.yumaosmart.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.inter.OnItemClickListener;
+import com.yumao.yumaosmart.utils.UiUtilities;
 
 import java.util.List;
 
@@ -89,7 +91,30 @@ public class PersonnalcenterAdapter extends RecyclerView.Adapter<Personnalcenter
             item_name = (TextView)itemView.findViewById(R.id.tv_personnal_item);
             item_icon = (ImageView) itemView.findViewById(R.id.iv_personnal_item);
 
+            //设置每个item相对屏幕的宽高比
+            //int width = ((Activity)item_icon.getContext()).getWindowManager().getDefaultDisplay().getWidth();
 
+            //DisplayMetrics dm2 = new DisplayMetrics();
+            DisplayMetrics dm = new DisplayMetrics();
+            dm = UiUtilities.getContex().getResources().getDisplayMetrics();
+            float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
+            int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
+            int screenWidth = dm.widthPixels; // 屏幕宽（像素，如：3200px）
+            int screenHeight = dm.heightPixels; // 屏幕高（像素，如：1280px）
+
+            ViewGroup.LayoutParams params = itemView.getLayoutParams();
+            params.width = screenWidth/4;
+            params.height = screenWidth/4;
+            itemView.setLayoutParams(params);
+
+
+        }
+        /**
+         * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+         */
+        public int dip2px(Context context, float dpValue) {
+            final float scale = context.getResources().getDisplayMetrics().density;
+            return (int) (dpValue * scale + 0.5f);
         }
 
     }

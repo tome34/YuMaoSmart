@@ -23,6 +23,7 @@ import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yumao.yumaosmart.R;
+import com.yumao.yumaosmart.activity.LanMujingxuanActivity;
 import com.yumao.yumaosmart.activity.LoginActivity;
 import com.yumao.yumaosmart.activity.MainActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
@@ -33,12 +34,14 @@ import com.yumao.yumaosmart.bean.ClassifyBean;
 import com.yumao.yumaosmart.bean.FirstListBean;
 import com.yumao.yumaosmart.callback.FirstBannerCallback;
 import com.yumao.yumaosmart.callback.FirstBannerLMCallback;
+import com.yumao.yumaosmart.callback.FirstClassifyCallback;
 import com.yumao.yumaosmart.callback.ProductsCallback;
 import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.manager.UserInformationManager;
 import com.yumao.yumaosmart.mode.FristBannerBean;
 import com.yumao.yumaosmart.mode.FristBannerLMBean;
+import com.yumao.yumaosmart.mode.FristClassifyMode;
 import com.yumao.yumaosmart.mode.ProductsMode;
 import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
@@ -104,11 +107,16 @@ public class FirstPagerFragment extends BaseFragment {
     private ImageView mImageView;
     private ViewGroup.LayoutParams mLayoutParams;
 
-    private List<String> imageArray = new ArrayList<>();  //轮播图图片集合
-    private List<String> imageTitle = new ArrayList<>();  //轮播图标题集合
-    private List<String> imageWebView = new ArrayList<>(); //轮播图的点击详情页
+    private List<String> imageArray ;  //轮播图图片集合
+    private List<String> imageTitle ;  //轮播图标题集合
+    private List<String> imageWebView ; //轮播图的点击详情页
+
+    private List<Integer> imageId ;    //栏目精选id
 
     private boolean mFlag;
+    private Intent mIntent;
+
+    private int vId ;
 
 
     @Override
@@ -151,18 +159,24 @@ public class FirstPagerFragment extends BaseFragment {
         //判断活动是否有数据,如果没有数据在判断栏目的数据
         isBannerData();
 
-        //mBanner.setVisibility(View.GONE);
+        initClassifyData();  //分类加载数据
         initClassify(); //分类
         initList(list); //产品展示
 
     }
 
+
+
     //判断活动是否有数据
     public void isBannerData(){
+        imageArray = new ArrayList<>();    //轮播活动图图片集合
+        imageTitle = new ArrayList<>();    //轮播图标题集合
+        imageWebView = new ArrayList<>(); //轮播图的点击详情页
+        imageId = new ArrayList<>();       //栏目精选id
 
         mFlag = false;
 
-        int vId ;
+
         //判断是否登录
         if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())){
             User userInformation = UserInformationManager.getInstance().getUserInformation();
@@ -175,7 +189,7 @@ public class FirstPagerFragment extends BaseFragment {
         OkHttpUtils
                 .get()
                 .url(Constant.BASE_URL+"vendor-sections")
-                .addParams("vendor_id",vId+"")
+                .addParams("vendor_id","1")
                 .build()
                 .execute(new FirstBannerCallback() {
                     @Override
@@ -228,6 +242,9 @@ public class FirstPagerFragment extends BaseFragment {
                         for (int i =0; i<response.size();i++){
                             FristBannerLMBean fristBannerLMBean = response.get(i);
                             imageArray.add(fristBannerLMBean.getVendor_section().getPicture());
+
+                            imageId.add(fristBannerLMBean.getVendor_section().getId());
+
                             imageTitle.add(fristBannerLMBean.getVendor_section().getSection_name());
 
                             //imageWebView.add(fristBannerLMBean.)
@@ -271,7 +288,7 @@ public class FirstPagerFragment extends BaseFragment {
             //LogUtils.d("tag","图片个数:"+imageArray.size());
 
         //设置banner样式
-        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         //设置图片加载器
         mBanner.setImageLoader(new GlideImageLoader());
         //设置图片集合
@@ -279,7 +296,7 @@ public class FirstPagerFragment extends BaseFragment {
         //设置banner动画效果
         mBanner.setBannerAnimation(Transformer.RotateDown);
         //设置标题集合（当banner样式有显示title时）
-        mBanner.setBannerTitles(imageTitle);
+        //mBanner.setBannerTitles(imageTitle);
         //设置轮播时间
         mBanner.setDelayTime(2000);
         //设置指示器位置（当banner模式中有指示器时）
@@ -288,11 +305,22 @@ public class FirstPagerFragment extends BaseFragment {
         mBanner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                Toast.makeText(UiUtilities.getContex(), "点击了"+position, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), FristBannerWebActivity.class);
-                intent.putExtra("uriWeb",imageWebView.get(position));
-                intent.putExtra("titles",imageTitle.get(position));
-                getActivity().startActivity(intent);
+                    LogUtils.d("tag","条目:"+imageWebView.size());
+                if(position<imageWebView.size()){
+                    Toast.makeText(UiUtilities.getContex(), "点击了"+position, Toast.LENGTH_SHORT).show();
+                    mIntent = new Intent(getActivity(), FristBannerWebActivity.class);
+                    mIntent.putExtra("uriWeb",imageWebView.get(position));
+                    mIntent.putExtra("titles",imageTitle.get(position));
+                    getActivity().startActivity(mIntent);
+                }else{
+                    Toast.makeText(UiUtilities.getContex(), "栏目精选点击了"+position, Toast.LENGTH_SHORT).show();
+                    mIntent = new Intent(getActivity(), LanMujingxuanActivity.class);
+                     //   LogUtils.d("tag","id:"+imageId.get(position));
+                    mIntent.putExtra("id",imageId.get(position - imageWebView.size()));
+                    mIntent.putExtra("BannerImage",imageArray.get(position));
+                    getActivity().startActivity(mIntent);
+                }
+
 
 
 
@@ -310,6 +338,28 @@ public class FirstPagerFragment extends BaseFragment {
         }
     }
 
+    //首页分类加载数据
+    private void initClassifyData() {
+
+
+        OkHttpUtils
+                .get()
+                .url(Constant.BASE_URL+"vendors/"+vId+"/categories")
+                .build()
+                .execute(new FirstClassifyCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                            LogUtils.d("分类失败");
+                    }
+
+                    @Override
+                    public void onResponse(List<FristClassifyMode> response, int id) {
+                        LogUtils.d("分类成功");
+                    }
+                });
+    }
+
 
     //    首页列表初始化
     private void initList(List<ProductsMode> list) {
@@ -319,6 +369,7 @@ public class FirstPagerFragment extends BaseFragment {
 
     //首页分类初始化
     private void initClassify() {
+
         mClassifyBeanFeiCui = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_fc), getString(R.string.feicui));
         mClassifyBeanCaiBao = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_cb), getString(R.string.caibao));
         mClassifyBeanDiamond = new ClassifyBean(String.valueOf(R.mipmap.home__icon_sel_zs), getString(R.string.zuanshi));
