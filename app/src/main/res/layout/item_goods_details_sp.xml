@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_marginTop="1dp"
+              android:background="@color/white"
+              android:layout_height="35dp">
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:text="发货仓:     "
+        style="@style/normalTextView"
+        android:id="@+id/item_goods_details_title_tv"
+        android:layout_width="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:layout_height="35dp"/>
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:text="揭阳"
+        style="@style/normalTextView"
+        android:id="@+id/item_goods_details_constan_tv"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:layout_height="35dp"/>
+
+</LinearLayout>

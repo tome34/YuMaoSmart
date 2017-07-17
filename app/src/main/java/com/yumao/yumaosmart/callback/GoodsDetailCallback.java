@@ -12,15 +12,15 @@ import okhttp3.Response;
 
 public abstract class GoodsDetailCallback extends Callback<GoodsDetailMode> {
 
-    private int mCode;
+    public String mDetailString;
     private GoodsDetailMode mGoodsDetailMode;
 
 
     @Override
     public GoodsDetailMode parseNetworkResponse(Response response, int id) throws Exception {
-        String string = response.body().string();
+        mDetailString = response.body().string();
 
-         mGoodsDetailMode = new Gson().fromJson(string, GoodsDetailMode.class);
+         mGoodsDetailMode = new Gson().fromJson(mDetailString, GoodsDetailMode.class);
 
             return mGoodsDetailMode;
     }

@@ -66,15 +66,13 @@ public class LanMujiangXuanAdapter extends RecyclerView.Adapter<LanMujiangXuanAd
         Picasso.with(mContext).load(mImageList.get(position)).into(holder.mIconIv);
         holder.mName.setText(mTiltisList.get(position));
        // holder.mNumber.setText();
-        holder.mPrice.setText(mResalePriceList.get(position)+"元");
-        holder.mNumber.setText("编号: "+mNumberList.get(position));
-
-
-       /* if (TextUtils.isEmpty(mResalePriceList.get(position)+"")){
-            holder.mPrice.setText(mResalePriceList.get(position));
+        if (mResalePriceList.get(position) ==0){
+            holder.mPrice.setText(mPriceList.get(position)+"元");
         }else{
-            holder.mPrice.setText(mPriceList.get(position));
-        }*/
+            holder.mPrice.setText(mResalePriceList.get(position)+"元");
+        }
+
+        holder.mNumber.setText("编号: "+mNumberList.get(position));
 
         //将position保存在itemView的tag中,以便点击时进行获取
         holder.itemView.setTag(position);

@@ -21,6 +21,7 @@ import com.yumao.yumaosmart.callback.LanMuJingXuanCallback;
 import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.inter.OnItemClickListener;
 import com.yumao.yumaosmart.mode.LanMuJingXuanBean;
+import com.yumao.yumaosmart.utils.GetNunberUtils;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
@@ -58,12 +59,13 @@ public class LanMujingxuanActivity extends BaseItemActivity {
 
     List<String> mImageList ; //栏目精选图片集合
     List<String> mTiltisList ; //栏目精选标题集合
-    List<Integer> mIdList ;     //产品id
+    List<Integer> mProductIdList ;     //产品id
     List<Integer> mPriceList ;  //产品价格
     List<Integer> mProductCostList ; //产品的成本价
     List<Integer> mResalePriceList ; //产品的转售价格,以转卖价优先
     List<String> mNumberList ;//产品编号
     private String mLogoUri;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,10 @@ public class LanMujingxuanActivity extends BaseItemActivity {
             @Override
             public void onItenClick(View view, int position) {
                 Toast.makeText(UiUtilities.getContex(), "被点击了" + position, Toast.LENGTH_SHORT).show();
+                mIntent = new Intent(LanMujingxuanActivity.this ,GoodsDetailActivity.class);
+                mIntent.putExtra(Constant.PRODUCT_ID,mProductIdList.get(position));  //产品id
+                startActivity(mIntent);
+
             }
 
             @Override
@@ -115,7 +121,7 @@ public class LanMujingxuanActivity extends BaseItemActivity {
     private void initData() {
 
         Intent intent = getIntent();
-        int vsid = intent.getIntExtra("id", -1);
+        int vsid = intent.getIntExtra("vsid", -1);  //分类id
             LogUtils.d("tag","vsid:"+vsid);
         String bannerImage = intent.getStringExtra("BannerImage");
         //设置banner图
@@ -136,7 +142,7 @@ public class LanMujingxuanActivity extends BaseItemActivity {
 
         mImageList = new ArrayList<>(); //栏目精选图片集合
          mTiltisList = new ArrayList<>(); //栏目精选标题集合
-         mIdList = new ArrayList<>();     //产品id
+        mProductIdList = new ArrayList<>();     //产品id
          mPriceList = new ArrayList<>();  //产品价格
          mProductCostList = new ArrayList<>() ; //产品的成本价
          mResalePriceList = new ArrayList<>(); //产品的转售价格,以转卖价优先
@@ -144,7 +150,7 @@ public class LanMujingxuanActivity extends BaseItemActivity {
 
         OkHttpUtils
                 .get()
-                .url(Constant.BASE_URL+"vendor-sections/"+vsid+"/section-featured/products")  //栏目详情页
+                .url(Constant.BASE_URL+"vendor-sections/"+vsid+"/section-featured/products")  //栏目二级详情页
                 .addParams("page","1")
                 .build()
                 .execute(new LanMuJingXuanCallback() {
@@ -156,28 +162,29 @@ public class LanMujingxuanActivity extends BaseItemActivity {
                     @Override
                     public void onResponse(List<LanMuJingXuanBean> response, int id) {
                         LogUtils.d("tag","成功");
-                        mLogoUri = response.get(1).getVendor().getLogo();
+                        mLogoUri = response.get(0).getVendor().getLogo();  //页面的门店logo图
                         for (int i = 0 ; i <response.size();i++){
 
                             mImageList.add(response.get(i).getThumb()); //图片
                             mTiltisList.add(response.get(i).getName());
-                            mIdList.add(response.get(i).getId());
+                            mProductIdList.add(response.get(i).getId());
                             mPriceList.add(response.get(i).getPrice());
                             mProductCostList.add(response.get(i).getProduct_cost());
                             mResalePriceList.add(response.get(i).getResale_price());
 
                             //产品编号
                             int a = (int) Math.floor((float)(mPriceList.get(i) - mProductCostList.get(i)) / mPriceList.get(i) * 0.6 * 100);
-                            String number = getNumber(a);
+
+                            String number = GetNunberUtils.getNumber(a);
                                 LogUtils.d("编号:"+number);
-                            int length = String.valueOf(mIdList.get(i)).length();
+                            int length = String.valueOf(mProductIdList.get(i)).length();
                             StringBuffer stringBuffer = new StringBuffer();
                             if(length<8){
                                 int i1 = 8 - length;
                                 for(int j =0;j<i1;j++){
                                     stringBuffer.append(0);
                                 }
-                                stringBuffer.append(mIdList.get(i));
+                                stringBuffer.append(mProductIdList.get(i));
                             }
                                 LogUtils.d("最终编号:"+number+stringBuffer);
                                String s = number + stringBuffer;
@@ -194,63 +201,5 @@ public class LanMujingxuanActivity extends BaseItemActivity {
                 });
     }
 
-    //获得编号
-    public String getNumber(int a) {
-        char[] numChar =new char[2];
-        String s = String.valueOf(a);
-        char[] chars = s.toCharArray();
-        LogUtils.d("chars:"+chars[0]+" "+chars[1]);
-        if (chars[0] == '0'){
-            numChar[0] ='X' ;
-        }else if(chars[0] == '1'){
-            numChar[0] ='A' ;
-        }else if(chars[0] == '2'){
-            numChar[0] ='B' ;
-        }else if(chars[0] == '3'){
-            numChar[0] ='C' ;
-        }else if(chars[0] == '4'){
-            numChar[0] ='D' ;
-        }else if(chars[0] == '5'){
-            numChar[0] ='E' ;
-        }else if(chars[0] == '6'){
-            numChar[0] ='F' ;
-        }else if(chars[0] == '7'){
-            numChar[0] ='G' ;
-        }else if(chars[0] == '8'){
-            numChar[0] ='H' ;
-        }else if(chars[0] == '9'){
-            numChar[0] ='I' ;
-        }
-
-        if(chars[1] == '0'){
-            numChar[1] ='X' ;
-        }else if(chars[1] == '1'){
-            numChar[1] ='A' ;
-        }else if(chars[1] == '2'){
-            numChar[1] ='B' ;
-        }else if(chars[1] == '3'){
-            numChar[1] ='C' ;
-        }else if(chars[1] == '4'){
-            numChar[1] ='D' ;
-        }else if(chars[1] == '5'){
-            numChar[1] ='E' ;
-        }else if(chars[1] == '6'){
-            numChar[1] ='F' ;
-        }else if(chars[1] == '7'){
-            numChar[1] ='G' ;
-        }else if(chars[1] == '8'){
-            numChar[1] ='H' ;
-        }else if(chars[1] == '9'){
-            numChar[1] ='I' ;
-        }
-
-            LogUtils.d("111:"+numChar[0]+" "+numChar[1]);
-        char[] cha = new char[2];
-        cha[0]='X';
-        cha[1]='X';
-            LogUtils.d("222:"+cha[0]+" "+cha[1]);
-
-        return new String(numChar);
-    }
 
 }

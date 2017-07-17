@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="300dp">
+              android:layout_marginTop="5dp"
+              android:layout_height="310dp"
+    android:background="@color/white">
         <ImageView
             android:scaleType="fitXY"
             android:id="@+id/iv_first_list_title"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
@@ -19,15 +20,13 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:background="@color/white"
-    android:layout_height="150dp">
+    android:layout_height="160dp">
         <LinearLayout
-
+            android:id="@+id/layout_first_list_left"
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_margin="3dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="2.5dp"
             android:layout_height="match_parent">
@@ -36,7 +35,8 @@
                     android:scaleType="fitXY"
                     android:id="@+id/iv_first_list_left"
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"/>
+                    android:background="@mipmap/home_soldout_bg"
+                    android:layout_height="wrap_content"/>
                 <TextView
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="3dp"
@@ -56,9 +56,8 @@
         </LinearLayout>
 
         <LinearLayout
-
+            android:id="@+id/layout_first_list_mid"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_marginLeft="2.5dp"
             android:layout_marginRight="2.5dp"
             android:layout_weight="1"
@@ -70,7 +69,8 @@
                     android:scaleType="fitXY"
                     android:id="@+id/iv_first_list_mid"
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"/>
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/home_soldout_bg"/>
                 <TextView
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="3dp"
@@ -90,8 +90,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_first_list_right"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_marginLeft="2.5dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
@@ -103,7 +103,8 @@
                     android:scaleType="fitXY"
                     android:id="@+id/iv_first_list_right"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/home_soldout_bg"/>
                 <TextView
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="3dp"

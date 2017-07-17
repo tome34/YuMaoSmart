@@ -14,32 +14,24 @@
         android:id="@+id/search_activity_first_classify_detail"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/colorPrimary"></android.support.v7.widget.SearchView>
+        android:background="@color/colorPrimary">
 
-    <com.yumao.yumaosmart.widgit.MyScrollview
-        android:id="@+id/sv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    </android.support.v7.widget.SearchView>
+
+
         <!--排序筛选-->
-       <LinearLayout
-           android:orientation="vertical"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+
            <RadioGroup
                android:id="@+id/radiogroup_first_classify_detail"
                android:layout_width="match_parent"
                android:layout_height="40dp"
                android:orientation="horizontal">
 
-
-
                <RadioButton
                    android:id="@+id/btn_first_classify_detail_update"
-
                    style="@style/redTextButton"
-                   android:layout_width="0dp"
+                   android:layout_width="100dp"
                    android:layout_height="match_parent"
-                   android:layout_weight="1"
                    android:button="@null"
                    android:gravity="center"
                    android:text="更新时间"/>
@@ -47,9 +39,9 @@
                <RadioButton
                    android:id="@+id/btn_first_classify_detail_price"
                    style="@style/redTextButton"
-                   android:layout_width="0dp"
+                   android:layout_width="wrap_content"
                    android:layout_height="match_parent"
-                   android:layout_weight="1"
+                   android:layout_marginLeft="20dp"
                    android:button="@null"
                    android:drawableRight="@drawable/first_classify_detail_sortprice"
                    android:gravity="center"
@@ -58,10 +50,10 @@
                <RadioButton
                    android:id="@+id/btn_first_classify_detail_choose"
                    style="@style/redTextButton"
-                   android:layout_width="0dp"
+                   android:layout_width="wrap_content"
                    android:layout_height="match_parent"
-                   android:layout_weight="1"
                    android:button="@null"
+                   android:layout_marginLeft="50dp"
                    android:drawableRight="@drawable/first_classify_detail_choose"
                    android:gravity="center"
                    android:text="筛选"/>
@@ -74,12 +66,30 @@
                android:layout_height="80dp">
 
            </com.yumao.yumaosmart.widget.CustomRadioGroup>
-           <com.yumao.yumaosmart.widgit.MyGridView
-               android:id="@+id/gv_first_classify_detail"
+
+           <com.yumao.yumaosmart.widgit.MyScrollview
+               android:id="@+id/sv"
                android:layout_width="match_parent"
                android:layout_height="wrap_content">
+               <LinearLayout
+                   android:orientation="vertical"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
 
-           </com.yumao.yumaosmart.widgit.MyGridView>
+           <!--包裹recyclerview,为了不让他滑动-->
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="5dp"
+               android:descendantFocusability="blocksDescendants">
+
+               <android.support.v7.widget.RecyclerView
+                   android:id="@+id/recyclerview"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+
+               </android.support.v7.widget.RecyclerView>
+           </RelativeLayout>
        </LinearLayout>
     </com.yumao.yumaosmart.widgit.MyScrollview>
 
