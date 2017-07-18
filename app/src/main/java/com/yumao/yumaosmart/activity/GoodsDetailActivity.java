@@ -2,18 +2,26 @@ package com.yumao.yumaosmart.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -46,8 +54,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import okhttp3.Call;
 import okhttp3.Response;
+
 
 public class GoodsDetailActivity extends BaseItemActivity {
 
@@ -96,24 +108,36 @@ public class GoodsDetailActivity extends BaseItemActivity {
     Button mDetailActivityGetItNowBt;
     @BindView(R.id.activity_goods_detail)
     LinearLayout mActivityGoodsDetail;
+    @BindView(R.id.details_icon_share)
+    ImageView mDetailsIconShare;
+    @BindView(R.id.tv_activity_goods_full_description_title)
+    TextView mTvActivityGoodsFullDescriptionTitle;
+    @BindView(R.id.tv_activity_goods_full_description_layout)
+    LinearLayout mTvActivityGoodsFullDescriptionLayout;
+    @BindView(R.id.videoplayer)
+    JCVideoPlayerStandard mVideoplayer;
+
+
 
     private AmountView mMAmountView;
     private List<String> mData = new ArrayList<>();
 
     private int mProductId;  //产品id
+    private String mVendorName;  //平台名字
+
     private int vId;//门店id
 
     private List<String> mPictures;  //banner图集合
-    private String mProductName ;    //产品名称
-    private int resalePrice ;        //转售价格
-    private int price ;              //销售价
-    private int prodctCost ;         //成本价格
+    private String mProductName;    //产品名称
+    private int resalePrice;        //转售价格
+    private int price;              //销售价
+    private int prodctCost;         //成本价格
 
-    private String mNumber ;             //条码 编号
+    private String mNumber;             //条码 编号
     private String workDuration;      //工期
-    private String wareHouseAddress ;  //发货仓
+    private String wareHouseAddress;  //发货仓
     private String fullDescription;   //描述
-    private List<String> specificationsList ;//品种集合
+    private List<String> specificationsList;//品种集合
 
     private List<String> mDetailStringList; //商品参数 中文key
 
@@ -123,7 +147,17 @@ public class GoodsDetailActivity extends BaseItemActivity {
     private GoodsDetailSpAdapter mSpAdapter;
     private GoodsDetailPiAdapter mPiAdapter;
 
+    StandardGSYVideoPlayer gsyVideoPlayer;
+
     private List<GoodsDetailMode.SpecificationsBean> mSpecifications;
+    private String mMedias;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient mClient;
+    private boolean mMediasFlas = false;
+    private String mAddress;
 
 
     @Override
@@ -133,9 +167,35 @@ public class GoodsDetailActivity extends BaseItemActivity {
         ButterKnife.bind(this);
         initToobar(getString(R.string.title_goods_detail));
 
+        initHeight();
         getGoodsId();
         initData();
 
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+         mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void initHeight() {
+        DisplayMetrics dm = new DisplayMetrics();
+        dm = UiUtilities.getContex().getResources().getDisplayMetrics();
+        int screenWidth = dm.widthPixels; // 屏幕宽（像素，如：3200px）
+
+
+        ViewGroup.LayoutParams params = mBanner.getLayoutParams();
+        params.width = screenWidth;
+        params.height = screenWidth;
+            LogUtils.d("长度:"+screenWidth);
+
+        mBanner.setLayoutParams(params);
+
+        ViewGroup.LayoutParams paramjc = mVideoplayer.getLayoutParams();
+        paramjc.width = screenWidth;
+        paramjc.height = screenWidth;
+        LogUtils.d("长度:"+screenWidth);
+
+        mVideoplayer.setLayoutParams(paramjc);
 
     }
 
@@ -152,7 +212,7 @@ public class GoodsDetailActivity extends BaseItemActivity {
 
         mPictures = new ArrayList<>();  //banner图集合
         specificationsList = new ArrayList<>();//品种集合
-        mSpecifications = new ArrayList<>() ;
+        mSpecifications = new ArrayList<>();
 
         //判断是否登录  ,获取门店id
         if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())) {
@@ -182,67 +242,80 @@ public class GoodsDetailActivity extends BaseItemActivity {
                         // initData(response);
                         mPictures = response.getPictures();
                         mSpecifications = response.getSpecifications();
-                        mProductName = response.getName() ;    //产品名称
+                        mProductName = response.getName();    //产品名称
+                        mVendorName = response.getVendor().getName(); //获取品台的名字
                         mProductId = response.getId();  //产品id
                         resalePrice = response.getResale_price();        //转售价格
                         price = response.getPrice();              //销售价
-                        prodctCost =response.getProduct_cost();         //成本价格
+                        prodctCost = response.getProduct_cost();         //成本价格
                         workDuration = response.getWork_duration();      //工期
+
+                        //详情页底部地址
+                        mAddress = response.getVendor().getAddress();
+
+                        if (response.medias == null) {                     //判断视频是否为空
+                            mVideoplayer.setVisibility(View.GONE);
+                            mBanner.setVisibility(View.VISIBLE);
+                        } else {
+                            mBanner.setVisibility(View.GONE);
+                            mVideoplayer.setVisibility(View.VISIBLE);
+                            mMedias = response.medias.get(0);  //视频MP4
+                            mMediasFlas = true;
+                        }
 
 
                         String detailString = mDetailString;
 
-                        JSONObject object = null ;
+                        JSONObject object = null;
                         mDetailStringList = new ArrayList<String>();  //存储字符串  "种水":"冰种"
 
-                        for (int i =0 ;i< response.getSpecifications().size();i++){
-                            try{
+                        for (int i = 0; i < response.getSpecifications().size(); i++) {
+                            try {
                                 object = new JSONObject(detailString);
                                 JSONArray specifications1 = object.optJSONArray("specifications");
                                 String s = specifications1.optString(i);
                                 StringBuffer sb = new StringBuffer(s);
-                                String substring = sb.substring(1, s.length()-1);
-                                LogUtils.d("tag",substring);
+                                String substring = sb.substring(1, s.length() - 1);
+                                LogUtils.d("tag", substring);
                                 mDetailStringList.add(substring);
-                            } catch (JSONException e){
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
 
-
-                        if (response.getFull_description() ==null){
-                            mTvActivityGoodsFullDescription.setVisibility(View.GONE);
-                        }else {
+                        if (response.getFull_description() == null) {
+                            mTvActivityGoodsFullDescriptionLayout.setVisibility(View.GONE);
+                        } else {
                             fullDescription = response.getFull_description();   //描述
-                            mTvActivityGoodsFullDescription.setText("描述:     "+fullDescription);
+                            mTvActivityGoodsFullDescription.setText(fullDescription);
                         }
 
-                        if (response.getWarehouse()==null){
+                        if (response.getWarehouse() == null) {
                             mTvActivityGoodsWarehouseAddress.setVisibility(View.GONE);
-                        }else{
+                        } else {
                             wareHouseAddress = response.getWarehouse().getName();   //发货仓
-                            mTvActivityGoodsWarehouseAddress.setText("货发仓:    "+wareHouseAddress);
+                            mTvActivityGoodsWarehouseAddress.setText("发货仓:    " + wareHouseAddress);
                         }
 
 
                         //产品编号
-                        int a = (int) Math.floor((float)(price - prodctCost) / price * 0.6 * 100);
+                        int a = (int) Math.floor((float) (price - prodctCost) / price * 0.6 * 100);
 
                         String number = GetNunberUtils.getNumber(a);
-                        LogUtils.d("编号:"+number);
+                        LogUtils.d("编号:" + number);
                         int length = String.valueOf(mProductId).length();
                         StringBuffer stringBuffer = new StringBuffer();
-                        if(length<8){
+                        if (length < 8) {
                             int i1 = 8 - length;
-                            for(int j =0;j<i1;j++){
+                            for (int j = 0; j < i1; j++) {
                                 stringBuffer.append(0);
                             }
                             stringBuffer.append(mProductId);
                         }
                         //LogUtils.d("最终编号:"+number+stringBuffer);
                         mNumber = number + stringBuffer;
-                            LogUtils.d("最终编号:"+mNumber);
+                        LogUtils.d("最终编号:" + mNumber);
 
 
                         initView();
@@ -268,6 +341,9 @@ public class GoodsDetailActivity extends BaseItemActivity {
         mBanner.setImageLoader(new GlideImageLoader());
         //设置图片集合
         mBanner.setImages(mPictures);
+        for (int i = 0; i < mPictures.size(); i++) {
+            LogUtils.d("tag", "轮播图:" + mPictures.get(i));
+        }
         //设置banner动画效果
         mBanner.setBannerAnimation(Transformer.RotateDown);
         //设置标题集合（当banner样式有显示title时）
@@ -279,26 +355,36 @@ public class GoodsDetailActivity extends BaseItemActivity {
         //banner设置方法全部调用完毕时最后调用
         mBanner.start();
 
+        if (mMediasFlas) {
+            //设置视频播放
+            mediasPlayer(mMedias);
+            mMediasFlas = false;
+        }
+
+
         //设置标题
         mTvActivityGoodsDetailGoodsname.setText(mProductName);
         //设置产品价格
-        if (resalePrice ==0){
-            mTvActivityGoodsDetailGoodsprice.setText("价格: "+price+"元");
-        }else {
-            mTvActivityGoodsDetailGoodsprice.setText("价格: "+resalePrice+"元");
+        if (resalePrice == 0) {
+            mTvActivityGoodsDetailGoodsprice.setText("价格: " + price + "元");
+        } else {
+            mTvActivityGoodsDetailGoodsprice.setText("价格: " + resalePrice + "元");
         }
 
         //设置总价
-        if (resalePrice ==0){
-            mTvActivityGoodsDetailTotalprice.setText(" "+price+"元");
-        }else {
-            mTvActivityGoodsDetailTotalprice.setText(" "+resalePrice+"元");
+        if (resalePrice == 0) {
+            mTvActivityGoodsDetailTotalprice.setText(" " + price + "元");
+        } else {
+            mTvActivityGoodsDetailTotalprice.setText(" " + resalePrice + "元");
         }
 
-       //条码
-        mTvActivityGoodsLineCode.setText("条码:     "+mNumber);
+        //条码
+        mTvActivityGoodsLineCode.setText("条码:     " + mNumber);
         //工期
-        mTvActivityGoodsWorkDuration.setText("工期:     "+workDuration);
+        mTvActivityGoodsWorkDuration.setText("工期:     " + workDuration);
+
+        //设置底部地址
+        mTvActivityGoodsDetailAddress.setText(mAddress + "玉猫平台提供支持");
 
 
         //参数的recyclerview
@@ -319,8 +405,6 @@ public class GoodsDetailActivity extends BaseItemActivity {
         mRvSpecifications.setAdapter(mSpAdapter);
 
 
-
-
         //图片的recyclerview
         // 竖直方向的网格样式，每行1个Item
         GridLayoutManager mLayoutManager2 = new GridLayoutManager(UiUtilities.getContex(), 1, OrientationHelper.VERTICAL, false) {
@@ -339,15 +423,84 @@ public class GoodsDetailActivity extends BaseItemActivity {
         mRvPictures.setAdapter(mPiAdapter);
 
 
+    }
 
+    //视频播放
+    private void mediasPlayer(String medias) {
+        String url = medias;//视频的uri
+
+
+        mVideoplayer.setUp(url, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, mProductName);
+        // mVideoplayer.thumbImageView.setImage("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
+        //设置图片
+        Picasso.with(this)
+                .load(Uri.parse(mPictures.get(0)))
+                .placeholder(R.mipmap.details_icon_play)
+                .into(mVideoplayer.thumbImageView);
+        LogUtils.d("视频图:" + mPictures.get(0));
 
     }
+
+    @Override
+    public void onBackPressed() {
+        if (JCVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JCVideoPlayer.releaseAllVideos();
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("GoodsDetail Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        mClient.connect();
+        AppIndex.AppIndexApi.start(mClient, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(mClient, getIndexApiAction());
+        mClient.disconnect();
+    }
+
+
     private class GlideImageLoader extends ImageLoader {
 
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
             //Glide 加载图片简单用法
-            Picasso.with(context).load((String) path).into(imageView);
+            Picasso.with(context).load(Uri.parse((String) path)).placeholder(R.mipmap.details_icon_bj).into(imageView);
+            //Glide.with(context).load((String) path).into(imageView);
+            LogUtils.d("图片:" + path);
+            LogUtils.d("上下文context:" + context);
         }
     }
 
@@ -413,7 +566,8 @@ public class GoodsDetailActivity extends BaseItemActivity {
     @OnClick({R.id.detail_activity_collection_iv,
             R.id.detail_activity_forward_iv,
             R.id.detail_activity_shoppingcard_bt,
-            R.id.detail_activity_get_it_now_bt
+            R.id.detail_activity_get_it_now_bt,
+            R.id.details_icon_share
     })
     public void onClick(View view) {
         switch (view.getId()) {
@@ -439,7 +593,51 @@ public class GoodsDetailActivity extends BaseItemActivity {
                 }
 */
                 break;
+
+            case R.id.details_icon_share:
+                //Toast.makeText(this, "分享", Toast.LENGTH_SHORT).show();
+
+                showShare();
+                break;
         }
+    }
+
+    private void showShare() {
+
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
+        oks.setTitle(mVendorName + "-" + mProductName);
+        // titleUrl是标题的网络链接，QQ和QQ空间等使用
+        oks.setTitleUrl("http://mall.yumaozhubao.com/product/" + mProductId + ".html");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("mall.yumaozhubao.com");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        //oks.setImagePath("/sdcard/123.jpg");//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+       /* if (mPictures.get(0) ==null){
+            oks.setImagePath(Uri.parse("android.resource://com.yumao.yumaosmart/mipmap/details_icon_kf.png").toString());
+        }else{
+            oks.setImageUrl(mPictures.get(1));
+        }*/
+
+        //oks.setima
+        oks.setUrl("http://mall.yumaozhubao.com/product/" + mProductId + ".html");
+        oks.setImagePath(Uri.parse("android.resource://com.yumao.yumaosmart/mipmap/details_icon_kf.png").toString());
+        //oks.setImagePath(mPictures.get(0));
+        oks.setImageUrl("http://mall.yumaozhubao.com/product/" + mProductId + ".html");
+        //LogUtils.d("分享:"+mProductId +" "+mPictures.get(0));
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        //oks.setComment("我是测试评论文本");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        //oks.setSite(getString(R.string.app_name));
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        //oks.setSiteUrl("http://sharesdk.cn");
+
+        // 启动分享GUI
+        oks.show(this);
     }
 
     private void add2shoppingcard() {

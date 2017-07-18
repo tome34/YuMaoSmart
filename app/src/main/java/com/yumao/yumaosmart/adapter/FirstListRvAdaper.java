@@ -2,6 +2,7 @@ package com.yumao.yumaosmart.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -114,7 +115,7 @@ public class FirstListRvAdaper extends RecyclerView.Adapter<FirstListRvAdaper.My
         // holder.mIconIv.setImageResource(mImageList.get(position));
             LogUtils.d("长度:"+mPictureImageLenght);
         if (position<mPictureImageLenght){
-            Picasso.with(mContext).load(mPictureImage.get(position)).into(holder.mTitleImage);
+            Picasso.with(mContext).load(Uri.parse(mPictureImage.get(position))).placeholder(R.mipmap.details_icon_bj).into(holder.mTitleImage);
 
             holder.mTitleImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -339,6 +340,14 @@ public class FirstListRvAdaper extends RecyclerView.Adapter<FirstListRvAdaper.My
             params.height = screenWidth/3;
 
             mLeftImage.setLayoutParams(params);
+        }
+
+        /**
+         * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+         */
+        public int dip2px(Context context, float dpValue) {
+            final float scale = context.getResources().getDisplayMetrics().density;
+            return (int) (dpValue * scale + 0.5f);
         }
 
     }

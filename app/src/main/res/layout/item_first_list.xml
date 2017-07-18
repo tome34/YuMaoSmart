@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_marginTop="5dp"
-              android:layout_height="310dp"
-    android:background="@color/white">
+              android:layout_height="320dp"
+    android:background="@color/graywhite">
         <ImageView
             android:scaleType="fitXY"
             android:id="@+id/iv_first_list_title"
@@ -16,7 +15,7 @@
             android:src="@mipmap/home_banner_cb"/>
         <!--首页列表条目布局-->
 <LinearLayout
-    android:padding="3dp"
+    android:layout_marginTop="5dp"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:background="@color/white"

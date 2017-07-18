@@ -18,6 +18,20 @@
     <!-- 拨打电话 -->
     <uses-permission android:name="android.permission.CALL_PHONE"/>
 
+    <!--shareSDK分析-->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <!-- 蓝牙分享所需的权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <application
         android:name=".base.MyApplication"
         android:allowBackup="true"
@@ -75,9 +89,13 @@
         </activity>
         <activity android:name=".activity.itemactivity.RecommendErWeiMaActivity">
         </activity>
+        <!-- 横竖屏切换不会重启Activity onCreate-->
         <activity
             android:name=".activity.GoodsDetailActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
         </activity>
         <activity android:name=".activity.FirstClassifyDetail">
         </activity>
@@ -98,10 +116,8 @@
         </activity>
         <activity android:name=".activity.MyMaterial2Activity">
         </activity>
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:exported="true"
-            android:label="@string/app_name"/>
+
+        <!--微信分享回调和三方登录回调 -->
         //我的订单
         <activity android:name=".activity.MyOrderActivity">
         </activity>
@@ -121,6 +137,43 @@
         </activity>
         <activity android:name=".activity.LanMujingxuanActivity">
         </activity>
+
+        <!-- ShareSDK的activity -->
+
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+
+            <intent-filter>
+                <data android:scheme="tencent100371282" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- 调用新浪原生SDK，需要注册的回调activity -->
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!--集成line客户端登录授权，需要添如下格式的过滤器-->
+            <intent-filter>
+                <data android:scheme="line.1477692153" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret -->
+        <meta-data android:name="Mob-AppKey" android:value="1f7a692f38103"/>
+        <meta-data android:name="Mob-AppSecret" android:value="334de62540a5d31bdbe484cf5a9abf37"/>
+
+
+
     </application>
 
 </manifest>

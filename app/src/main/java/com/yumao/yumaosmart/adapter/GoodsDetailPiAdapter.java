@@ -1,6 +1,7 @@
 package com.yumao.yumaosmart.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -52,8 +53,7 @@ public class GoodsDetailPiAdapter extends RecyclerView.Adapter<GoodsDetailPiAdap
 
        // holder.mIconIv.setImageResource(mImageList.get(position));
       // holder.image.setImageResource();
-        Picasso.with(mContext).load(mPictures.get(position)).into(holder.image);
-
+        Picasso.with(mContext).load(Uri.parse(mPictures.get(position))).placeholder(R.mipmap.details_icon_bj).into(holder.image);
         //将position保存在itemView的tag中,以便点击时进行获取
        // holder.itemView.setTag(position);
     }

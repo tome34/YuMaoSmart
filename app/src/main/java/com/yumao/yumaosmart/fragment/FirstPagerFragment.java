@@ -255,7 +255,7 @@ public class FirstPagerFragment extends BaseFragment {
             //首页底部地址
             String address = userBean.getVendor().getAddress();
             LogUtils.d("tag","首页底部地址:"+address);
-            mTvFirstText.setText("地址: " + address);
+            mTvFirstText.setText("地址: " + address+"玉猫平台提供支持");
 
 
         } else {

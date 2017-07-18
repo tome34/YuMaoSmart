@@ -54,6 +54,7 @@ public class GoodsDetailMode  {
     private List<SpecificationsBean> specifications;
     private List<ManufacturersBean> manufacturers;
     private List<String> pictures;
+    public List<String> medias ;
 
     public void setId(int id) {
         this.id = id;
@@ -134,6 +135,7 @@ public class GoodsDetailMode  {
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
     }
+
 
     public int getId() {
         return id;

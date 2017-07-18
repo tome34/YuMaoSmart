@@ -71,7 +71,9 @@ dependencies {
     //时间选择器、省市区三级联动，可以自定义
     compile 'com.contrarywind:Android-PickerView:3.2.4'
     compile project(':magicindicatorlib')
+    //图片加载框架
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.code.gson:gson:2.8.0'
     //微信登录
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
@@ -96,11 +98,24 @@ dependencies {
     compile 'pub.devrel:easypermissions:0.4.2'
     //下拉刷新
     compile 'in.srain.cube:ultra-ptr:1.0.11'
-
     //上拉加载更多
-
-
     compile 'com.squareup.okhttp3:okhttp:3.3.0'
     // retrofit的日誌攔截
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+
+    //分享
+    compile files('libs/MobCommons-2017.0608.1618.jar')
+    compile files('libs/MobTools-2017.0608.1618.jar')
+    compile files('libs/ShareSDK-Core-3.0.0.jar')
+    compile files('libs/ShareSDK-QQ-3.0.0.jar')
+    compile files('libs/ShareSDK-QZone-3.0.0.jar')
+
+    //完整版引入
+   // compile 'com.shuyu:GSYVideoPlayer:2.0.2'
+
+    //完整版引入
+    compile 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v2.0.1'
+
+    //节操播放器
+    compile 'fm.jiecao:jiecaovideoplayer:5.7'
 }

@@ -246,12 +246,15 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         LogUtils.d("tag","角色:"+ mRolesString);*/
         //判断是否登录,如果登录就显示数据
         if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())) {
-            //显示头像数据
-            showTouXiangData();
+
             //显示recyclerview
             mRvPersonalCenter.setVisibility(View.VISIBLE);
 
             int grade = UserInformationManager.getInstance().userGrade();
+
+            //显示头像数据
+            showTouXiangData();
+
             if (grade == 1) {
                 //LogUtils.d("tag","分公司");
                 String[] stringArr = new String[]{"我的佣金", "我的货款", "我的销售", "会员订单", "我的收藏", "我的推广",
@@ -561,6 +564,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
     private void updateView() {
         init();
+        initView();
     }
 
 

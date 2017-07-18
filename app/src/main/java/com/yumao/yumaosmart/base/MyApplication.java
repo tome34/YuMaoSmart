@@ -1,9 +1,9 @@
 package com.yumao.yumaosmart.base;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import com.mob.MobApplication;
 import com.yumao.yumaosmart.mode.User;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -16,7 +16,7 @@ import okhttp3.OkHttpClient;
  * Created by kk on 2017/2/21.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MobApplication {
     public static Handler mHandler;
     public static Context mContext;
     public HashMap<String, String> mHashMap = new HashMap<>();
