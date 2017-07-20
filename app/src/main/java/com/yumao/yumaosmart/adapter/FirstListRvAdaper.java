@@ -2,6 +2,7 @@ package com.yumao.yumaosmart.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -115,7 +116,13 @@ public class FirstListRvAdaper extends RecyclerView.Adapter<FirstListRvAdaper.My
         // holder.mIconIv.setImageResource(mImageList.get(position));
             LogUtils.d("长度:"+mPictureImageLenght);
         if (position<mPictureImageLenght){
-            Picasso.with(mContext).load(Uri.parse(mPictureImage.get(position))).placeholder(R.mipmap.details_icon_bj).into(holder.mTitleImage);
+            Picasso.with(mContext).load(Uri.parse(mPictureImage.get(position)))
+                    .placeholder(R.mipmap.details_icon_bj)
+                    .resizeDimen(R.dimen.image_width,R.dimen.image_height)
+                    .onlyScaleDown()
+                    .config(Bitmap.Config.RGB_565)
+                    .centerCrop()
+                    .into(holder.mTitleImage);
 
             holder.mTitleImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -335,11 +342,20 @@ public class FirstListRvAdaper extends RecyclerView.Adapter<FirstListRvAdaper.My
             int screenWidth = dm.widthPixels; // 屏幕宽（像素，如：3200px）
             int screenHeight = dm.heightPixels; // 屏幕高（像素，如：1280px）
 
-            ViewGroup.LayoutParams params = mLeftImage.getLayoutParams();
-            params.width = screenWidth/3;
-            params.height = screenWidth/3;
+            ViewGroup.LayoutParams paramLeft = mLeftImage.getLayoutParams();
+            paramLeft.width = screenWidth/3;
+            paramLeft.height = screenWidth/3 - dip2px(UiUtilities.getContex(),10.0f);
+            mLeftImage.setLayoutParams(paramLeft);
 
-            mLeftImage.setLayoutParams(params);
+            ViewGroup.LayoutParams paramMid = mMidImage.getLayoutParams();
+            paramMid.width = screenWidth/3;
+            paramMid.height = screenWidth/3- dip2px(UiUtilities.getContex(),10.0f);
+            mMidImage.setLayoutParams(paramMid);
+
+            ViewGroup.LayoutParams paramRight = mRightImage.getLayoutParams();
+            paramRight.width = screenWidth/3;
+            paramRight.height = screenWidth/3- dip2px(UiUtilities.getContex(),10.0f);
+            mRightImage.setLayoutParams(paramRight);
         }
 
         /**

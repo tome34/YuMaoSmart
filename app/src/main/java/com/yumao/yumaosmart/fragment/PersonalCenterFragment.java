@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.itheima.roundedimageview.RoundedImageView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.activity.LoginActivity;
@@ -35,7 +38,6 @@ import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
-import com.yumao.yumaosmart.widgit.CustomUItraRefreshHeader;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,10 +49,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
 import okhttp3.Call;
 
 import static android.app.Activity.RESULT_OK;
@@ -91,8 +89,8 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     TextView mTvPersonnalZichang;
     @BindView(R.id.iv_personnal_fragment_setting)
     ImageView mIvPersonnalFragmentSetting;
-    @BindView(R.id.ultra_ptr_frame)
-    PtrClassicFrameLayout mUltraPtrFrame;
+    @BindView(R.id.smartLayout)
+    SmartRefreshLayout mSmartLayout;
 
     private PersonnalcenterAdapter mPersonnalcenterAdapter;
     private List<PersonnalBean> mData;
@@ -127,41 +125,17 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     //初始化视图
     @Override
     protected void initView() {
-        /**
-         * 经典 风格的头部实现
-         */
-        //final PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(UiUtilities.getContex());
-       // header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, 0);
 
-        CustomUItraRefreshHeader header = new CustomUItraRefreshHeader(UiUtilities.getContex());
-
-        mUltraPtrFrame.setHeaderView(header);
-        mUltraPtrFrame.addPtrUIHandler(header);
-        mUltraPtrFrame.setLastUpdateTimeRelateObject(this);
-        mUltraPtrFrame.setPtrHandler(new PtrHandler() {
-            /**
-             * 检查是否可以执行下来刷新，比如列表为空或者列表第一项在最上面时。
-             */
+        //下拉刷新
+        mSmartLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
-
+            public void onRefresh(RefreshLayout refreshlayout) {
+                updateView();
+                refreshlayout.finishRefresh(3000);
             }
-            //需要加载数据时触发
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-
-                mUltraPtrFrame.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mUltraPtrFrame.refreshComplete();
-                        updateView();
-
-                    }
-                },2500);
-            }
-
         });
+        //禁止上拉加载更多
+        mSmartLayout.setEnableLoadmore(false);
 
         // 竖直方向的网格样式，每行四个Item
         GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(), 4, OrientationHelper.VERTICAL, false) {

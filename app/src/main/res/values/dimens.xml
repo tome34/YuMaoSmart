@@ -2,4 +2,14 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--首页栏目大图 列表,自定义图片的加载-->
+
+    <dimen name="image_width">360dp</dimen>
+    <dimen name="image_height">150dp</dimen>
+
+    <!--首页门店图片-->
+    <dimen name="home_image_width">360dp</dimen>
+    <dimen name="home_height">150dp</dimen>
+
 </resources>

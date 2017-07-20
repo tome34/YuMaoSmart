@@ -21,7 +21,6 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -116,7 +115,16 @@ public class GoodsDetailActivity extends BaseItemActivity {
     LinearLayout mTvActivityGoodsFullDescriptionLayout;
     @BindView(R.id.videoplayer)
     JCVideoPlayerStandard mVideoplayer;
-
+    @BindView(R.id.tv_activity_goods_line_code_title)
+    TextView mTvActivityGoodsLineCodeTitle;
+    @BindView(R.id.tv_activity_goods_work_duration_title)
+    TextView mTvActivityGoodsWorkDurationTitle;
+    @BindView(R.id.tv_activity_goods_warehouse_addres_title)
+    TextView mTvActivityGoodsWarehouseAddresTitle;
+    @BindView(R.id.tv_activity_goods_warehouse_addres_layout)
+    LinearLayout mTvActivityGoodsWarehouseAddresLayout;
+    @BindView(R.id.tv_activity_goods_work_duration_layout)
+    LinearLayout mTvActivityGoodsWorkDurationLayout;
 
 
     private AmountView mMAmountView;
@@ -147,7 +155,6 @@ public class GoodsDetailActivity extends BaseItemActivity {
     private GoodsDetailSpAdapter mSpAdapter;
     private GoodsDetailPiAdapter mPiAdapter;
 
-    StandardGSYVideoPlayer gsyVideoPlayer;
 
     private List<GoodsDetailMode.SpecificationsBean> mSpecifications;
     private String mMedias;
@@ -174,7 +181,7 @@ public class GoodsDetailActivity extends BaseItemActivity {
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-         mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void initHeight() {
@@ -186,14 +193,14 @@ public class GoodsDetailActivity extends BaseItemActivity {
         ViewGroup.LayoutParams params = mBanner.getLayoutParams();
         params.width = screenWidth;
         params.height = screenWidth;
-            LogUtils.d("长度:"+screenWidth);
+        LogUtils.d("长度:" + screenWidth);
 
         mBanner.setLayoutParams(params);
 
         ViewGroup.LayoutParams paramjc = mVideoplayer.getLayoutParams();
         paramjc.width = screenWidth;
         paramjc.height = screenWidth;
-        LogUtils.d("长度:"+screenWidth);
+        LogUtils.d("长度:" + screenWidth);
 
         mVideoplayer.setLayoutParams(paramjc);
 
@@ -292,10 +299,10 @@ public class GoodsDetailActivity extends BaseItemActivity {
                         }
 
                         if (response.getWarehouse() == null) {
-                            mTvActivityGoodsWarehouseAddress.setVisibility(View.GONE);
+                            mTvActivityGoodsWarehouseAddresLayout.setVisibility(View.GONE);
                         } else {
                             wareHouseAddress = response.getWarehouse().getName();   //发货仓
-                            mTvActivityGoodsWarehouseAddress.setText("发货仓:    " + wareHouseAddress);
+                            mTvActivityGoodsWarehouseAddress.setText(wareHouseAddress);
                         }
 
 
@@ -350,6 +357,7 @@ public class GoodsDetailActivity extends BaseItemActivity {
         //mBanner.setBannerTitles(imageTitle);
         //设置轮播时间
         mBanner.setDelayTime(2000);
+
         //设置指示器位置（当banner模式中有指示器时）
         mBanner.setIndicatorGravity(BannerConfig.CENTER);
         //banner设置方法全部调用完毕时最后调用
@@ -379,12 +387,12 @@ public class GoodsDetailActivity extends BaseItemActivity {
         }
 
         //条码
-        mTvActivityGoodsLineCode.setText("条码:     " + mNumber);
+        mTvActivityGoodsLineCode.setText(mNumber);
         //工期
-        mTvActivityGoodsWorkDuration.setText("工期:     " + workDuration);
+        mTvActivityGoodsWorkDuration.setText(workDuration);
 
         //设置底部地址
-        mTvActivityGoodsDetailAddress.setText(mAddress + "玉猫平台提供支持");
+        mTvActivityGoodsDetailAddress.setText("地址: " + mAddress );
 
 
         //参数的recyclerview
@@ -499,8 +507,7 @@ public class GoodsDetailActivity extends BaseItemActivity {
             //Glide 加载图片简单用法
             Picasso.with(context).load(Uri.parse((String) path)).placeholder(R.mipmap.details_icon_bj).into(imageView);
             //Glide.with(context).load((String) path).into(imageView);
-            LogUtils.d("图片:" + path);
-            LogUtils.d("上下文context:" + context);
+
         }
     }
 
@@ -625,9 +632,9 @@ public class GoodsDetailActivity extends BaseItemActivity {
 
         //oks.setima
         oks.setUrl("http://mall.yumaozhubao.com/product/" + mProductId + ".html");
-        oks.setImagePath(Uri.parse("android.resource://com.yumao.yumaosmart/mipmap/details_icon_kf.png").toString());
+        //oks.setImagePath(Uri.parse("android.resource://com.yumao.yumaosmart/mipmap/details_icon_kf.png").toString());
         //oks.setImagePath(mPictures.get(0));
-        oks.setImageUrl("http://mall.yumaozhubao.com/product/" + mProductId + ".html");
+        oks.setImageUrl(mPictures.get(0));
         //LogUtils.d("分享:"+mProductId +" "+mPictures.get(0));
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
         //oks.setComment("我是测试评论文本");

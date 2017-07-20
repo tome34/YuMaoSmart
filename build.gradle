@@ -3,6 +3,10 @@
 buildscript {
     repositories {
         jcenter()
+        //改了
+        jcenter {
+            url "http://jcenter.bintray.com/"
+        }
         mavenCentral()
         maven {
             url "https://jitpack.io"

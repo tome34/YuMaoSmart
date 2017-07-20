@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_first_classify_detail"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-
+    android:background="@color/graywhite"
     tools:context="com.yumao.yumaosmart.activity.FirstClassifyDetail">
 
     <android.support.v7.widget.SearchView
@@ -18,79 +18,101 @@
 
     </android.support.v7.widget.SearchView>
 
+    <!--下拉刷新-->
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/smartLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlAccentColor="@color/graywhite"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlDisableContentWhenRefresh="true"
+        app:srlDisableContentWhenLoading="true">
+        <!--srlAccentColor srlPrimaryColor 将会改变 Header 和 Footer 的主题颜色-->
+        <!--srlEnablePreviewInEditMode 可以开启和关闭预览功能-->
+        <!--<com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />-->
+        <com.yumao.yumaosmart.widgit.SmartreshHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <!--排序筛选-->
+        </com.yumao.yumaosmart.widgit.SmartreshHeader>
 
-           <RadioGroup
-               android:id="@+id/radiogroup_first_classify_detail"
-               android:layout_width="match_parent"
-               android:layout_height="40dp"
-               android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-               <RadioButton
-                   android:id="@+id/btn_first_classify_detail_update"
-                   style="@style/redTextButton"
-                   android:layout_width="100dp"
-                   android:layout_height="match_parent"
-                   android:button="@null"
-                   android:gravity="center"
-                   android:text="更新时间"/>
 
-               <RadioButton
-                   android:id="@+id/btn_first_classify_detail_price"
-                   style="@style/redTextButton"
-                   android:layout_width="wrap_content"
-                   android:layout_height="match_parent"
-                   android:layout_marginLeft="20dp"
-                   android:button="@null"
-                   android:drawableRight="@drawable/first_classify_detail_sortprice"
-                   android:gravity="center"
-                   android:text="价格"/>
+            <!--排序筛选-->
 
-               <RadioButton
-                   android:id="@+id/btn_first_classify_detail_choose"
-                   style="@style/redTextButton"
-                   android:layout_width="wrap_content"
-                   android:layout_height="match_parent"
-                   android:button="@null"
-                   android:layout_marginLeft="50dp"
-                   android:drawableRight="@drawable/first_classify_detail_choose"
-                   android:gravity="center"
-                   android:text="筛选"/>
-           </RadioGroup>
-           <!--分类筛选-->
-           <com.yumao.yumaosmart.widget.CustomRadioGroup
-               android:layout_marginLeft="30dp"
-               android:id="@+id/customRadioGroup"
-               android:layout_width="match_parent"
-               android:layout_height="80dp">
+            <RadioGroup
+                android:id="@+id/radiogroup_first_classify_detail"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-           </com.yumao.yumaosmart.widget.CustomRadioGroup>
+                <RadioButton
+                    android:id="@+id/btn_first_classify_detail_update"
+                    style="@style/redTextButton"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="更新时间"/>
 
-           <com.yumao.yumaosmart.widgit.MyScrollview
-               android:id="@+id/sv"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content">
-               <LinearLayout
-                   android:orientation="vertical"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/btn_first_classify_detail_price"
+                    style="@style/redTextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/first_classify_detail_sortprice"
+                    android:gravity="center"
+                    android:text="价格"/>
 
-           <!--包裹recyclerview,为了不让他滑动-->
-           <RelativeLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginTop="5dp"
-               android:descendantFocusability="blocksDescendants">
+                <RadioButton
+                    android:id="@+id/btn_first_classify_detail_choose"
+                    style="@style/redTextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="50dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/first_classify_detail_choose"
+                    android:gravity="center"
+                    android:text="筛选"/>
+            </RadioGroup>
+            <!--分类筛选-->
+            <com.yumao.yumaosmart.widget.CustomRadioGroup
+                android:id="@+id/customRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="30dp">
 
-               <android.support.v7.widget.RecyclerView
-                   android:id="@+id/recyclerview"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent">
+            </com.yumao.yumaosmart.widget.CustomRadioGroup>
 
-               </android.support.v7.widget.RecyclerView>
-           </RelativeLayout>
-       </LinearLayout>
-    </com.yumao.yumaosmart.widgit.MyScrollview>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+        //上拉加载更多
+          <!--  <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
+        <com.yumao.yumaosmart.widgit.Smartreshfooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.yumao.yumaosmart.widgit.Smartreshfooter>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

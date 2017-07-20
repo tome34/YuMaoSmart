@@ -7,6 +7,8 @@
     <color name="hint_gray">#dddddd</color>
     //底色
     <color name="graywhite">#f0f0f0</color>
+    //字体颜色
+    <color name="zitiblack">#272727</color>
 
     <color name="colorPrimaryDark">#ffffff</color>
 

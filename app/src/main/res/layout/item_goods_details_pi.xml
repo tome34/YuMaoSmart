@@ -3,12 +3,12 @@
               android:orientation="vertical"
               android:background="@color/graywhite"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="match_parent">
     <ImageView
         android:id="@+id/item_goods_details_iv"
         android:scaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="match_parent"
+        android:src="@mipmap/text_00127668"/>
 
 </LinearLayout>

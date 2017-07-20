@@ -84,7 +84,7 @@ public class GoodsDetailPiAdapter extends RecyclerView.Adapter<GoodsDetailPiAdap
 
             ViewGroup.LayoutParams params = itemView.getLayoutParams();
             params.width = screenWidth;
-            //params.height = screenWidth;
+            params.height = screenWidth;
             itemView.setLayoutParams(params);
 
 

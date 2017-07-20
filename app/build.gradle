@@ -58,28 +58,36 @@ dependencies {
     })
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
     testCompile 'junit:junit:4.12'
+    //butterknife
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    //okhttpUtils
     compile 'com.zhy:okhttputils:2.6.2'
     //万能的adapter
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile 'com.zhy:base-adapter:3.0.3'
     //多种样式的弹出对话框
     compile 'com.orhanobut:dialogplus:1.11@aar'
+    //eventbus
     compile 'org.greenrobot:eventbus:3.0.0'
     //    compile 'com.contrarywind:Android-PickerView:3.0.8'
     //时间选择器、省市区三级联动，可以自定义
     compile 'com.contrarywind:Android-PickerView:3.2.4'
     compile project(':magicindicatorlib')
-    //图片加载框架
+    //图片加载框架picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
+    //glide
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    //gson
     compile 'com.google.code.gson:gson:2.8.0'
     //微信登录
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-    // banner
-    compile 'com.youth.banner:banner:1.4.9'
-    // 圆形图片
+    compile files('libs/wechat-sdk-android-with-mta-1.3.4.jar')
+    //compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:4.0.2'
+    //compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.0.2'
+    //compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    //compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2'
+    //compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:4.0.2'
+    //圆形图片
     //compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.open-android:RoundedImageView:v1.0.0'
     // 仿ios弹出警告窗体
@@ -89,33 +97,37 @@ dependencies {
     // smartTabLayout
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
-    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     //图片裁剪
-    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    //首页轮播图
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    //图片裁剪crop
+    compile 'com.soundcloud.android.crop:lib_crop:1.0.0'
+    //首页轮播图 banner
     compile 'com.youth.banner:banner:1.4.9'
     //6.0权限
     compile 'pub.devrel:easypermissions:0.4.2'
     //下拉刷新
-    compile 'in.srain.cube:ultra-ptr:1.0.11'
-    //上拉加载更多
+   // compile 'in.srain.cube:ultra-ptr:1.0.11'
+    //okhttp
     compile 'com.squareup.okhttp3:okhttp:3.3.0'
     // retrofit的日誌攔截
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-
     //分享
     compile files('libs/MobCommons-2017.0608.1618.jar')
     compile files('libs/MobTools-2017.0608.1618.jar')
     compile files('libs/ShareSDK-Core-3.0.0.jar')
     compile files('libs/ShareSDK-QQ-3.0.0.jar')
     compile files('libs/ShareSDK-QZone-3.0.0.jar')
-
     //完整版引入
-   // compile 'com.shuyu:GSYVideoPlayer:2.0.2'
-
+    // compile 'com.shuyu:GSYVideoPlayer:2.0.2'
     //完整版引入
-    compile 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v2.0.1'
-
+    //compile 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v2.0.1'
     //节操播放器
     compile 'fm.jiecao:jiecaovideoplayer:5.7'
+    //购物车加减控件
+    //compile 'com.github.open-android:ShoppingCartAddSubtract:0.1.0'
+    //强大的下拉刷新,上拉加载smartrefresh
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.2-alpha-5'
+    //一个开源gif控件
+    //compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+
 }

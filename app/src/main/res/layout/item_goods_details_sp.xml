@@ -3,24 +3,29 @@
               android:layout_width="match_parent"
               android:layout_marginTop="1dp"
               android:background="@color/white"
-              android:layout_height="35dp">
+              android:layout_height="43dp">
     <TextView
-        android:layout_marginLeft="10dp"
-        android:text="发货仓:     "
+        android:layout_marginLeft="15dp"
+        android:text="发货仓:"
         style="@style/normalTextView"
         android:id="@+id/item_goods_details_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:background="@color/white"
         android:gravity="center_vertical"
-        android:layout_height="35dp"/>
+        android:layout_height="43dp"
+        android:textSize="14sp"
+        android:textColor="@color/zitiblack"/>
     <TextView
-        android:layout_marginLeft="10dp"
         android:text="揭阳"
         style="@style/normalTextView"
         android:id="@+id/item_goods_details_constan_tv"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="3"
         android:background="@color/white"
         android:gravity="center_vertical"
-        android:layout_height="35dp"/>
+        android:layout_height="43dp"
+        android:textSize="14sp"
+        android:textColor="@color/zitiblack"/>
 
 </LinearLayout>

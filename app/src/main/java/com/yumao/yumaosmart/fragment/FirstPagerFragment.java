@@ -16,6 +16,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -52,7 +55,6 @@ import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.yumao.yumaosmart.web.FristBannerWebActivity;
-import com.yumao.yumaosmart.widgit.CustomUItraRefreshHeader;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -61,10 +63,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
 import okhttp3.Call;
 
 import static com.yumao.yumaosmart.base.MyApplication.mContext;
@@ -95,8 +93,8 @@ public class FirstPagerFragment extends BaseFragment {
     TextView mTvFirstText;
     @BindView(R.id.banner)
     Banner mBanner;
-    @BindView(R.id.ultra_ptr_frame)
-    PtrClassicFrameLayout mUltraPtrFrame;
+    @BindView(R.id.smartLayout)
+    SmartRefreshLayout mSmartLayout;
 
     private List<ClassifyBean> mClassifyData;
     private ClassifyBean mClassifyBeanFeiCui;
@@ -130,31 +128,30 @@ public class FirstPagerFragment extends BaseFragment {
     private List<Integer> mImageUnList; //不显示图标
     private FirstClassifyAdapter mAdapter;
 
-    private List<String> mPictureImage ;   //栏目大图
-    private List<Integer> mPictureImageLocal ;   //本地栏目大图
+    private List<String> mPictureImage;   //栏目大图
+    private List<Integer> mPictureImageLocal;   //本地栏目大图
     private List<Integer> mProductId; //产品id
-    private List<String> mProductName ;   //产品名称
-    private List<Integer> mPrice ;   //产品的销售价
-    private List<Integer> mResalePrice ;   //产品的转售价
+    private List<String> mProductName;   //产品名称
+    private List<Integer> mPrice;   //产品的销售价
+    private List<Integer> mResalePrice;   //产品的转售价
     private List<String> mProductImage;   //每个item的产品的图片
 
     private List<List<Integer>> mProductIdList; //产品id集合
-    private List<List<String>> mProductNameList ;   //产品名称集合
-    private List<List<Integer>> mPriceList ;   //产品的销售价集合
-    private List<List<Integer>> mResalePriceList ;   //产品的转售价集合
-    private List<List<String>> mProductImageList ; //每个item的产品图片集合
+    private List<List<String>> mProductNameList;   //产品名称集合
+    private List<List<Integer>> mPriceList;   //产品的销售价集合
+    private List<List<Integer>> mResalePriceList;   //产品的转售价集合
+    private List<List<String>> mProductImageList; //每个item的产品图片集合
 
-    private List<Integer> mItemSize ;      //条目图片的大小
-    private List<Integer> mResList ;      //列表栏目
+    private List<Integer> mItemSize;      //条目图片的大小
+    private List<Integer> mResList;      //列表栏目
 
-    private List<String> mImageLMList ;    //列表栏目大图
+    private List<String> mImageLMList;    //列表栏目大图
     private FirstListRvAdaper mRvAdaper;
 
 
-
     private boolean mFlag;
-    private int mBannerFlag ; //判断轮播图
-    private int mListFlag ; //判断列表
+    private int mBannerFlag; //判断轮播图
+    private int mListFlag; //判断列表
     private Intent mIntent;
 
     private int vId;   //门店的id
@@ -163,49 +160,19 @@ public class FirstPagerFragment extends BaseFragment {
 
     @Override
     protected void init() {
-        /**
-         * 经典 风格的头部实现
-         */
-        //final PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(UiUtilities.getContex());
-        // header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, 0);
 
-        CustomUItraRefreshHeader header = new CustomUItraRefreshHeader(UiUtilities.getContex());
-
-        mUltraPtrFrame.setHeaderView(header);
-        mUltraPtrFrame.addPtrUIHandler(header);
-        mUltraPtrFrame.setLastUpdateTimeRelateObject(this);
-        mUltraPtrFrame.setPtrHandler(new PtrHandler() {
-            /**
-             * 检查是否可以执行下来刷新，比如列表为空或者列表第一项在最上面时。
-             */
+        //下拉刷新
+        mSmartLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
-
+            public void onRefresh(RefreshLayout refreshlayout) {
+                updateView();
+                refreshlayout.finishRefresh(3000);
             }
-
-            //需要加载数据时触发
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-
-                mUltraPtrFrame.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mUltraPtrFrame.refreshComplete();
-                        updateView();
-
-                    }
-                }, 2500);
-            }
-
         });
 
-
-
-
-
+        //禁止上拉加载更多
+        mSmartLayout.setEnableLoadmore(false);
     }
-
 
 
     //下拉刷新数据
@@ -240,7 +207,7 @@ public class FirstPagerFragment extends BaseFragment {
             User userBean = UserInformationManager.getInstance().getUserInformation();
             String logoUrl = userBean.getVendor().getLogo();
             //首页左边商城头像
-            Picasso.with(mContext).load(logoUrl).resize(180, 180).placeholder(R.mipmap.yumao_mall).into(mIvFirstItemPersonTopleft);
+            Picasso.with(mContext).load(logoUrl).placeholder(R.mipmap.yumao_mall).into(mIvFirstItemPersonTopleft);
 
             //用户头像
             String iconUrl = SPUtils.getString(UiUtilities.getContex(), Constant.AVATAR_URL);
@@ -254,8 +221,7 @@ public class FirstPagerFragment extends BaseFragment {
 
             //首页底部地址
             String address = userBean.getVendor().getAddress();
-            LogUtils.d("tag","首页底部地址:"+address);
-            mTvFirstText.setText("地址: " + address+"玉猫平台提供支持");
+            mTvFirstText.setText("地址: " + address);
 
 
         } else {
@@ -275,7 +241,7 @@ public class FirstPagerFragment extends BaseFragment {
         mImageLMList = new ArrayList<>();    //列表栏目大图
 
         mFlag = false;
-        mBannerFlag =0 ;
+        mBannerFlag = 0;
 
 
         //判断是否登录
@@ -318,15 +284,14 @@ public class FirstPagerFragment extends BaseFragment {
                             imageWebView.add(fristBannerBean.getSection_href());
 
                         }
-                            LogUtils.d("轮播图1");
-                        mBannerFlag =1;
+                        LogUtils.d("轮播图1");
+                        mBannerFlag = 1;
                         //initViewPager(); //轮播图
                         //栏目轮播图
                         bannerLMGetData();
 
                     }
                 });
-
 
 
         LogUtils.d("轮播图3");
@@ -343,7 +308,7 @@ public class FirstPagerFragment extends BaseFragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         LogUtils.d("tag", "栏目无图片");
-                        if (mBannerFlag ==1){  //证明活动有轮播图
+                        if (mBannerFlag == 1) {  //证明活动有轮播图
                             initViewPager(); //轮播图
                         }
 
@@ -571,22 +536,21 @@ public class FirstPagerFragment extends BaseFragment {
         mResalePrice = new ArrayList<>();   //产品的转售价
         mPrice = new ArrayList<>();         //产品的销售价
         mProductImage = new ArrayList<>();   //每个item的产品的图片
-            LogUtils.d("tag","数组初始化:"+mProductImage);
+        LogUtils.d("tag", "数组初始化:" + mProductImage);
 
-        mItemSize = new ArrayList<>() ;      //条目的大小
-        mResList = new ArrayList<>() ;       //列表栏目
+        mItemSize = new ArrayList<>();      //条目的大小
+        mResList = new ArrayList<>();       //列表栏目
 
         mProductIdList = new ArrayList<>(); //产品id集合
         mProductNameList = new ArrayList<>();   //产品名称集合
         mPriceList = new ArrayList<>();   //产品的销售价集合
         mResalePriceList = new ArrayList<>();   //产品的转售价集合
-        mProductImageList =new ArrayList<>(); //每个item的产品图片集合
+        mProductImageList = new ArrayList<>(); //每个item的产品图片集合
 
-        mListFlag =0;   //判断列表
+        mListFlag = 0;   //判断列表
 
 
-
-        int [] titleRes={R.mipmap.home_banner_fc,R.mipmap.home_banner_zs,
+        int[] titleRes = {R.mipmap.home_banner_fc, R.mipmap.home_banner_zs,
                 R.mipmap.home_banner_cb,
                 R.mipmap.home_banner_kj,
                 R.mipmap.home_banner_zz,
@@ -596,7 +560,7 @@ public class FirstPagerFragment extends BaseFragment {
 
         };
 
-        for (int i =0 ;i<titleRes.length; i++){
+        for (int i = 0; i < titleRes.length; i++) {
             mResList.add(titleRes[i]);
         }
 
@@ -610,7 +574,7 @@ public class FirstPagerFragment extends BaseFragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         LogUtils.d("tag", "栏目无图片2");
-                        mListFlag =1;  //栏目无图片
+                        mListFlag = 1;  //栏目无图片
                         //列表数据
                         ListLMGetData();
 
@@ -619,9 +583,9 @@ public class FirstPagerFragment extends BaseFragment {
                     @Override
                     public void onResponse(List<FristBannerLMBean> response, int id) {
                         LogUtils.d("tag", "栏目有图片2");
-                        mListFlag =2;  //栏目有图片
+                        mListFlag = 2;  //栏目有图片
 
-                        for (int i =0; i< response.size();i++){
+                        for (int i = 0; i < response.size(); i++) {
 
                             mProductId = new ArrayList<Integer>();
                             mProductName = new ArrayList<String>();
@@ -632,9 +596,9 @@ public class FirstPagerFragment extends BaseFragment {
 
                             mPictureImageLenght = response.size();  //栏目的数量
                             mPictureImage.add(response.get(i).getVendor_section().getPicture());
-                                LogUtils.d("列表栏目图片:"+mPictureImage.get(i));
+                            LogUtils.d("列表栏目图片:" + mPictureImage.get(i));
                             mItemSize.add(response.get(i).getProducts().size());
-                            for(int j =0 ;j < response.get(i).getProducts().size(); j++){
+                            for (int j = 0; j < response.get(i).getProducts().size(); j++) {
 
                                 mProductId.add(response.get(i).getProducts().get(j).getId());
                                 mProductName.add(response.get(i).getProducts().get(j).getName());
@@ -642,7 +606,7 @@ public class FirstPagerFragment extends BaseFragment {
                                 mPrice.add(response.get(i).getProducts().get(j).getPrice());
                                 mProductImage.add(response.get(i).getProducts().get(j).getThumb());
                             }
-                                LogUtils.d("tag","tup:"+mProductImage.size());
+                            LogUtils.d("tag", "tup:" + mProductImage.size());
 
                             mProductIdList.add(mProductId);
                             mProductNameList.add(mProductName);
@@ -653,10 +617,9 @@ public class FirstPagerFragment extends BaseFragment {
                         }
                         //列表数据
                         ListLMGetData();
-                       // initList(); //首页列表初始化
+                        // initList(); //首页列表初始化
                     }
                 });
-
 
 
     }
@@ -671,20 +634,20 @@ public class FirstPagerFragment extends BaseFragment {
                 .execute(new FirstListRvCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LogUtils.d("tag","分类失败2");
-                        if (mListFlag ==2){
+                        LogUtils.d("tag", "分类失败2");
+                        if (mListFlag == 2) {
                             initList(); //首页列表初始化
                         }
                     }
 
                     @Override
                     public void onResponse(List<FirstListRvMode> response, int id) {
-                        LogUtils.d("tag","分类成功2:" + response.size());
+                        LogUtils.d("tag", "分类成功2:" + response.size());
                         //本地列表大图
-                        for (int k =0 ; k < 8;k++){
-                           if (mContainsList.get(k)){
-                               mPictureImageLocal.add(mResList.get(k));
-                           }
+                        for (int k = 0; k < 8; k++) {
+                            if (mContainsList.get(k)) {
+                                mPictureImageLocal.add(mResList.get(k));
+                            }
                         }
 
                         for (int i = 0; i < response.size(); i++) {
@@ -698,9 +661,9 @@ public class FirstPagerFragment extends BaseFragment {
 
 
                             mItemSize.add(response.get(i).getProducts().size());
-                                LogUtils.d("mitemSize:"+mItemSize);
+                            LogUtils.d("mitemSize:" + mItemSize);
 
-                            for(int j =0 ;j< response.get(i).getProducts().size(); j++){
+                            for (int j = 0; j < response.get(i).getProducts().size(); j++) {
 
                                 mProductId.add(response.get(i).getProducts().get(j).getId());
                                 mProductName.add(response.get(i).getProducts().get(j).getName());
@@ -736,7 +699,7 @@ public class FirstPagerFragment extends BaseFragment {
             }
         };*/
         // 竖直方向的网格样式，每行1个Item
-        GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(),1, OrientationHelper.VERTICAL, false) {
+        GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(), 1, OrientationHelper.VERTICAL, false) {
             @Override
             public boolean canScrollVertically() {
                 //return super.canScrollVertically();
@@ -749,14 +712,12 @@ public class FirstPagerFragment extends BaseFragment {
         //设置管理器
         mLvFirstList.setLayoutManager(mLayoutManager);
         //设置adapter
-        mRvAdaper = new FirstListRvAdaper(UiUtilities.getContex(),mPictureImage,mItemSize,mProductNameList,mResalePriceList,mPriceList,mProductImageList ,mPictureImageLenght,mPictureImageLocal
-        ,imageVsid,mImageLMList,vId,mIdList,mProductIdList);
+        mRvAdaper = new FirstListRvAdaper(UiUtilities.getContex(), mPictureImage, mItemSize, mProductNameList, mResalePriceList, mPriceList, mProductImageList, mPictureImageLenght, mPictureImageLocal
+                , imageVsid, mImageLMList, vId, mIdList, mProductIdList);
 
         // TODO: 2017/7/14点击事件传递数据
 
         mLvFirstList.setAdapter(mRvAdaper);
-
-
 
 
     }

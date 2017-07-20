@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.mob.MobApplication;
+import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.mode.User;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -22,6 +23,8 @@ public class MyApplication extends MobApplication {
     public HashMap<String, String> mHashMap = new HashMap<>();
     private OkHttpClient mClient;
     private static User mUser;
+
+
 
     public HashMap<String, String> getHashMap() {
         return mHashMap;
@@ -55,6 +58,12 @@ public class MyApplication extends MobApplication {
         mContext = getApplicationContext();
         mUser = new User();
         creatOkhttpClient();
+
+        //加载图片框架
+        Picasso.with(this)
+                .setIndicatorsEnabled(true);//显示指示器
+        Picasso.with(this)
+                .setLoggingEnabled(true);//开启日志打印
     }
 
     //初始化Okhttp

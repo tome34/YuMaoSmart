@@ -12,6 +12,22 @@
 
     <include layout="@layout/item_toolbar"></include>
 
+    <!--下拉刷新-->
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/smartLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlAccentColor="@color/graywhite"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlDisableContentWhenRefresh="true"
+        app:srlDisableContentWhenLoading="true">
+    <com.yumao.yumaosmart.widgit.SmartreshHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.yumao.yumaosmart.widgit.SmartreshHeader>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -48,4 +64,12 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <com.yumao.yumaosmart.widgit.Smartreshfooter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.yumao.yumaosmart.widgit.Smartreshfooter>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>
