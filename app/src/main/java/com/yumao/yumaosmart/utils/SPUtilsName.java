@@ -8,6 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import static com.yumao.yumaosmart.base.MyApplication.mContext;
+
 /**
  * ClassName:SPUtils <br/>
  * Function: SharedPreference的工具类 <br/>
@@ -16,22 +18,32 @@ import java.util.Map;
  * @author cheegon
  * @version
  */
-public class SPUtilss {
+public class SPUtilsName {
+
+    private  String mFileName ;
+    private Context context;
     /**
      * 保存在手机里面的文件名
      */
-    public static final String FILE_NAME = "config";
+   // public static final String FILE_NAME = "config";
+
+    public SPUtilsName() {
+    }
+    public SPUtilsName(Context context, String fileName) {
+        mFileName = fileName ;
+        mContext = context ;
+    }
 
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
      * 
-     * @param context
+     * @param
      * @param key
      * @param object
      */
-    public static void put(Context context, String key, Object object) {
+    public  void put(String key, Object object) {
 
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(mFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
         if (object instanceof String) {
@@ -54,13 +66,13 @@ public class SPUtilss {
     /**
      * 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
      * 
-     * @param context
+     * @param
      * @param key
      * @param defaultObject
      * @return
      */
-    public static Object get(Context context, String key, Object defaultObject) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+    public Object get(String key, Object defaultObject) {
+        SharedPreferences sp = context.getSharedPreferences(mFileName, Context.MODE_PRIVATE);
 
         if (defaultObject instanceof String) {
             return sp.getString(key, (String) defaultObject);
@@ -80,11 +92,11 @@ public class SPUtilss {
     /**
      * 移除某个key值已经对应的值
      * 
-     * @param context
+     * @param
      * @param key
      */
-    public static void remove(Context context, String key) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+    public void remove(String key) {
+        SharedPreferences sp = context.getSharedPreferences(mFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
         SharedPreferencesCompat.apply(editor);
@@ -93,10 +105,10 @@ public class SPUtilss {
     /**
      * 清除所有数据
      * 
-     * @param context
+     * @param
      */
-    public static void clear(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+    public void clear() {
+        SharedPreferences sp = context.getSharedPreferences(mFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
         SharedPreferencesCompat.apply(editor);
@@ -105,23 +117,23 @@ public class SPUtilss {
     /**
      * 查询某个key是否已经存在
      * 
-     * @param context
+     * @param
      * @param key
      * @return
      */
-    public static boolean contains(Context context, String key) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+    public boolean contains(String key) {
+        SharedPreferences sp = context.getSharedPreferences(mFileName, Context.MODE_PRIVATE);
         return sp.contains(key);
     }
 
     /**
      * 返回所有的键值对
      * 
-     * @param context
+     * @param
      * @return
      */
-    public static Map<String, ?> getAll(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+    public Map<String, ?> getAll() {
+        SharedPreferences sp = context.getSharedPreferences(mFileName, Context.MODE_PRIVATE);
         return sp.getAll();
     }
 

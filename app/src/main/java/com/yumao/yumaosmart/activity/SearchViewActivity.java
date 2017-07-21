@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class FirstClassifyDetail extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class SearchViewActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
 
     @BindView(R.id.activity_first_classify_detail)
@@ -64,11 +65,15 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
     RadioButton mBtnFirstClassifyDetailChoose;
     @BindView(R.id.radiogroup_first_classify_detail)
     RadioGroup mRadiogroupFirstClassifyDetail;
+
     @BindView(R.id.smartLayout)
     SmartRefreshLayout mSmartLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
+    @BindView(R.id.listview)
+    ListView mListview;
+    @BindView(R.id.classify_content_layout)
+    LinearLayout mClassifyContentLayout;
 
 
     private String mText;
@@ -89,6 +94,8 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
     private String mSortBy = "id";
     private String mOrder = "DESC";
     private int mShaiXuan = 1;  //筛选,默认为1 ;
+
+    private String mKeyword = "";  //搜索
 
     List<String> mImageList; //栏目精选图片集合
     List<String> mTiltisList; //栏目精选标题集合
@@ -125,7 +132,9 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.mipmap.back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        // ArrayAdapter adapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1);
+        //mListview.setAdapter(adapter);
+        // mListview.setTextFilterEnabled(true);//设置为可过滤的
 
     }
 
@@ -159,11 +168,13 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
     public boolean onQueryTextSubmit(String query) {
         //在输入法按下搜索或者回车时，会调用次方法，在这里可以作保存历史记录的操作，
         // 我这里用了 sharepreference保存
-
+        mListview.setVisibility(View.GONE);
+        mClassifyContentLayout.setVisibility(View.VISIBLE);
+        ClassifyData(query);
         Toast.makeText(this, "保存" + query, Toast.LENGTH_SHORT).show();
 
 
-        SPUtilsName spUtilsName = new SPUtilsName(FirstClassifyDetail.this, Constant.SP_FILE_SEARCH);
+        SPUtilsName spUtilsName = new SPUtilsName(SearchViewActivity.this, Constant.SP_FILE_SEARCH);
         spUtilsName.put(query, query);
         //.searchKnowledge(query);
 
@@ -173,8 +184,10 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Intent intent = new Intent(this, SearchViewActivity.class);
-        startActivity(intent);
+        mClassifyContentLayout.setVisibility(View.GONE);
+        mListview.setVisibility(View.VISIBLE);
+        /*Intent intent = new Intent(this, LanMujingxuanActivity.class);
+        startActivity(intent);*/
         //输入字符则回调此方法
         //Toast.makeText(this,"154",Toast.LENGTH_SHORT).show();
         if (TextUtils.isEmpty((newText))) {
@@ -192,7 +205,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
             public void onRefresh(RefreshLayout refreshlayout) {
                 //refreshlayout.finishRefresh(2000);
                 UpDataView();
-
+                mSmartLayout.finishRefresh(2000);
             }
         });
         mSmartLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -210,7 +223,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
     private void UpDataView() {
         initStatusBar();
         setCategoryId();
-        ClassifyData();  //加载数据
+        ClassifyData("");  //加载数据
         init();
     }
 
@@ -227,9 +240,9 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
 
     }
 
-    private void ClassifyData() {
+    private void ClassifyData(String keyword) {
 
-
+        mKeyword = keyword;   //搜索
         page = 1;      //页数
         mSmartLayout.setLoadmoreFinished(false);
 
@@ -250,6 +263,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
                 .get()
                 .url(Constant.BASE_URL + "vendors/" + mVid + "/vendor-products")  //栏目二级详情页
                 .addParams("category_id", mCategoryId + "")
+                .addParams("keyword", mKeyword)
                 .addParams("page", String.valueOf(page))
                 .addParams("sort_by", mSortBy)
                 .addParams("order", mOrder)
@@ -296,7 +310,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
                         }
                         mRadiogroupFirstClassifyDetail.setVisibility(View.VISIBLE);
                         initView(); //等数据加载完,初始化视图
-                        mSmartLayout.finishRefresh(2000);
+
                     }
                 });
 
@@ -308,7 +322,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
         //设置管理器
         mRecyclerview.setLayoutManager(mLayoutManager);
         //设置adapter
-        mAdapter = new LanMujiangXuanAdapter(FirstClassifyDetail.this, mImageList, mTiltisList, mResalePriceList, mPriceList, mNumberList);
+        mAdapter = new LanMujiangXuanAdapter(SearchViewActivity.this, mImageList, mTiltisList, mResalePriceList, mPriceList, mNumberList);
 
         mRecyclerview.setAdapter(mAdapter);
 
@@ -337,6 +351,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
                 .get()
                 .url(Constant.BASE_URL + "vendors/" + mVid + "/vendor-products")  //栏目二级详情页
                 .addParams("category_id", mCategoryId + "")
+                .addParams("keyword", mKeyword)
                 .addParams("page", String.valueOf(page))
                 .addParams("sort_by", mSortBy)
                 .addParams("order", mOrder)
@@ -537,7 +552,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
                         mChildren = response.getChildren();
                         initData(mChildren);
                         for (int i = 0; i < mChildren.size() + 1; i++) {
-                            mRadioButton = (RadioButton) FirstClassifyDetail.this.getLayoutInflater().inflate(R.layout.radiobutton_addcart, null);
+                            mRadioButton = (RadioButton) SearchViewActivity.this.getLayoutInflater().inflate(R.layout.radiobutton_addcart, null);
                             if (i == 0) {
                                 mRadioButton.setText("所有");
                                 mTextList.add("所有");

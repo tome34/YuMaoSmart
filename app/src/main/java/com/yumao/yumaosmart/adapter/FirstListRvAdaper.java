@@ -81,7 +81,7 @@ public class FirstListRvAdaper extends RecyclerView.Adapter<FirstListRvAdaper.My
         mImageVsid = imageVsid;            //栏目精选分页id
         mImageLMList = imageLMList;  //栏目精选自定义大图
         mVId = vid ;    //门店的id
-        mIdList = idList ;  //分类的id
+        mIdList = idList ;  //筛选后分类的id
         mProductIdList = productIdList; //产品id
 
         mInflater= LayoutInflater.from(context);
@@ -343,17 +343,17 @@ public class FirstListRvAdaper extends RecyclerView.Adapter<FirstListRvAdaper.My
             int screenHeight = dm.heightPixels; // 屏幕高（像素，如：1280px）
 
             ViewGroup.LayoutParams paramLeft = mLeftImage.getLayoutParams();
-            paramLeft.width = screenWidth/3;
+            paramLeft.width = screenWidth/3 - dip2px(UiUtilities.getContex(),10.0f);
             paramLeft.height = screenWidth/3 - dip2px(UiUtilities.getContex(),10.0f);
             mLeftImage.setLayoutParams(paramLeft);
 
             ViewGroup.LayoutParams paramMid = mMidImage.getLayoutParams();
-            paramMid.width = screenWidth/3;
+            paramMid.width = screenWidth/3- dip2px(UiUtilities.getContex(),10.0f);
             paramMid.height = screenWidth/3- dip2px(UiUtilities.getContex(),10.0f);
             mMidImage.setLayoutParams(paramMid);
 
             ViewGroup.LayoutParams paramRight = mRightImage.getLayoutParams();
-            paramRight.width = screenWidth/3;
+            paramRight.width = screenWidth/3- dip2px(UiUtilities.getContex(),10.0f);
             paramRight.height = screenWidth/3- dip2px(UiUtilities.getContex(),10.0f);
             mRightImage.setLayoutParams(paramRight);
         }

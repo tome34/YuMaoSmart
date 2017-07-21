@@ -79,7 +79,7 @@ public class LanMujingxuanActivity extends BaseItemActivity {
     private Intent mIntent;
 
     private int page; //页数
-    private int mVsid;
+    private int mVsid;  //栏目vsid
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

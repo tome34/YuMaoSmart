@@ -14,7 +14,8 @@ public interface Constant  {
 
     //sp存储的值
     String SP_FILE_NAME = "setting";
-
+    //首页搜索历史记录
+    String SP_FILE_SEARCH = "search_history";
     //存储用户的token
     public static final String TOKEN = "token";
 

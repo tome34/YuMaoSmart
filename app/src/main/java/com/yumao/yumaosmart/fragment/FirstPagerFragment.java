@@ -123,7 +123,8 @@ public class FirstPagerFragment extends BaseFragment {
 
     private List<String> mClassifyName;//分类名称
     private List<Boolean> mContainsList;//分类是否显示
-    private List<Integer> mIdList; //分类的id
+    private List<Integer> mIdList; //全部的分类的id,总数有8个
+    private List<Integer> mCategoriesId ; //筛选后的分类id
     private List<Integer> mImageList; //显示图标
     private List<Integer> mImageUnList; //不显示图标
     private FirstClassifyAdapter mAdapter;
@@ -423,7 +424,8 @@ public class FirstPagerFragment extends BaseFragment {
 
         mClassifyName = new ArrayList<>();//分类名称
         mContainsList = new ArrayList<>();//分类是否显示
-        mIdList = new ArrayList<>(); //分类的id
+        mIdList = new ArrayList<>(); //全部分类的id
+        mCategoriesId = new ArrayList<>(); //筛选后的分类id
         mImageList = new ArrayList<>(); //显示图标
         mImageUnList = new ArrayList<>(); //不显示图标
 
@@ -457,7 +459,7 @@ public class FirstPagerFragment extends BaseFragment {
                             mClassifyName.add(response.get(i).getName());
                             mContainsList.add(response.get(i).getContains());
                             mIdList.add(response.get(i).getId());
-
+                                //LogUtils.d("tag","分类的id:"+response.get(i).getId());
                         }
                         initClassify(); //分类
                     }
@@ -643,12 +645,15 @@ public class FirstPagerFragment extends BaseFragment {
                     @Override
                     public void onResponse(List<FirstListRvMode> response, int id) {
                         LogUtils.d("tag", "分类成功2:" + response.size());
-                        //本地列表大图
+                        //筛选本地列表大图
                         for (int k = 0; k < 8; k++) {
                             if (mContainsList.get(k)) {
-                                mPictureImageLocal.add(mResList.get(k));
+                                mPictureImageLocal.add(mResList.get(k));  //列表大图
+                                mCategoriesId.add(mIdList.get(k));            //筛选分类id
                             }
                         }
+
+
 
                         for (int i = 0; i < response.size(); i++) {
                             //mPictureImageLocal.add(mResList.get(i));  //有问题
@@ -713,7 +718,7 @@ public class FirstPagerFragment extends BaseFragment {
         mLvFirstList.setLayoutManager(mLayoutManager);
         //设置adapter
         mRvAdaper = new FirstListRvAdaper(UiUtilities.getContex(), mPictureImage, mItemSize, mProductNameList, mResalePriceList, mPriceList, mProductImageList, mPictureImageLenght, mPictureImageLocal
-                , imageVsid, mImageLMList, vId, mIdList, mProductIdList);
+                , imageVsid, mImageLMList, vId, mCategoriesId, mProductIdList);
 
         // TODO: 2017/7/14点击事件传递数据
 
