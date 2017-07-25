@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_sub"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:text="—"
+        android:textSize="14sp"
+        android:textColor="@color/gray"
+        android:enabled="false"
+        android:background="@drawable/item_button_cart_number_selector"/>
+
+
+    <TextView
+        android:id="@+id/tv_number"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="1"
+        android:textSize="14sp"
+        android:textColor="@color/zitiblack"/>
+
+
+    <TextView
+        android:id="@+id/tv_add"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:text="+"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/colorRed"
+        android:background="@drawable/item_button_cart_number_selector"/>
+
+</LinearLayout>

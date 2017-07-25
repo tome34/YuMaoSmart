@@ -1,87 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@color/graywhite"
+              android:orientation="vertical">
 
-
-<ListView
-    android:layout_weight="1"
-    android:id="@+id/lv_shopping_cart"
-    android:layout_width="match_parent"
-    android:layout_height="0dp">
-
-</ListView>
-
-    <RelativeLayout
-        android:background="#edd2d2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp">
-        <RadioButton
-           android:layout_marginTop="8dp"
-            android:id="@+id/rbtn_shopping_card_selectall"
-            android:button="@null"
-            android:background="@drawable/shopping_card_title_rbtn"
-            android:layout_alignParentLeft="true"
+        android:layout_height="45dp"
+        android:background="@color/zitiblack"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="购物车"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_cart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="@color/white">
+
+        <CheckBox
+            android:id="@+id/check_box_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
+            android:button="@drawable/selector_select_all"/>
+
         <TextView
-            android:textColor="@color/colorNormal"
-            android:layout_marginLeft="2dp"
-            android:gravity="center_vertical"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/rbtn_shopping_card_selectall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
             android:text="全选"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"/>
+            android:textColor="@color/zitiblack"
+            android:textSize="16sp"/>
 
-        <TextView
-            android:textColor="@color/colorNormal"
-            android:text="不含运费"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_alignStart="@+id/textView2"
-            android:id="@+id/tv_shopping_card_ifcontains_delive"
-            android:layout_alignRight="@+id/tv_shopping_card_total"
-            android:layout_alignEnd="@+id/tv_shopping_card_total"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:textColor="@color/colorRed"
-            android:text="￥:0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_shopping_card_total"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="72dp"
-            android:layout_marginEnd="70dp"/>
+            <TextView
+                android:id="@+id/tv_commit"
+                android:layout_width="96dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/item_button_submit_selector"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="去结算"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
 
-        <TextView
-            android:textColor="@color/colorNormal"
-            android:text="合计"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView2"
-            android:layout_marginRight="78dp"
-            android:layout_marginEnd="78dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/tv_shopping_card_total"
-            android:layout_alignEnd="@+id/tv_shopping_card_total"/>
+            <LinearLayout
+                android:id="@+id/ll_middle_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@id/tv_commit">
 
-        <Button
-            android:textColor="#fff"
-            android:background="@color/colorRed"
-            android:text="去结算"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/tv_shopping_card_ifcontains_delive"
-            android:layout_toEndOf="@+id/tv_shopping_card_ifcontains_delive"
-            android:id="@+id/button"/>
-    </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="合计:"
+                    android:textColor="@color/zitiblack"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_total_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="0元"
+                    android:textColor="@color/colorRed"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/no_freight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/ll_middle_view"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_toLeftOf="@id/tv_commit"
+                android:text="(不含运费)"
+                android:textColor="@color/zitiblack"
+                android:textSize="10sp"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
 </LinearLayout>

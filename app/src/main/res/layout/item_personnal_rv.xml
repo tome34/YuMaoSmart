@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/iv_personnal_layout"
               android:orientation="vertical"
-              android:layout_margin="1dp"
+              android:layout_margin="0.5dp"
               android:background="@color/white"
               android:layout_width="match_parent"
-              android:layout_height="90dp">
+              android:layout_height="wrap_content">
 <ImageView
     android:layout_gravity="center"
     android:id="@+id/iv_personnal_item"
@@ -13,13 +13,14 @@
     android:layout_width="40dp"
     android:layout_height="40dp"/>
     <TextView
-        android:textColor="@color/colorNormal"
         android:id="@+id/tv_personnal_item"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:layout_marginTop="5dp"
         android:text="我的收藏"
         android:textSize="12dp"
+        android:textColor="@color/zitiblack"
         android:layout_width="wrap_content"
-        android:layout_height="15dp"/>
+        android:layout_height="15dp"
+        />
 </LinearLayout>

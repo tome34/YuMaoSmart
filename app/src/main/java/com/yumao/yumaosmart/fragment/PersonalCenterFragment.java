@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import okhttp3.Call;
 
 import static android.app.Activity.RESULT_OK;
@@ -105,6 +102,15 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     private List<Integer> mIconDatas;
     private String mRolesString;
     private List<String> mRoles;
+
+    @Override
+    public View onInitView() {
+
+        View view = View.inflate(UiUtilities.getContex(), R.layout.fragment_personal_center, null);
+
+       // EventBus.getDefault().register(UiUtilities.getContex());
+        return view;
+    }
 
 
     //    初始化监听
@@ -417,22 +423,6 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
         return LoadingPager.LoadingPagerEnum.SUCCESS;
     }
 
-    @Override
-    public View onInitView() {
-
-        View view = View.inflate(UiUtilities.getContex(), R.layout.fragment_personal_center, null);
-
-        return view;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View mRootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, mRootView);
-
-        return mRootView;
-    }
 
     //点击事件
     @Override

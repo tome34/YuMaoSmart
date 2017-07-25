@@ -92,16 +92,16 @@
         "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\drawable\\abc_ratingbar_indicator_material.xml"
     },
     {
-        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\release\\drawable\\abc_btn_colored_material.xml",
-        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\drawable\\abc_btn_colored_material.xml"
-    },
-    {
         "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\release\\drawable\\abc_edit_text_material.xml",
         "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\drawable\\abc_edit_text_material.xml"
     },
     {
         "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\release\\drawable\\abc_list_selector_holo_dark.xml",
         "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\drawable\\abc_list_selector_holo_dark.xml"
+    },
+    {
+        "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\release\\drawable\\abc_btn_colored_material.xml",
+        "source": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.1.0\\res\\drawable\\abc_btn_colored_material.xml"
     },
     {
         "merged": "E:\\IDE\\WORKSPACE\\YuMaoSmart\\magicindicatorlib\\build\\intermediates\\res\\merged\\release\\drawable\\abc_item_background_holo_dark.xml",

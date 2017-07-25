@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.yumao.yumaosmart.activity.LanMujingxuanActivity;
 import com.yumao.yumaosmart.activity.LoginActivity;
 import com.yumao.yumaosmart.activity.MainActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
+import com.yumao.yumaosmart.activity.SearchActivity;
 import com.yumao.yumaosmart.adapter.FirstClassifyAdapter;
 import com.yumao.yumaosmart.adapter.FirstListAdaper;
 import com.yumao.yumaosmart.adapter.FirstListRvAdaper;
@@ -95,6 +97,8 @@ public class FirstPagerFragment extends BaseFragment {
     Banner mBanner;
     @BindView(R.id.smartLayout)
     SmartRefreshLayout mSmartLayout;
+    @BindView(R.id.search_et_input)
+    EditText mSearchEtInput;
 
     private List<ClassifyBean> mClassifyData;
     private ClassifyBean mClassifyBeanFeiCui;
@@ -124,7 +128,7 @@ public class FirstPagerFragment extends BaseFragment {
     private List<String> mClassifyName;//分类名称
     private List<Boolean> mContainsList;//分类是否显示
     private List<Integer> mIdList; //全部的分类的id,总数有8个
-    private List<Integer> mCategoriesId ; //筛选后的分类id
+    private List<Integer> mCategoriesId; //筛选后的分类id
     private List<Integer> mImageList; //显示图标
     private List<Integer> mImageUnList; //不显示图标
     private FirstClassifyAdapter mAdapter;
@@ -157,6 +161,8 @@ public class FirstPagerFragment extends BaseFragment {
 
     private int vId;   //门店的id
     private int mPictureImageLenght;
+
+    private boolean searchFlag = false;
 
 
     @Override
@@ -196,6 +202,14 @@ public class FirstPagerFragment extends BaseFragment {
 
         //initList(list); //产品展示
 
+    }
+
+    //初始化布局
+    @Override
+    public View onInitView() {
+        mFragmentView = View.inflate(UiUtilities.getContex(), R.layout.fragment_first_pager, null);
+        ButterKnife.bind(this, mFragmentView);
+        return mFragmentView;
     }
 
 
@@ -410,6 +424,7 @@ public class FirstPagerFragment extends BaseFragment {
         mBanner.start();
     }
 
+
     private class GlideImageLoader extends ImageLoader {
 
         @Override
@@ -459,7 +474,7 @@ public class FirstPagerFragment extends BaseFragment {
                             mClassifyName.add(response.get(i).getName());
                             mContainsList.add(response.get(i).getContains());
                             mIdList.add(response.get(i).getId());
-                                //LogUtils.d("tag","分类的id:"+response.get(i).getId());
+                            //LogUtils.d("tag","分类的id:"+response.get(i).getId());
                         }
                         initClassify(); //分类
                     }
@@ -654,7 +669,6 @@ public class FirstPagerFragment extends BaseFragment {
                         }
 
 
-
                         for (int i = 0; i < response.size(); i++) {
                             //mPictureImageLocal.add(mResList.get(i));  //有问题
 
@@ -753,12 +767,7 @@ public class FirstPagerFragment extends BaseFragment {
         return LoadingPager.LoadingPagerEnum.SUCCESS;
     }
 
-    @Override
-    public View onInitView() {
-        mFragmentView = View.inflate(UiUtilities.getContex(), R.layout.fragment_first_pager, null);
-        ButterKnife.bind(this, mFragmentView);
-        return mFragmentView;
-    }
+
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        // TODO: inflate a fragment view
@@ -776,7 +785,7 @@ public class FirstPagerFragment extends BaseFragment {
 
     //首页个人中心点击事件
     @OnClick({R.id.iv_first_item_person_topleft, R.id.iv_first_item_person_topright, R.id.tv_first_list_user_name,
-            R.id.tv_first_page_shanjiajieshao, R.id.tv_first_page_person_tel})
+            R.id.tv_first_page_shanjiajieshao, R.id.tv_first_page_person_tel,R.id.search_et_input})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_first_item_person_topleft:
@@ -820,6 +829,11 @@ public class FirstPagerFragment extends BaseFragment {
                     startActivity(new Intent(UiUtilities.getContex(), LoginActivity.class));
                 }
 
+                break;
+
+            case R.id.search_et_input:  //首页搜索栏跳转到搜索页
+
+                startActivity(new Intent(UiUtilities.getContex(), SearchActivity.class));
                 break;
 
         }

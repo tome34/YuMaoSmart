@@ -1,15 +1,27 @@
 <resources>
 
-    <!-- Base application theme. -->
+  <!--   Base application theme.
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+         Customize your theme here.
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!--添加分割线颜色样式，如果不需要测删除就是系统自带的分割线样式-->
-        <!--<item name= "android:listDivider">@drawable/divideritem </item >-->
+        添加分割线颜色样式，如果不需要测删除就是系统自带的分割线样式
+        <item name= "android:listDivider">@drawable/divideritem </item >
+           </style>-->
 
-    </style>
+        <!-- Base application theme. -->
+        <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+            <!-- Customize your theme here. -->
+            <item name="windowActionBar">false</item>
+            <item name="windowNoTitle">true</item>
+            <item name="colorPrimary">@color/colorPrimary</item>
+            <item name="colorPrimaryDark">@color/colorPrimary</item>
+            <item name="colorAccent">@color/colorPrimary</item>
+            <item name="android:textColorHint">@color/white</item>
+        </style>
+
+
     <!--自定义基类主题-->
     <style name="BaseLightTheme" parent="@style/Theme.AppCompat.Light">
 

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import com.yumao.yumaosmart.adapter.GoodsDetailSpAdapter;
 import com.yumao.yumaosmart.base.BaseItemActivity;
 import com.yumao.yumaosmart.callback.GoodsDetailCallback;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.manager.CartManager;
 import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.manager.UserInformationManager;
 import com.yumao.yumaosmart.mode.GoodsDetailMode;
@@ -40,6 +42,7 @@ import com.yumao.yumaosmart.utils.GetNunberUtils;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.yumao.yumaosmart.widgit.AmountView;
+import com.yumao.yumaosmart.widgit.CustomCarGoodsCounterView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -80,7 +83,7 @@ public class GoodsDetailActivity extends BaseItemActivity {
     @BindView(R.id.tv_activity_goods_detail_totalprice_ifcontains_delivery)
     TextView mTvActivityGoodsDetailTotalpriceIfcontainsDelivery;
     @BindView(R.id.amount_view)
-    AmountView mAmountView;
+    CustomCarGoodsCounterView mAmountView;
     @BindView(R.id.tv_activity_goods_goodsparamater)
     TextView mTvActivityGoodsGoodsparamater;
     @BindView(R.id.tv_activity_goods_line_code)
@@ -125,6 +128,8 @@ public class GoodsDetailActivity extends BaseItemActivity {
     LinearLayout mTvActivityGoodsWarehouseAddresLayout;
     @BindView(R.id.tv_activity_goods_work_duration_layout)
     LinearLayout mTvActivityGoodsWorkDurationLayout;
+    @BindView(R.id.detail_scrol_view)
+    ScrollView mDetailScrolView;
 
 
     private AmountView mMAmountView;
@@ -185,6 +190,10 @@ public class GoodsDetailActivity extends BaseItemActivity {
     }
 
     private void initHeight() {
+
+        //解决scrollView不置顶问题
+        mDetailScrolView.scrollTo(0,0);
+
         DisplayMetrics dm = new DisplayMetrics();
         dm = UiUtilities.getContex().getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels; // 屏幕宽（像素，如：3200px）
@@ -392,7 +401,7 @@ public class GoodsDetailActivity extends BaseItemActivity {
         mTvActivityGoodsWorkDuration.setText(workDuration);
 
         //设置底部地址
-        mTvActivityGoodsDetailAddress.setText("地址: " + mAddress );
+        mTvActivityGoodsDetailAddress.setText("地址: " + mAddress);
 
 
         //参数的recyclerview
@@ -584,13 +593,16 @@ public class GoodsDetailActivity extends BaseItemActivity {
                 startActivity(new Intent(this, ConfirmOrderActivity.class));
                 break;
             case R.id.detail_activity_shoppingcard_bt:
-                if (mStock_quantity > 0 && mAmount > 0) {
+             /*   if (mStock_quantity > 0 && mAmount > 0) {
                     add2shoppingcard();
                 } else {
                     Toast.makeText(this, "库存不足加入购车失败", Toast.LENGTH_SHORT).show();
-                }
+                }*/
+                CartManager.getInstance().postCartItem(mProductId,1);
+                    LogUtils.d("点击了加入购物车"+mProductId);
 
                 break;
+
             case R.id.detail_activity_get_it_now_bt:
                 /*if (!(mVendorId == 0)) {
                     Intent intent = new Intent();

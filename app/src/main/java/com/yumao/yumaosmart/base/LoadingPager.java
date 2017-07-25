@@ -47,6 +47,7 @@ public abstract class LoadingPager extends FrameLayout {
         triggleLoadData();
     }
 
+    //加载成功,由自己子类实现
     public abstract View initSuccessView();
 
     public void refreshUIByState() {

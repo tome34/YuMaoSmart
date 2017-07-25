@@ -80,7 +80,7 @@
                     style="@style/redTextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="40dp"
                     android:button="@null"
                     android:drawableRight="@drawable/first_classify_detail_choose"
                     android:gravity="center"

@@ -34,7 +34,6 @@ import com.yumao.yumaosmart.mode.CategoriesContentMode;
 import com.yumao.yumaosmart.mode.LanMuJingXuanBean;
 import com.yumao.yumaosmart.utils.GetNunberUtils;
 import com.yumao.yumaosmart.utils.LogUtils;
-import com.yumao.yumaosmart.utils.SPUtilsName;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.yumao.yumaosmart.widget.CustomRadioGroup;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -163,8 +162,6 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
         Toast.makeText(this, "保存" + query, Toast.LENGTH_SHORT).show();
 
 
-        SPUtilsName spUtilsName = new SPUtilsName(FirstClassifyDetail.this, Constant.SP_FILE_SEARCH);
-        spUtilsName.put(query, query);
         //.searchKnowledge(query);
 
 

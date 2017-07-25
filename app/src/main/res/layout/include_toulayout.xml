@@ -24,7 +24,8 @@
             android:scaleType="fitXY"
             android:src="@mipmap/first_page_person_icon_touxiang"
             touxiang:riv_oval="true"
-            touxiang:riv_border_width="0dp"/>
+            touxiang:riv_border_width="2dp"
+            touxiang:riv_border_color="@color/white"/>
 
         <TextView
 
@@ -34,7 +35,7 @@
             android:layout_marginTop="10dp"
             android:layout_below="@id/iv_personnal_fragment_touxiang"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/colorNormal"
+            android:textColor="@color/zitiblack"
             android:text="昵称"/>
 
         <TextView
@@ -44,7 +45,7 @@
             android:layout_marginTop="10dp"
             android:layout_below="@id/tv_personnal_petname"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/colorNormal"
+            android:textColor="@color/zitiblack"
             android:text="注册时间:2017-1-1"/>
 
         <ImageView
@@ -69,7 +70,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="累计销量:0"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/zitiblack"/>
 
            <View
                android:layout_width="1dp"
@@ -87,7 +88,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="累计资产:0"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/zitiblack"/>
         </LinearLayout>
     </RelativeLayout>
 

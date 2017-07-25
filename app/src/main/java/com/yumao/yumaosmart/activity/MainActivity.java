@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     private TabHost.TabSpec mTabSpec;
     private View mTabRootView;
     private TextView mTabView;
+    private ImageView mTabViewIv;
     private Drawable mDrawableTop;
 
     @Override
@@ -117,15 +119,17 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
 
         mTabRootView = mInflater.inflate(R.layout.tab_item, null);
         mTabView = (TextView) mTabRootView.findViewById(R.id.id_tab);
-
+        mTabViewIv = (ImageView) mTabRootView.findViewById(R.id.id_tab_iv);
 
         if (i == 0) {
             mTabView.setSelected(true);
+            mTabViewIv.setSelected(true);
         }
         mTabView.setText(textArray[i]);
-        mDrawableTop = getResources().getDrawable(tabDrableArray[i]);
-        mDrawableTop.setBounds(0,0,mDrawableTop.getMinimumWidth(),mDrawableTop.getMinimumHeight());
-        mTabView.setCompoundDrawables(null, mDrawableTop, null, null);
+        mTabViewIv.setImageResource(tabDrableArray[i]);
+        //mDrawableTop = getResources().getDrawable(tabDrableArray[i]);
+        //mDrawableTop.setBounds(0,0,mDrawableTop.getMinimumWidth(),mDrawableTop.getMinimumHeight());
+        //mTabView.setCompoundDrawables(null, mDrawableTop, null, null);
 
         return mTabRootView;
     }

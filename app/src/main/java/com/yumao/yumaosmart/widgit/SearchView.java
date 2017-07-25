@@ -83,9 +83,9 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
     }
 
     private void initViews() {
-       // etInput = (EditText) findViewById(R.id.search_et_input);
+        etInput = (EditText) findViewById(R.id.search_et_input);
         ivDelete = (ImageView) findViewById(R.id.search_iv_delete);
-        //btnBack = (Button) findViewById(R.id.search_btn_back);
+        btnBack = (Button) findViewById(R.id.search_btn_back);
         lvTips = (ListView) findViewById(R.id.search_lv_tips);
 
         lvTips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -151,7 +151,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
     private class EditChangedListener implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
+            lvTips.setVisibility(VISIBLE);
         }
 
         @Override
@@ -178,22 +178,26 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
 
         @Override
         public void afterTextChanged(Editable editable) {
+
         }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-           /* case R.id.search_et_input:
+            case R.id.search_et_input:
                 lvTips.setVisibility(VISIBLE);
-                break;*/
+                break;
             case R.id.search_iv_delete:
                 etInput.setText("");
                 ivDelete.setVisibility(GONE);
                 break;
-           /* case R.id.search_btn_back:
-                ((Activity) mContext).finish();
-                break;*/
+            case R.id.search_btn_back:
+                etInput.setText("");
+                lvTips.setVisibility(GONE);
+                etInput.setFocusable(false);
+
+                break;
         }
     }
 

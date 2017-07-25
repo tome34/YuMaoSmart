@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -35,7 +34,6 @@ import com.yumao.yumaosmart.mode.CategoriesContentMode;
 import com.yumao.yumaosmart.mode.LanMuJingXuanBean;
 import com.yumao.yumaosmart.utils.GetNunberUtils;
 import com.yumao.yumaosmart.utils.LogUtils;
-import com.yumao.yumaosmart.utils.SPUtilsName;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.yumao.yumaosmart.widget.CustomRadioGroup;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -70,10 +68,7 @@ public class SearchViewActivity extends AppCompatActivity implements SearchView.
     SmartRefreshLayout mSmartLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.listview)
-    ListView mListview;
-    @BindView(R.id.classify_content_layout)
-    LinearLayout mClassifyContentLayout;
+
 
 
     private String mText;
@@ -114,7 +109,7 @@ public class SearchViewActivity extends AppCompatActivity implements SearchView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_classify_detail);
+        setContentView(R.layout.activity_search_view);
         ButterKnife.bind(this);
 
         //下拉加载
@@ -168,14 +163,10 @@ public class SearchViewActivity extends AppCompatActivity implements SearchView.
     public boolean onQueryTextSubmit(String query) {
         //在输入法按下搜索或者回车时，会调用次方法，在这里可以作保存历史记录的操作，
         // 我这里用了 sharepreference保存
-        mListview.setVisibility(View.GONE);
-        mClassifyContentLayout.setVisibility(View.VISIBLE);
+
         ClassifyData(query);
         Toast.makeText(this, "保存" + query, Toast.LENGTH_SHORT).show();
 
-
-        SPUtilsName spUtilsName = new SPUtilsName(SearchViewActivity.this, Constant.SP_FILE_SEARCH);
-        spUtilsName.put(query, query);
         //.searchKnowledge(query);
 
 
@@ -184,8 +175,7 @@ public class SearchViewActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        mClassifyContentLayout.setVisibility(View.GONE);
-        mListview.setVisibility(View.VISIBLE);
+
         /*Intent intent = new Intent(this, LanMujingxuanActivity.class);
         startActivity(intent);*/
         //输入字符则回调此方法

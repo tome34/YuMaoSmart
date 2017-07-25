@@ -17,19 +17,7 @@
         android:layout_height="?attr/actionBarSize"
         >
     </android.support.v7.widget.Toolbar>
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
 
-    </ListView>
-
-<LinearLayout
-    android:id="@+id/classify_content_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
     <!--下拉刷新-->
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -126,5 +114,4 @@
 
         </com.yumao.yumaosmart.widgit.Smartreshfooter>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-</LinearLayout>
 </LinearLayout>

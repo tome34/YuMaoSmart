@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_goods_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,9 +13,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="1"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:focusableInTouchMode="true">
 
     <ScrollView
+        android:id="@+id/detail_scrol_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -151,16 +153,14 @@
                     android:textSize="12sp"
                     android:textColor="@color/zitiblack"/>
 
-                <com.yumao.yumaosmart.widgit.AmountView
+                <com.yumao.yumaosmart.widgit.CustomCarGoodsCounterView
                     android:id="@+id/amount_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="12dp"
-                    app:btnTextSize="14sp"
-                    app:btnWidth="36dp"
-                    app:tvWidth="30dp"/>
+                   />
             </RelativeLayout>
 
             <!--产品参数-->
@@ -405,7 +405,7 @@
             android:src="@mipmap/details_icon_zf"
             android:background="@color/white"/>
         <Button
-            android:textSize="15.3dp"
+            android:textSize="16dp"
             android:id="@+id/detail_activity_shoppingcard_bt"
             android:text="加入购物车"
             android:layout_marginTop="0.5dp"
@@ -416,7 +416,7 @@
             android:layout_height="match_parent"
             android:background="@color/zitiblack"/>
         <Button
-            android:textSize="15.3dp"
+            android:textSize="16dp"
             android:id="@+id/detail_activity_get_it_now_bt"
             android:text="立即购买"
             android:layout_marginTop="0.5dp"

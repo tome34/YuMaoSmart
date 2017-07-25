@@ -103,8 +103,8 @@ public class PersonnalcenterAdapter extends RecyclerView.Adapter<Personnalcenter
             int screenHeight = dm.heightPixels; // 屏幕高（像素，如：1280px）
 
             ViewGroup.LayoutParams params = itemView.getLayoutParams();
-            params.width = screenWidth/4;
-            params.height = screenWidth/4;
+            params.width = screenWidth/4 - dip2px(mContext ,2.0f);
+            params.height = screenWidth/4 - dip2px(mContext ,2.0f);
             itemView.setLayoutParams(params);
 
 
