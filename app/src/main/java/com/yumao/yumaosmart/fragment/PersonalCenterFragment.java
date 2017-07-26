@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 
 import static android.app.Activity.RESULT_OK;
@@ -89,6 +92,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     @BindView(R.id.smartLayout)
     SmartRefreshLayout mSmartLayout;
 
+
     private PersonnalcenterAdapter mPersonnalcenterAdapter;
     private List<PersonnalBean> mData;
     private List<String> mItemList;
@@ -108,7 +112,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
 
         View view = View.inflate(UiUtilities.getContex(), R.layout.fragment_personal_center, null);
 
-       // EventBus.getDefault().register(UiUtilities.getContex());
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -192,7 +196,7 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     public void onDestroy() {
         super.onDestroy();
 
-        EventBus.getDefault().unregister(UiUtilities.getContex());
+         EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -304,25 +308,6 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
                 return;
             }
 
-
-     /*   mPersonnalBean = new PersonnalBean("我的资料", String.valueOf(R.mipmap.personnal_my_material));
-        mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("我的佣金", String.valueOf(R.mipmap.personnal_my_employree));
-        mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("会员订单", String.valueOf(R.mipmap.personnalcenter_vip_orderlist));
-        mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("我的人气", String.valueOf(R.mipmap.personnal_my_populatrity));
-        mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("我的推广", String.valueOf(R.mipmap.personnal_center_my_spread));
-        mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("门店订单", String.valueOf(R.mipmap.personnal_stores_orderlistl));
-        mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("我的会员", String.valueOf(R.mipmap.personnal_center_my_vip));
-        mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("门店资料", String.valueOf(R.mipmap.personnal_my_material));
-        mData.add(mPersonnalBean);
-        mPersonnalBean = new PersonnalBean("服务中心", String.valueOf(R.mipmap.personnalcenter_my_partner));
-        mData.add(mPersonnalBean);*/
         } else {
 
             mTvPersonnalPetname.setText("登录/注册");
@@ -532,4 +517,11 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     }
 
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
 }

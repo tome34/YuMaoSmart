@@ -11,14 +11,20 @@ import android.widget.Toast;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.adapter.ShoppingCartAdapter;
 import com.yumao.yumaosmart.base.BaseCartFragment;
+import com.yumao.yumaosmart.bean.Shopping;
 import com.yumao.yumaosmart.callback.ShoppingCartCallback;
 import com.yumao.yumaosmart.constant.Constant;
+import com.yumao.yumaosmart.manager.CartManager;
 import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.mode.ShoppingCartMode;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.zhy.http.okhttp.OkHttpUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +57,7 @@ public class ShoppingCartFragment extends BaseCartFragment {
     private int page = 1 ;
     public boolean isChecked = true;  //购物车是否选中
 
+
     private List<Integer> mCartId ;  //购物车id
     private List<Integer> mProductId ; //产品id
     private List<String> mProductName ; //产品名称
@@ -60,7 +67,14 @@ public class ShoppingCartFragment extends BaseCartFragment {
     private List<Integer> mQuantity;      //产品数量
     private List<Boolean> mCheckBox ;     //checkBox的状态
 
-    private ShoppingCartAdapter mCartAdapter ;
+    public ShoppingCartAdapter mCartAdapter ;
+
+    public String mGetCarJsonData ;  //获取购物车的所有json数据
+
+    public ShoppingCartFragment() {
+
+    }
+
 
     @Override
     public View initView() {
@@ -78,8 +92,12 @@ public class ShoppingCartFragment extends BaseCartFragment {
 
     private void initCartData() {
 
+        boolean loginState = LoginManager.getInstance().isLoginState(UiUtilities.getContex());
+        LogUtils.d("购物车登录状态:"+loginState);
         //判断是否登录
-        if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())){
+        if (loginState){
+
+            mGetCarJsonData = null ;
 
             mCartId = new ArrayList<>();  //购物车id
             mProductId = new ArrayList<>(); //产品id
@@ -105,13 +123,17 @@ public class ShoppingCartFragment extends BaseCartFragment {
                     .execute(new ShoppingCartCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-                            LogUtils.d("购物车数据失败");
-                            Toast.makeText(mContext, "请重新登录", Toast.LENGTH_SHORT).show();
+                            LogUtils.d("购物车数据失败"+e);
+                            Toast.makeText(mContext, "请重新登录"+e, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onResponse(List<ShoppingCartMode> response, int id) {
                             LogUtils.d("购物车数据成功"+"条目数量:"+response.size());
+                            //获取购物车的所有json数据
+                            mGetCarJsonData = cartJsonData;
+
+                            SPUtils.putString(UiUtilities.getContex(),Constant.CART_JSON,mGetCarJsonData);
 
                             for (int i = 0;i<response.size();i++){
                                 mCartId.add(response.get(i).getId());
@@ -124,6 +146,7 @@ public class ShoppingCartFragment extends BaseCartFragment {
 
                                 //初始化checkBox
                                 mCheckBox.add(false);
+
                             }
                             initCartView();
 
@@ -178,16 +201,46 @@ public class ShoppingCartFragment extends BaseCartFragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        UpDataView();
+    }
+
     //刷新数据
     public void UpDataView() {
+        initCartData();
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void initBottomUI(String s) {
+
+        mCheckBoxAll.setChecked(CartManager.getInstance().isAllChecked());
+
+        mTvTotalMoney.setText("¥" + CartManager.getInstance().getTotalProice());
+
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void UpAdapter(MessageAdapter adapter) {
+
+        mCartAdapter.notifyDataSetChanged();
+    }
+
+    public static class MessageAdapter{
+        public final String name ;
+
+        public MessageAdapter(String name){
+            this.name = name ;
+        }
     }
 
 
     //开启eventbus
     @Override
     public boolean isRegisterEventBus() {
-        return false;
+        return true;
     }
 
 
@@ -195,7 +248,14 @@ public class ShoppingCartFragment extends BaseCartFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.check_box_all:  //全选
+                List<Shopping> cars = CartManager.getInstance().getMemoryAll();
+                Toast.makeText(mContext, "全选"+mCheckBoxAll.isChecked(), Toast.LENGTH_SHORT).show();
 
+                mCheckBoxAll.setChecked(CartManager.getInstance().setCheckState(mCheckBoxAll.isChecked()));
+
+                mCartAdapter.notifyDataSetChanged();
+
+                EventBus.getDefault().post(new String());
 
                 break;
             case R.id.tv_commit:  //结算

@@ -42,6 +42,14 @@ public interface Constant  {
 
     //产品id
     public static final String PRODUCT_ID ="product_id";
+
     //列表二级分类id:categoryId
     public static final String CATEGORY_ID ="category_id";
+
+    //购物车的json数据
+    public static final String CART_JSON ="cart_json";
+
+    //搜索结果keyword
+    public static final String SEARCH_RESULT ="search_result";
+
 }

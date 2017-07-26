@@ -14,10 +14,14 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.activity.GoodsDetailActivity;
+import com.yumao.yumaosmart.bean.Shopping;
 import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.manager.CartManager;
+import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.yumao.yumaosmart.widgit.CustomCarGoodsCounterView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -36,7 +40,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     private List<Integer> mPrice ;       //价格
     private List<String> mThumbIv ;       //item图片
     private List<Integer> mQuantity;      //产品数量
-    private List<Boolean> mCheckBox;
+    private List<Boolean> mCheckBoxList;
 
     private LayoutInflater mInflater;
     private Intent mIntent;
@@ -56,7 +60,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         mPrice = price;
         mThumbIv = thumbIv ;
         mQuantity = quantity ;
-        mCheckBox = checkBox ;
+        mCheckBoxList = checkBox ;
         mInflater= LayoutInflater.from(context);
     }
 
@@ -71,7 +75,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyViewholder holder, final int position) {
+    public void onBindViewHolder(final MyViewholder holder, final int position) {
 
         Picasso.with(mContext).load(mThumbIv.get(position)).into(holder.mIvIcon);
         //购物车图片点击事件
@@ -101,6 +105,23 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             }
         });
 
+        holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Shopping> memoryAll = CartManager.getInstance().getMemoryAll();
+                    LogUtils.d("内存数据:"+memoryAll);
+                memoryAll.get(position).isChecked = !memoryAll.get(position).isChecked;
+
+                holder.mCheckBox.setChecked(memoryAll.get(position).isChecked);
+
+
+                //更新购物车条目
+                CartManager.getInstance().updateGoodsCar(memoryAll.get(position));
+
+                EventBus.getDefault().post(new String());
+            }
+        });
+
     }
 
     @Override
@@ -125,6 +146,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
             mDelete = (TextView) itemView.findViewById(R.id.car_goods_delete);
             mCarGoodsCounter = (CustomCarGoodsCounterView) itemView.findViewById(R.id.car_goods_counter);
+
 
             mCarGoodsCounter.setUpdateGoodsNumberListener(this);
         }

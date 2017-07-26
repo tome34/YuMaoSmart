@@ -11,8 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +32,7 @@ import com.yumao.yumaosmart.activity.LanMujingxuanActivity;
 import com.yumao.yumaosmart.activity.LoginActivity;
 import com.yumao.yumaosmart.activity.MainActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
-import com.yumao.yumaosmart.activity.SearchActivity;
+import com.yumao.yumaosmart.activity.TestSearchActivity;
 import com.yumao.yumaosmart.adapter.FirstClassifyAdapter;
 import com.yumao.yumaosmart.adapter.FirstListAdaper;
 import com.yumao.yumaosmart.adapter.FirstListRvAdaper;
@@ -98,7 +98,8 @@ public class FirstPagerFragment extends BaseFragment {
     @BindView(R.id.smartLayout)
     SmartRefreshLayout mSmartLayout;
     @BindView(R.id.search_et_input)
-    EditText mSearchEtInput;
+    LinearLayout mSearchEtInput;
+
 
     private List<ClassifyBean> mClassifyData;
     private ClassifyBean mClassifyBeanFeiCui;
@@ -358,30 +359,6 @@ public class FirstPagerFragment extends BaseFragment {
 
     //        首页轮播图
     private void initViewPager() {
-      /*  vpRes.add(String.valueOf(R.mipmap.first_page_picture));
-        vpRes.add(String.valueOf(R.mipmap.first_page_picture));
-        vpRes.add(String.valueOf(R.mipmap.first_page_picture));
-
-        for (int i = 0; i < vpRes.size(); i++) {
-            mImageView = new ImageView(getActivity());
-            mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            mImageView.setImageResource(Integer.parseInt(vpRes.get(i)));
-            mLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            mImageView.setLayoutParams(mLayoutParams);
-            views.add(mImageView);
-        }
-
-        mViewPager.setAdapter(new FirstViewPagerAdapter(views));*/
-
-        //设置图片加载集合
-        //imageArray=new ArrayList<>();
-        // imageArray.add("http://img3.imgtn.bdimg.com/it/u=2758743658,581437775&fm=15&gp=0.jpg");
-        //设置图片标题集合
-        //imageTitle=new ArrayList<>();
-        //imageTitle.add("aaaaaaaaa");
-
-
-        //LogUtils.d("tag","图片个数:"+imageArray.size());
 
         //设置banner样式
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
@@ -484,27 +461,6 @@ public class FirstPagerFragment extends BaseFragment {
     //首页分类初始化
     private void initClassify() {
 
-     /*   mClassifyBeanFeiCui = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_fc), getString(R.string.feicui));
-        mClassifyBeanCaiBao = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_cb), getString(R.string.caibao));
-        mClassifyBeanDiamond = new ClassifyBean(String.valueOf(R.mipmap.home__icon_sel_zs), getString(R.string.zuanshi));
-        mClassifyBeanBoJin = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_kj), getString(R.string.huangbojin));
-        mClassifyBeanZhenZhu = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_zz), getString(R.string.zhenzhu));
-        mClassifyBeanSilver = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_ys), getString(R.string.yinshi));
-        mClassifyBeanHeTianYu = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_hty), getString(R.string.hetianyu));
-        mClassifyBeanOther = new ClassifyBean(String.valueOf(R.mipmap.home_icon_sel_qt), getString(R.string.other));
-//        mClassifyAdapter = new FirstClassifyAdapter(UiUtilities.getContex(), R.layout.item_first_classify, mClassifyData);
-        mClassifyData = new ArrayList<>();
-        mClassifyData.add(mClassifyBeanFeiCui);
-        mClassifyData.add(mClassifyBeanCaiBao);
-        mClassifyData.add(mClassifyBeanDiamond);
-        mClassifyData.add(mClassifyBeanBoJin);
-        mClassifyData.add(mClassifyBeanZhenZhu);
-        mClassifyData.add(mClassifyBeanSilver);
-        mClassifyData.add(mClassifyBeanHeTianYu);
-        mClassifyData.add(mClassifyBeanOther);
-        mClassifyAdapter = new FirstClassifyAdapter(UiUtilities.getContex(), R.layout.item_first_classify, mClassifyData, getActivity());
-        mRvFirstClassify.setLayoutManager(new GridLayoutManager(UiUtilities.getContex(), 4));
-        mRvFirstClassify.setAdapter(mClassifyAdapter);*/
         // 竖直方向的网格样式，每行2个Item
         GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(), 4, OrientationHelper.VERTICAL, false) {
             @Override
@@ -706,17 +662,7 @@ public class FirstPagerFragment extends BaseFragment {
 
     //    首页列表初始化
     private void initList() {
-        /*mFirstListAdaper = new FirstListAdaper(UiUtilities.getContex(), R.layout.item_first_list, list, getActivity());
-        mLvFirstList.setAdapter(mFirstListAdaper);*/
-        // 竖直方向的网格样式，每行2个Item
-       /* LinearLayoutManager mLayoutManager = new LinearLayoutManager(UiUtilities.getContex()) {
-            @Override
-            public boolean canScrollVertically() {
-                //return super.canScrollVertically();
-                // 直接禁止垂直滑动
-                return false;
-            }
-        };*/
+
         // 竖直方向的网格样式，每行1个Item
         GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(), 1, OrientationHelper.VERTICAL, false) {
             @Override
@@ -741,25 +687,6 @@ public class FirstPagerFragment extends BaseFragment {
 
     }
 
-/*    //        初始化网络,获取Fragment的数据
-    @Override
-    protected void init() {
-        OkHttpUtils
-                .get()
-                .url("https://dist.yumao168.com/api/recommended-products")
-                .build()
-                .execute(new ProductsCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), "网络连接失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(List<ProductsMode> response, int id) {
-                        initData(response);
-                    }
-                });
-    }*/
 
     @Override
     public LoadingPager.LoadingPagerEnum onInitData() {
@@ -767,14 +694,6 @@ public class FirstPagerFragment extends BaseFragment {
         return LoadingPager.LoadingPagerEnum.SUCCESS;
     }
 
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        // TODO: inflate a fragment view
-//        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-//        ButterKnife.bind(this, rootView);
-//        return rootView;
-//    }
 
     @Override
     protected void initListenner() {
@@ -785,7 +704,7 @@ public class FirstPagerFragment extends BaseFragment {
 
     //首页个人中心点击事件
     @OnClick({R.id.iv_first_item_person_topleft, R.id.iv_first_item_person_topright, R.id.tv_first_list_user_name,
-            R.id.tv_first_page_shanjiajieshao, R.id.tv_first_page_person_tel,R.id.search_et_input})
+            R.id.tv_first_page_shanjiajieshao, R.id.tv_first_page_person_tel, R.id.search_et_input})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_first_item_person_topleft:
@@ -833,11 +752,12 @@ public class FirstPagerFragment extends BaseFragment {
 
             case R.id.search_et_input:  //首页搜索栏跳转到搜索页
 
-                startActivity(new Intent(UiUtilities.getContex(), SearchActivity.class));
+                startActivity(new Intent(UiUtilities.getContex(), TestSearchActivity.class));
                 break;
 
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

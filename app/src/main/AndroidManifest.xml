@@ -197,6 +197,8 @@
 
         <activity android:name=".activity.SearchActivity">
         </activity>
+        <activity android:name=".activity.TestSearchActivity">
+        </activity>
     </application>
 
 </manifest>

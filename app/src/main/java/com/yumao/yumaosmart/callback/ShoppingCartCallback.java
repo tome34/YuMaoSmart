@@ -16,10 +16,12 @@ import okhttp3.Response;
 
 public abstract class ShoppingCartCallback extends Callback<List<ShoppingCartMode>> {
 
+    public String cartJsonData ;
+
     @Override
     public List<ShoppingCartMode> parseNetworkResponse(Response response, int id) throws Exception {
-        String s = response.body().string();
-        List<ShoppingCartMode> list= new Gson().fromJson(s, new TypeToken<ArrayList<ShoppingCartMode>>() {
+        cartJsonData = response.body().string();
+        List<ShoppingCartMode> list= new Gson().fromJson(cartJsonData, new TypeToken<ArrayList<ShoppingCartMode>>() {
         }.getType());
 
         return list;
