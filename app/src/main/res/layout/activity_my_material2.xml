@@ -100,16 +100,16 @@
     <LinearLayout
 
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_weight="0">
     <Button
         android:id="@+id/activity_my_material_button_back"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_margin="0dp"
-        android:background="@drawable/shap_ring"
+        android:background="@color/colorRed"
         android:textColor="#ffff"
-        android:textSize="20sp"
+        android:textSize="14sp"
         android:text="退出当前登录"/>
     </LinearLayout>
 </LinearLayout>

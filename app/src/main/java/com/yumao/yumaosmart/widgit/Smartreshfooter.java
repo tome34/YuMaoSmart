@@ -46,7 +46,7 @@ public class Smartreshfooter extends LinearLayout implements RefreshFooter {
         View headrView = LayoutInflater.from(context).inflate(R.layout.ani_footer_loading,this);
         mIvFooterLoading = (ImageView)headrView.findViewById(R.id.iv_footer_loading);
         mTvFooterFinish = (TextView) headrView.findViewById(R.id.tv_footer_finish);
-        mIvFooterLoading.setImageResource(R.mipmap.botton_loading_00000);
+        mIvFooterLoading.setImageResource(R.drawable.botton_loading_00000);
 
         //初始化动画
        /* mIvLoading.setImageResource(R.drawable.ani_header_loading);

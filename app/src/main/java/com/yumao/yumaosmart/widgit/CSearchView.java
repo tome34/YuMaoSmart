@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Desc:
@@ -105,15 +108,18 @@ public class CSearchView extends LinearLayout {
         mEtSearch.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN){
                 //如果点击了软键盘的搜索
                 if (keyCode == KeyEvent.KEYCODE_SEARCH||keyCode==KeyEvent.KEYCODE_ENTER) {
                     String trim = mEtSearch.getText().toString().trim();
                     mOnSearchViewListener.onSearch(trim);
                     // 隐藏软键盘
                     KeyboardUtils.hideSoftInput(mContext, mEtSearch);
-                    mListView.setVisibility(View.INVISIBLE);
-                    mLlContainer.setVisibility(View.INVISIBLE);
-                  //  mEtSearch.setText("");
+                    mOnSearchViewListener.cancel();
+                   // mListView.setVisibility(View.INVISIBLE);
+                    //mLlContainer.setVisibility(View.INVISIBLE);
+                    mEtSearch.setText(trim);
+                }
                 }
                 return false;
             }
@@ -138,13 +144,17 @@ public class CSearchView extends LinearLayout {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               //倒数
                 String s = mSearchHistory.get(mSearchHistory.size() - position - 1);
+                Log.d(TAG, "onItemClick: "+mSearchHistory.size() +",position:"+position);
+
                 mOnSearchViewListener.onSearch(s);
                 // 隐藏软键盘
                 KeyboardUtils.hideSoftInput(mContext, CSearchView.this);
-                mListView.setVisibility(View.INVISIBLE);
-                mLlContainer.setVisibility(View.INVISIBLE);
-                // mEtSearch.setText(s);
+                mOnSearchViewListener.cancel();
+               // mListView.setVisibility(View.INVISIBLE);
+                //mLlContainer.setVisibility(View.INVISIBLE);
+                mEtSearch.setText(s);
             }
         });
 
@@ -168,13 +178,14 @@ public class CSearchView extends LinearLayout {
                 switch (index) {
                     case 0:
                         int i = mSearchHistory.size() - position - 1;
+                        Log.d(TAG, "onMenuItemClick: "+i);
                         mSearchHistory.remove(i);
                         mAdapter.notifyDataSetChanged();
                         mOnSearchViewListener.onItemDel(i);
                         if (mSearchHistory.size()==0) {
                             //mLlContainer.setVisibility(View.INVISIBLE);
                             mEtSearch.clearFocus();
-                            KeyboardUtils.hideSoftInput(mContext, mEtSearch);
+                           // KeyboardUtils.hideSoftInput(mContext, mEtSearch); //隐藏软键盘
                         }
                         break;
                 }
@@ -205,8 +216,8 @@ public class CSearchView extends LinearLayout {
                 mSearchHistory.clear();
                 mAdapter.notifyDataSetChanged();
                 mOnSearchViewListener.clean();
-                mEtSearch.clearFocus();
-                KeyboardUtils.hideSoftInput(mContext, mEtSearch);
+                //mEtSearch.clearFocus();
+                //KeyboardUtils.hideSoftInput(mContext, mEtSearch);
                 break;
 
         }
@@ -217,7 +228,7 @@ public class CSearchView extends LinearLayout {
         mOnSearchViewListener = onSearchViewListener;
     }
 
-    public void hideView() {
+   /* public void hideView() {
         KeyboardUtils.hideSoftInput(mContext, CSearchView.this);
         mTvCancel.setVisibility(View.INVISIBLE);
         mEtSearch.setText("");
@@ -225,21 +236,21 @@ public class CSearchView extends LinearLayout {
         mListView.setVisibility(View.INVISIBLE);
         mEtSearch.clearFocus();
         mLlContainer.setVisibility(View.INVISIBLE);
-    }
+    }*/
 
     /**
-     * 更新关键字搜索
-     *
-     * @param list
-     */
-    public void updata(List<String> list) {
+      * 更新关键字搜索
+      *
+      * @param
+      */
+  /*   public void updata(List<String> list) {
         mLlContainer.setVisibility(View.GONE);
         mListView.setVisibility(View.VISIBLE);
         mSearchHistory.clear();
         mSearchHistory.addAll(list);
         mAdapter.setType(1);
         mAdapter.notifyDataSetChanged();
-    }
+    }*/
 
     public void showView() {
         mEtSearch.requestFocus();

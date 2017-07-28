@@ -13,7 +13,6 @@ import okhttp3.Response;
 public abstract class CategoriesContentCallback extends Callback<CategoriesContentMode> {
     @Override
     public CategoriesContentMode parseNetworkResponse(Response response, int id) throws Exception {
-
         String string = response.body().string();
         CategoriesContentMode categoriesContentMode = new Gson().fromJson(string, CategoriesContentMode.class);
 

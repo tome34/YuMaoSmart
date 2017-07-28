@@ -32,7 +32,7 @@ import com.yumao.yumaosmart.activity.LanMujingxuanActivity;
 import com.yumao.yumaosmart.activity.LoginActivity;
 import com.yumao.yumaosmart.activity.MainActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
-import com.yumao.yumaosmart.activity.TestSearchActivity;
+import com.yumao.yumaosmart.activity.SearchActivity;
 import com.yumao.yumaosmart.adapter.FirstClassifyAdapter;
 import com.yumao.yumaosmart.adapter.FirstListAdaper;
 import com.yumao.yumaosmart.adapter.FirstListRvAdaper;
@@ -242,6 +242,7 @@ public class FirstPagerFragment extends BaseFragment {
 
         } else {
             mIvFirstItemPersonTopright.setImageResource(R.mipmap.first_page_person_icon_touxiang);
+            mIvFirstItemPersonTopleft.setImageResource(R.mipmap.home_img_logo);
             mTvFirstListUserName.setVisibility(View.GONE);
         }
     }
@@ -461,7 +462,7 @@ public class FirstPagerFragment extends BaseFragment {
     //首页分类初始化
     private void initClassify() {
 
-        // 竖直方向的网格样式，每行2个Item
+        // 竖直方向的网格样式，每行4个Item
         GridLayoutManager mLayoutManager = new GridLayoutManager(UiUtilities.getContex(), 4, OrientationHelper.VERTICAL, false) {
             @Override
             public boolean canScrollVertically() {
@@ -486,6 +487,7 @@ public class FirstPagerFragment extends BaseFragment {
                     Intent intent = new Intent(UiUtilities.getContex(), FirstClassifyDetail.class);
                     intent.putExtra(Constant.CATEGORY_ID, mIdList.get(position));  //分类的id
                     intent.putExtra("vid", vId);//门店id
+                    intent.putExtra(Constant.SEARCH_TAGE,1); //跳转的类型
                     //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().startActivity(intent);
                 }
@@ -751,8 +753,9 @@ public class FirstPagerFragment extends BaseFragment {
                 break;
 
             case R.id.search_et_input:  //首页搜索栏跳转到搜索页
-
-                startActivity(new Intent(UiUtilities.getContex(), TestSearchActivity.class));
+                mIntent = new Intent(UiUtilities.getContex(), SearchActivity.class);
+                mIntent.putExtra(Constant.SEARCH_TAGE,2);  //从首页跳转
+                startActivity(mIntent);
                 break;
 
         }

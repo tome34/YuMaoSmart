@@ -16,21 +16,30 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.adapter.MyBaseFragmentAdapter;
+import com.yumao.yumaosmart.callback.UserCallback;
+import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.fragment.ClassifyFragment;
 import com.yumao.yumaosmart.fragment.FirstPagerFragment;
 import com.yumao.yumaosmart.fragment.PersonalCenterFragment;
 import com.yumao.yumaosmart.fragment.ShoppingCartFragment;
+import com.yumao.yumaosmart.manager.LoginManager;
+import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.LogUtils;
+import com.yumao.yumaosmart.utils.SPUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
 
 
 public class MainActivity extends AppCompatActivity implements TabHost.OnTabChangeListener {
@@ -81,10 +90,46 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                     LogUtils.d("gender="+UiUtilities.getUser().getGender());*/
         initStatusBar();
         init();
+       // refreshToken(); //刷新token
         initListenner();
 
         //从微信界面跳转到个人中心界面,activity跳转fragment
 
+
+    }
+
+    private void refreshToken() {
+
+        boolean loginState = LoginManager.getInstance().isLoginState(this);
+        if (loginState) {
+            String token = SPUtils.getString(UiUtilities.getContex(), Constant.TOKEN);
+
+            OkHttpUtils
+                    .post()
+                    .url(Constant.BASE_URL + "token")
+                    .addParams("X-API-TOKEN", token)
+                    .build()
+                    .execute(new UserCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            LogUtils.d("tag","更新token失败"+e);
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            LogUtils.d("tag", "更新token成功" + mCode);
+                            if (mCode == 200) {
+                                User userBean = new Gson().fromJson(response, User.class);
+                                String token = userBean.getToken();
+                                LogUtils.d("tag", "token:" + token);
+                                //保存token
+                                SPUtils.putString(UiUtilities.getContex(), Constant.TOKEN, token);
+                            } else {
+                                Toast.makeText(MainActivity.this, "code:"+mCode, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
 
     }
 

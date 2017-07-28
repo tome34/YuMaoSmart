@@ -19,10 +19,10 @@
             <ImageView
                 android:id="@+id/iv_first_item_person_topleft"
                 android:layout_width="105dp"
-                android:layout_height="90.3dp"
+                android:layout_height="90dp"
                 android:layout_marginLeft="17dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/yumao_mall"
+                android:src="@mipmap/home_img_logo"
                 />
         </RelativeLayout>
 

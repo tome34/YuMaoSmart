@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
@@ -17,7 +16,6 @@ import com.yumao.yumaosmart.activity.GoodsDetailActivity;
 import com.yumao.yumaosmart.bean.Shopping;
 import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.manager.CartManager;
-import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 import com.yumao.yumaosmart.widgit.CustomCarGoodsCounterView;
 
@@ -45,13 +43,19 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     private LayoutInflater mInflater;
     private Intent mIntent;
     public CheckInterface checkInterface;
+    private List<Shopping> mMemoryAll;
 
     public ShoppingCartAdapter() {
 
     }
+    public ShoppingCartAdapter(Context context ,List<Shopping> memoryAll) {
+        mInflater= LayoutInflater.from(context);
+        mContext = context ;
+        mMemoryAll = memoryAll ;
 
-    public ShoppingCartAdapter(Context context ,List<Integer> cartId,List<Integer> productId,List<String> productName
-     ,List<Integer> resalePrice ,List<Integer> price, List<String> thumbIv, List<Integer> quantity ,List<Boolean> checkBox) {
+    }
+   /* public ShoppingCartAdapter(Context context ,List<Integer> cartId,List<Integer> productId,List<String> productName
+     ,List<Integer> resalePrice ,List<Integer> price, List<String> thumbIv, List<Integer> quantity ) {
         mContext = context ;
         mCartId = cartId ;
         mProductId = productId;
@@ -60,9 +64,11 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         mPrice = price;
         mThumbIv = thumbIv ;
         mQuantity = quantity ;
-        mCheckBoxList = checkBox ;
+
         mInflater= LayoutInflater.from(context);
-    }
+
+    }*/
+
 
     @Override
     public MyViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -77,7 +83,71 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     @Override
     public void onBindViewHolder(final MyViewholder holder, final int position) {
 
-        Picasso.with(mContext).load(mThumbIv.get(position)).into(holder.mIvIcon);
+        String thumb = mMemoryAll.get(position).getProduct().getThumb();
+        Picasso.with(mContext).load(thumb).into(holder.mIvIcon);
+        holder.mIvIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIntent = new Intent(UiUtilities.getContex() ,GoodsDetailActivity.class);
+                mIntent.putExtra(Constant.PRODUCT_ID,mMemoryAll.get(position).getProduct().getId());  //产品id
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(mIntent);
+            }
+        });
+
+        holder.mTvTitle.setText(mMemoryAll.get(position).getProduct().getName());
+        if (mMemoryAll.get(position).getProduct().getResale_price() !=0){
+            holder.mTvPrice.setText(mMemoryAll.get(position).getProduct().getResale_price()+"元");
+        }else {
+            holder.mTvPrice.setText(mMemoryAll.get(position).getProduct().getPrice()+"元");
+        }
+        //数量
+        holder.mCarGoodsCounter.setGoodsNumber(mMemoryAll.get(position).count);
+
+        holder.mCheckBox.setChecked(mMemoryAll.get(position).isChecked);
+        holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mMemoryAll.get(position).isChecked = !mMemoryAll.get(position).isChecked;
+                holder.mCheckBox.setChecked(mMemoryAll.get(position).isChecked);
+                //更新购物车
+                CartManager.getInstance().updateGoodsCar(mMemoryAll.get(position));
+               // Shopping shopping = mMemoryAll.get(position);
+
+                EventBus.getDefault().post(new String());
+            }
+        });
+
+        //删除的点击事件
+        holder.mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(mContext, "删除"+mMemoryAll.get(position).getId(), Toast.LENGTH_SHORT).show();
+                CartManager.getInstance().deleteCartItem(mMemoryAll.get(position).getId());
+                //从内存移除,在刷新数据
+
+            }
+        });
+
+        //加减号
+        holder.mCarGoodsCounter.setGoodsNumber(mMemoryAll.get(position).count);
+        holder.mCarGoodsCounter.setUpdateGoodsNumberListener(new CustomCarGoodsCounterView.UpdateGoodsNumberListener() {
+            @Override
+            public void updateGoodsNumber(int number) {
+                    //LogUtils.d("加减号:"+number);
+                //updateGoodsCar
+                mMemoryAll.get(position).count = number;
+                    //LogUtils.d("内存:"+);
+
+                EventBus.getDefault().post(new String());
+            }
+        });
+
+
+
+
+       /* Picasso.with(mContext).load(mThumbIv.get(position)).into(holder.mIvIcon);
         //购物车图片点击事件
         holder.mIvIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,16 +190,17 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
                 EventBus.getDefault().post(new String());
             }
-        });
+        });*/
 
     }
 
     @Override
     public int getItemCount() {
-        return mCartId.size();
+        //return mCartId.size();
+        return mMemoryAll.size();
     }
 
-    public class MyViewholder extends RecyclerView.ViewHolder implements CustomCarGoodsCounterView.UpdateGoodsNumberListener {
+    public class MyViewholder extends RecyclerView.ViewHolder  {
 
         private final CheckBox mCheckBox;
         private final ImageView mIvIcon;
@@ -146,15 +217,11 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
             mDelete = (TextView) itemView.findViewById(R.id.car_goods_delete);
             mCarGoodsCounter = (CustomCarGoodsCounterView) itemView.findViewById(R.id.car_goods_counter);
-
-
-            mCarGoodsCounter.setUpdateGoodsNumberListener(this);
-        }
-
-        @Override
-        public void updateGoodsNumber(int number) {
+            //mCarGoodsCounter.setGoodsNumber(3);
 
         }
+
+
     }
 
     /**

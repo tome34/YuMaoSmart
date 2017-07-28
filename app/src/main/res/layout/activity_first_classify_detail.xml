@@ -10,13 +10,80 @@
     android:background="@color/graywhite"
     tools:context="com.yumao.yumaosmart.activity.FirstClassifyDetail">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:background="#39cbec"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        >
-    </android.support.v7.widget.Toolbar>
+        android:layout_height="45dp"
+        android:background="@color/zitiblack"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/classify_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/cart_icon_back"/>
+
+        <LinearLayout
+            android:id="@+id/search_et_input"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:background="@drawable/search_view_shape"
+            android:orientation="horizontal"
+            android:visibility="visible">
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/search_icon"/>
+            <TextView
+
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:hint="商品搜索"
+                android:textSize="12dp"
+                android:textColorHint="@color/gray"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/search_et_input2"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="center"
+            android:background="@drawable/search_view_shape"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/iv_search2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/search_icon"/>
+            <TextView
+                android:id="@+id/et_search"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="1dp"
+                android:hint="商品搜索"
+                android:textSize="12dp"
+                android:textColorHint="@color/gray"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+    </LinearLayout>
 
     <!--下拉刷新-->
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -39,53 +106,122 @@
             android:layout_height="wrap_content">
 
         </com.yumao.yumaosmart.widgit.SmartreshHeader>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
+
+        <LinearLayout
+            android:id="@+id/search_empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/search_empty_icon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:textColor="@color/zitiblack"
+                android:textSize="14sp"
+                android:text="没有相关商品"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/liebiao_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
             <!--排序筛选-->
 
-            <RadioGroup
-                android:id="@+id/radiogroup_first_classify_detail"
+            <LinearLayout
+                android:id="@+id/first_classify_detail_layout"
                 android:layout_width="match_parent"
                 android:layout_height="28dp"
                 android:orientation="horizontal"
+                android:background="@color/graywhite"
                 android:visibility="gone">
 
-                <RadioButton
+                <Button
                     android:id="@+id/btn_first_classify_detail_update"
-                    style="@style/redTextButton"
-                    android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:button="@null"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@null"
                     android:gravity="center"
-                    android:text="更新时间"/>
+                    android:text="更新时间"
+                    android:textColor="@color/zitiblack"
+                    android:textSize="14sp"
+                    />
 
-                <RadioButton
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/graywhite"
+                    android:gravity="center">
+
+               <Button
                     android:id="@+id/btn_first_classify_detail_price"
-                    style="@style/redTextButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:button="@null"
-                    android:drawableRight="@drawable/first_classify_detail_sortprice"
+                    android:background="@null"
                     android:gravity="center"
-                    android:text="价格"/>
+                    android:text="价格"
+                    android:textColor="@color/zitiblack"
+                    android:textSize="14sp"/>
 
-                <RadioButton
-                    android:id="@+id/btn_first_classify_detail_choose"
-                    style="@style/redTextButton"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/classify_detail_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/graywhite"
+                        android:src="@drawable/warehouse_icon_back"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="40dp"
-                    android:button="@null"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                <Button
+                    android:id="@+id/btn_first_classify_detail_choose"
+                    android:layout_height="match_parent"
+                    android:layout_width="55dp"
                     android:drawableRight="@drawable/first_classify_detail_choose"
+                    android:background="@null"
                     android:gravity="center"
-                    android:text="筛选"/>
-            </RadioGroup>
+                    android:text="筛选"
+                    android:textColor="@color/zitiblack"
+                    android:textSize="14sp"/>
+
+                    </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                />
+
+            </LinearLayout>
+
             <!--分类筛选-->
             <com.yumao.yumaosmart.widget.CustomRadioGroup
                 android:id="@+id/customRadioGroup"
@@ -102,6 +238,8 @@
                 android:layout_marginTop="5dp">
 
             </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
         </LinearLayout>
         //上拉加载更多
           <!--  <com.scwang.smartrefresh.layout.footer.ClassicsFooter

@@ -45,7 +45,7 @@ public class SmartreshHeader extends LinearLayout implements RefreshHeader {
         View headrView = LayoutInflater.from(context).inflate(R.layout.ani_header_loading,this);
         mIvLoading = (ImageView)headrView.findViewById(R.id.iv_loading);
         mTvFinish = (TextView) headrView.findViewById(R.id.tv_finish);
-        mIvLoading.setImageResource(R.mipmap.loading_00000);
+        mIvLoading.setImageResource(R.drawable.loading_00000);
 
         //初始化动画
        /* mIvLoading.setImageResource(R.drawable.ani_header_loading);
@@ -93,15 +93,15 @@ public class SmartreshHeader extends LinearLayout implements RefreshHeader {
     @Override
     public int onFinish(RefreshLayout layout, boolean success) {
         mDrawable.stop();
-        mIvLoading.setVisibility(GONE);
-        mTvFinish.setVisibility(VISIBLE);
+        //mIvLoading.setVisibility(GONE);
+        //mTvFinish.setVisibility(VISIBLE);
         if (success) {  //刷新成功
 
-            mTvFinish.setText("加载完成");
+            mTvFinish.setText("刷新完成");
 
         } else {       //刷新失败
 
-            mTvFinish.setText("加载失败");
+            mTvFinish.setText("刷新失败");
         }
         return 500;//延迟500毫秒之后再弹回
     }
@@ -114,15 +114,17 @@ public class SmartreshHeader extends LinearLayout implements RefreshHeader {
             case PullDownToRefresh: //下拉刷新
                 //初始化动画
                 mIvLoading.setVisibility(VISIBLE);
-                mTvFinish.setVisibility(GONE);
+                mTvFinish.setVisibility(VISIBLE);
+                mTvFinish.setText("下拉刷新");
                 mIvLoading.setImageResource(R.drawable.ani_header_loading);
                 mDrawable = (AnimationDrawable) mIvLoading.getDrawable();
                 break;
             case Refreshing:        //正在刷新
                 mDrawable.start();
+                mTvFinish.setText("正在刷新");
                 break;
             case ReleaseToRefresh:  //释放立刻刷新
-
+                mTvFinish.setText("释放立刻刷新");
                 break;
         }
     }

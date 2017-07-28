@@ -1,5 +1,6 @@
 package com.yumao.yumaosmart.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Desc:
@@ -54,6 +57,7 @@ public class SearchViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.updata(mSearchHistory.get(mSearchHistory.size() - position - 1));
+        Log.d(TAG, "getView: "+mSearchHistory.size() +",position1:"+position);
         return convertView;
     }
 
@@ -74,7 +78,7 @@ public class SearchViewAdapter extends BaseAdapter {
         public void updata(String s) {
             mTvHistory.setText(s);
             LogUtils.d("条目内容:"+s);
-            mIvType.setImageResource(mType==0?R.drawable.cart_icon_sel:R.drawable.ic_search);
+            //mIvType.setImageResource(mType==0?R.drawable.history:R.drawable.history);
          //
         }
     }

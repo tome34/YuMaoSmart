@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.inter.OnItemClickListener;
+import com.yumao.yumaosmart.manager.CartManager;
+import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
 
 import java.util.List;
@@ -29,6 +32,8 @@ public class LanMujiangXuanAdapter extends RecyclerView.Adapter<LanMujiangXuanAd
     List<Integer> mResalePriceList ; //产品的转售价格,以转卖价优先
     List<String> mNumberList ;//产品编号
 
+    List<Integer> mProductIdList;     //产品id
+
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener = null;
 
@@ -36,13 +41,16 @@ public class LanMujiangXuanAdapter extends RecyclerView.Adapter<LanMujiangXuanAd
     public LanMujiangXuanAdapter() {
     }
 
-    public LanMujiangXuanAdapter(Context context, List<String> imageList,List<String> tiltisList,List<Integer> resalePriceList,List<Integer> priceList ,List<String> number){
+    public LanMujiangXuanAdapter(Context context, List<String> imageList,List<String> tiltisList,List<Integer> resalePriceList,List<Integer> priceList ,List<String> number
+    ,List<Integer> productIdList){
         mContext = context ;
         mImageList = imageList ;
         mTiltisList = tiltisList;
         mResalePriceList = resalePriceList;
         mPriceList = priceList ;
         mNumberList = number ;
+
+        mProductIdList = productIdList ;
         mInflater= LayoutInflater.from(context);
 
     }
@@ -60,7 +68,7 @@ public class LanMujiangXuanAdapter extends RecyclerView.Adapter<LanMujiangXuanAd
     }
 
     @Override
-    public void onBindViewHolder(MyViewholder holder, int position) {
+    public void onBindViewHolder(MyViewholder holder, final int position) {
 
        // holder.mIconIv.setImageResource(mImageList.get(position));
         Picasso.with(mContext).load(mImageList.get(position)).into(holder.mIconIv);
@@ -73,6 +81,14 @@ public class LanMujiangXuanAdapter extends RecyclerView.Adapter<LanMujiangXuanAd
         }
 
         holder.mNumber.setText("编号: "+mNumberList.get(position));
+
+        holder.mToShopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CartManager.getInstance().postCartItem(mProductIdList.get(position),1);
+                    LogUtils.d("加入购物车");
+            }
+        });
 
         //将position保存在itemView的tag中,以便点击时进行获取
         holder.itemView.setTag(position);
@@ -97,6 +113,7 @@ public class LanMujiangXuanAdapter extends RecyclerView.Adapter<LanMujiangXuanAd
         public TextView mPrice;
         public ImageView mIconIv;
         public TextView mNumber;
+        private final LinearLayout mToShopping;
 
         public MyViewholder(View itemView) {
             super(itemView);
@@ -104,6 +121,7 @@ public class LanMujiangXuanAdapter extends RecyclerView.Adapter<LanMujiangXuanAd
             mName = (TextView) itemView.findViewById(R.id.tv_item_activity_first_classif_detail_name);
             mPrice = (TextView) itemView.findViewById(R.id.tv_item_activity_first_classif_detail_price);
             mNumber = (TextView) itemView.findViewById(R.id.tv_item_activity_first_classif_detail_numtitle);
+            mToShopping = (LinearLayout) itemView.findViewById(R.id.item_classify_detail__shopping);
 
 
             DisplayMetrics dm = new DisplayMetrics();

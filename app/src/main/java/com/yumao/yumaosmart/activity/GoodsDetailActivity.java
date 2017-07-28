@@ -38,6 +38,7 @@ import com.yumao.yumaosmart.manager.LoginManager;
 import com.yumao.yumaosmart.manager.UserInformationManager;
 import com.yumao.yumaosmart.mode.GoodsDetailMode;
 import com.yumao.yumaosmart.mode.User;
+import com.yumao.yumaosmart.utils.Arith;
 import com.yumao.yumaosmart.utils.GetNunberUtils;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
@@ -170,6 +171,7 @@ public class GoodsDetailActivity extends BaseItemActivity {
     private GoogleApiClient mClient;
     private boolean mMediasFlas = false;
     private String mAddress;
+    private int mNumberCout;
 
 
     @Override
@@ -381,18 +383,19 @@ public class GoodsDetailActivity extends BaseItemActivity {
 
         //设置标题
         mTvActivityGoodsDetailGoodsname.setText(mProductName);
+
         //设置产品价格
         if (resalePrice == 0) {
-            mTvActivityGoodsDetailGoodsprice.setText("价格: " + price + "元");
+            mTvActivityGoodsDetailGoodsprice.setText("价格:" + price + "元");
         } else {
-            mTvActivityGoodsDetailGoodsprice.setText("价格: " + resalePrice + "元");
+            mTvActivityGoodsDetailGoodsprice.setText("价格:" + resalePrice + "元");
         }
 
         //设置总价
         if (resalePrice == 0) {
-            mTvActivityGoodsDetailTotalprice.setText(" " + price + "元");
+            mTvActivityGoodsDetailTotalprice.setText(price + "元");
         } else {
-            mTvActivityGoodsDetailTotalprice.setText(" " + resalePrice + "元");
+            mTvActivityGoodsDetailTotalprice.setText(resalePrice + "元");
         }
 
         //条码
@@ -402,6 +405,29 @@ public class GoodsDetailActivity extends BaseItemActivity {
 
         //设置底部地址
         mTvActivityGoodsDetailAddress.setText("地址: " + mAddress);
+
+        //价格加减总价
+        mAmountView.setUpdateGoodsNumberListener(new CustomCarGoodsCounterView.UpdateGoodsNumberListener() {
+            @Override
+            public void updateGoodsNumber(int number) {
+                //LogUtils.d("加减号:"+number);
+
+                mNumberCout = number;
+
+                //获取产品的价格
+                String Sprice = mTvActivityGoodsDetailGoodsprice.getText().toString();
+                String substring = Sprice.substring(3, Sprice.length()-1);
+
+                LogUtils.d("总价格1:"+substring);
+                double dbSprice = Double.parseDouble(substring);
+                //LogUtils.d("总价格2:"+dbSprice);
+                double mul = Arith.mul(number, dbSprice);
+
+                //LogUtils.d("总价格:"+mul);
+                mTvActivityGoodsDetailTotalprice.setText(mul +"元");
+
+            }
+        });
 
 
         //参数的recyclerview
@@ -414,6 +440,7 @@ public class GoodsDetailActivity extends BaseItemActivity {
                 return false;
             }
         };
+
         //设置管理器
         mRvSpecifications.setLayoutManager(mLayoutManager);
         //设置adapter
@@ -598,8 +625,8 @@ public class GoodsDetailActivity extends BaseItemActivity {
                 } else {
                     Toast.makeText(this, "库存不足加入购车失败", Toast.LENGTH_SHORT).show();
                 }*/
-                CartManager.getInstance().postCartItem(mProductId,1);
-                    LogUtils.d("点击了加入购物车"+mProductId);
+                CartManager.getInstance().postCartItem(mProductId,mNumberCout);
+                   // LogUtils.d("点击了加入购物车"+mProductId);
 
                 break;
 

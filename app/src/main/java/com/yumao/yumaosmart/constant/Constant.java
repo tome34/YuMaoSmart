@@ -52,4 +52,7 @@ public interface Constant  {
     //搜索结果keyword
     public static final String SEARCH_RESULT ="search_result";
 
+    //搜索跳转类型
+    public static final String SEARCH_TAGE ="search_tage";
+
 }

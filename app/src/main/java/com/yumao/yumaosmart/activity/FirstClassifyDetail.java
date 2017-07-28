@@ -1,23 +1,19 @@
 package com.yumao.yumaosmart.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -26,12 +22,13 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.adapter.LanMujiangXuanAdapter;
-import com.yumao.yumaosmart.callback.CategoriesContentCallback;
 import com.yumao.yumaosmart.callback.LanMuJingXuanCallback;
 import com.yumao.yumaosmart.constant.Constant;
 import com.yumao.yumaosmart.inter.OnItemClickListener;
-import com.yumao.yumaosmart.mode.CategoriesContentMode;
+import com.yumao.yumaosmart.manager.LoginManager;
+import com.yumao.yumaosmart.manager.UserInformationManager;
 import com.yumao.yumaosmart.mode.LanMuJingXuanBean;
+import com.yumao.yumaosmart.mode.User;
 import com.yumao.yumaosmart.utils.GetNunberUtils;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
@@ -48,7 +45,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class FirstClassifyDetail extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class FirstClassifyDetail extends AppCompatActivity {
 
 
     @BindView(R.id.activity_first_classify_detail)
@@ -56,51 +53,68 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
     @BindView(R.id.btn_first_classify_detail_update)
-    RadioButton mBtnFirstClassifyDetailUpdate;
+    Button mBtnFirstClassifyDetailUpdate;
     @BindView(R.id.btn_first_classify_detail_price)
-    RadioButton mBtnFirstClassifyDetailPrice;
+    Button mBtnFirstClassifyDetailPrice;
     @BindView(R.id.btn_first_classify_detail_choose)
-    RadioButton mBtnFirstClassifyDetailChoose;
-    @BindView(R.id.radiogroup_first_classify_detail)
-    RadioGroup mRadiogroupFirstClassifyDetail;
+    Button mBtnFirstClassifyDetailChoose;
+
     @BindView(R.id.smartLayout)
     SmartRefreshLayout mSmartLayout;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    @BindView(R.id.iv_search)
+    ImageView mIvSearch;
+    @BindView(R.id.search_et_input)
+    LinearLayout mSearchEtInput;
+    @BindView(R.id.classify_back)
+    ImageView mClassifyBack;
+    @BindView(R.id.search_empty_layout)
+    LinearLayout mSearchEmptyLayout;
+    @BindView(R.id.liebiao_layout)
+    LinearLayout mLiebiaoLayout;
+    @BindView(R.id.classify_detail_iv)
+    ImageView mClassifyDetailIv;
+    @BindView(R.id.text)
+    TextView mText;
+    @BindView(R.id.first_classify_detail_layout)
+    LinearLayout mFirstClassifyDetailLayout;
+    @BindView(R.id.customRadioGroup)
+    CustomRadioGroup mCustomRadioGroup;
+    @BindView(R.id.et_search)
+    TextView mEtSearch;
+    @BindView(R.id.search_et_input2)
+    LinearLayout mSearchEtInput2;
 
 
-
-    private String mText;
-    private List<String> mTextList = new ArrayList<>();
-
-    private List<String> categry = new ArrayList<>();
-    private CustomRadioGroup mCustomRadioGroup;
-    private List mData = new ArrayList();
-    private RadioButton mRadioButton;
-    private List<CategoriesContentMode.ChildrenBeanX> mChildren;
-    private CategoriesContentMode.ChildrenBeanX mChildrenBeanX;
-    private Map<String, String> map = new HashMap<>();
     private int mCategoryId;
     private int mVid;
     private Intent mIntent;
 
     private int page;
-    private String mSortBy = "id";
-    private String mOrder = "DESC";
-    private int mShaiXuan = 1;  //筛选,默认为1 ;
+
+    private String mSortBy = "id";  //筛选,默认id
+    private String mOrder = "DESC"; //筛选,默认降序
+    private int mSX_order = 1;  //筛选:降序,默认为1 ;
 
     List<String> mImageList; //栏目精选图片集合
     List<String> mTiltisList; //栏目精选标题集合
-    List<Integer> mIdList;     //产品id
+    List<Integer> mProductIdList;     //产品id
     List<Integer> mPriceList;  //产品价格
     List<Integer> mProductCostList; //产品的成本价
     List<Integer> mResalePriceList; //产品的转售价格,以转卖价优先
     List<String> mNumberList;//产品编号
 
-    private SearchView searchView;
+    Map<String, String> mMapParams;   //网络请求参数
+
+    //判断从哪里跳转过来的,有三种情况
+    private int CATEGORY_TO = 1;    //分类跳转
+    private int HOME_SEARCH = 2;   //从首页搜索跳转
+    private int CATEGORY_SEARCH = 3; //分类搜索跳转
+
+    private String mSearchResult;
 
 
     private LanMujiangXuanAdapter mAdapter;
+    private int mIntExtraTage;
 
 
     @Override
@@ -115,73 +129,9 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
         //触发自动加载
         mSmartLayout.autoRefresh(10);
 
-        //顶部toolbar搜索
-        initSearchView();
     }
 
-    private void initSearchView() {
-
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(R.mipmap.back);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // return super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.search_toolbar, menu);
-        MenuItem menuItem = menu.findItem(R.id.search);//
-        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);//加载searchview
-        searchView.setOnQueryTextListener(this);//为搜索框设置监听事件
-        searchView.setSubmitButtonEnabled(true);//设置是否显示搜索按钮
-        searchView.setQueryHint("查找");//设置提示信息
-        searchView.setIconifiedByDefault(true);//设置搜索默认为图标
-        return true;
-
-    }
-
-    //搜索监听
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        //在输入法按下搜索或者回车时，会调用次方法，在这里可以作保存历史记录的操作，
-        // 我这里用了 sharepreference保存
-
-        Toast.makeText(this, "保存" + query, Toast.LENGTH_SHORT).show();
-
-
-        //.searchKnowledge(query);
-
-
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        Intent intent = new Intent(this, SearchViewActivity.class);
-        startActivity(intent);
-        //输入字符则回调此方法
-        //Toast.makeText(this,"154",Toast.LENGTH_SHORT).show();
-        if (TextUtils.isEmpty((newText))) {
-            //mListview.clearTextFilter();
-        } else {
-            //mListview.setFilterText(newText);
-        }
-        return true;
-    }
-
+    //下拉刷新
     private void Smartrefresh() {
 
         mSmartLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -207,36 +157,101 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
     private void UpDataView() {
         initStatusBar();
         setCategoryId();
-        ClassifyData();  //加载数据
-        init();
+
     }
 
 
     //初始化mPostion和mCategoryId
     private void setCategoryId() {
-        /*Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        mCategoryId = extras.getInt("mCategoryId");*/
-        Intent intent = getIntent();
-        mCategoryId = intent.getIntExtra(Constant.CATEGORY_ID, -1);
-        mVid = intent.getIntExtra("vid", 1);
-        LogUtils.d("id:" + mCategoryId + " " + mVid);
 
+        mLiebiaoLayout.setVisibility(View.VISIBLE);
+        mSearchEmptyLayout.setVisibility(View.GONE);
+
+        page = 1;      //页数,默认第一页
+
+        if (mSX_order == 2) {
+            mOrder = "ASC";
+        }
+
+        //判断是否登录
+        if (LoginManager.getInstance().isLoginState(UiUtilities.getContex())) {
+            User userInformation = UserInformationManager.getInstance().getUserInformation();
+            int id = userInformation.getVendor().getId();
+            LogUtils.d("tag", "" + id);
+            mVid = id;
+        } else {
+            mVid = 1;
+        }
+
+        Intent intent = getIntent();
+        mIntExtraTage = intent.getIntExtra(Constant.SEARCH_TAGE, -1);
+
+        LogUtils.d("tag", "搜索标注:" + mIntExtraTage);
+
+        if (mIntExtraTage == CATEGORY_TO) { //从分类跳转1
+
+            mSearchEtInput.setVisibility(View.VISIBLE);
+            mSearchEtInput2.setVisibility(View.GONE);  //有编辑框
+
+            mCategoryId = intent.getIntExtra(Constant.CATEGORY_ID, -1);
+            //mVid = intent.getIntExtra("vid", 1);
+            //LogUtils.d("id:" + mCategoryId + " " + mVid);
+
+            mMapParams = new HashMap<>();  //网络请求参数集合
+            mMapParams.put("category_id", mCategoryId + "");
+            mMapParams.put("sort_by", mSortBy);
+            mMapParams.put("page", String.valueOf(page));
+            mMapParams.put("order", mOrder);
+
+        } else if (mIntExtraTage == HOME_SEARCH) {  //从首页搜索2
+            //搜索结果
+            mSearchResult = intent.getStringExtra(Constant.SEARCH_RESULT);
+
+            mSearchEtInput.setVisibility(View.GONE);
+            mSearchEtInput2.setVisibility(View.VISIBLE);
+            mEtSearch.setText(mSearchResult);
+
+            mMapParams = new HashMap<>();  //网络请求参数集合
+            mMapParams.put("keyword", mSearchResult);
+            mMapParams.put("sort_by", mSortBy);
+            mMapParams.put("page", String.valueOf(page));
+            mMapParams.put("order", mOrder);
+
+        } else if (mIntExtraTage == CATEGORY_SEARCH) {  //从分类搜索3
+            //搜索结果
+            mSearchResult = intent.getStringExtra(Constant.SEARCH_RESULT);
+            //分类id
+            mCategoryId = intent.getIntExtra(Constant.CATEGORY_ID, -1);
+            LogUtils.d("分类的id:" + mCategoryId);
+
+            mSearchEtInput.setVisibility(View.GONE);
+            mSearchEtInput2.setVisibility(View.VISIBLE);
+            mEtSearch.setText(mSearchResult);
+
+            mMapParams = new HashMap<>();  //网络请求参数集合
+            mMapParams.put("keyword", mSearchResult);
+            mMapParams.put("category_id", mCategoryId + "");
+            mMapParams.put("sort_by", mSortBy);
+            mMapParams.put("page", String.valueOf(page));
+            mMapParams.put("order", mOrder);
+
+        } else {
+            LogUtils.d("跳转有问题了");
+        }
+
+        ClassifyData();  //加载数据
+        LogUtils.d("tag", "vid:" + mVid + ",分类id:" + mCategoryId + ",keyword:" + mSearchResult);
     }
 
     private void ClassifyData() {
 
 
-        page = 1;      //页数
         mSmartLayout.setLoadmoreFinished(false);
 
-        if (mShaiXuan == 1) {
-            mOrder = "DESC";
-        }
         //mSortBy = "id"; //筛选类型
         mImageList = new ArrayList<>(); //栏目精选图片集合
         mTiltisList = new ArrayList<>(); //栏目精选标题集合
-        mIdList = new ArrayList<>();     //产品id
+        mProductIdList = new ArrayList<>();     //产品id
         mPriceList = new ArrayList<>();  //产品价格
         mProductCostList = new ArrayList<>(); //产品的成本价
         mResalePriceList = new ArrayList<>(); //产品的转售价格,以转卖价优先
@@ -246,17 +261,18 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
         OkHttpUtils
                 .get()
                 .url(Constant.BASE_URL + "vendors/" + mVid + "/vendor-products")  //栏目二级详情页
-                .addParams("category_id", mCategoryId + "")
-                .addParams("page", String.valueOf(page))
-                .addParams("sort_by", mSortBy)
-                .addParams("order", mOrder)
+                .params(mMapParams)
                 .build()
                 .execute(new LanMuJingXuanCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         LogUtils.d("列表页失败");
-                        mRadiogroupFirstClassifyDetail.setVisibility(View.VISIBLE);
-                        mSmartLayout.finishRefresh(2000);
+                        //mRadiogroupFirstClassifyDetail.setVisibility(View.GONE);
+                        mSmartLayout.finishRefresh(1000);
+                        mLiebiaoLayout.setVisibility(View.GONE);
+                        mSearchEmptyLayout.setVisibility(View.VISIBLE);
+
+
                     }
 
                     @Override
@@ -266,7 +282,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
 
                             mImageList.add(response.get(i).getThumb()); //图片
                             mTiltisList.add(response.get(i).getName());
-                            mIdList.add(response.get(i).getId());
+                            mProductIdList.add(response.get(i).getId());
                             mPriceList.add(response.get(i).getPrice());
                             mProductCostList.add(response.get(i).getProduct_cost());
                             mResalePriceList.add(response.get(i).getResale_price());
@@ -276,14 +292,14 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
 
                             String number = GetNunberUtils.getNumber(a);
                             LogUtils.d("编号:" + number);
-                            int length = String.valueOf(mIdList.get(i)).length();
+                            int length = String.valueOf(mProductIdList.get(i)).length();
                             StringBuffer stringBuffer = new StringBuffer();
                             if (length < 8) {
                                 int i1 = 8 - length;
                                 for (int j = 0; j < i1; j++) {
                                     stringBuffer.append(0);
                                 }
-                                stringBuffer.append(mIdList.get(i));
+                                stringBuffer.append(mProductIdList.get(i));
                             }
                             LogUtils.d("最终编号:" + number + stringBuffer);
                             String s = number + stringBuffer;
@@ -291,7 +307,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
                             //编号加入集合
                             mNumberList.add(s);
                         }
-                        mRadiogroupFirstClassifyDetail.setVisibility(View.VISIBLE);
+                        mFirstClassifyDetailLayout.setVisibility(View.VISIBLE);
                         initView(); //等数据加载完,初始化视图
                         mSmartLayout.finishRefresh(2000);
                     }
@@ -305,7 +321,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
         //设置管理器
         mRecyclerview.setLayoutManager(mLayoutManager);
         //设置adapter
-        mAdapter = new LanMujiangXuanAdapter(FirstClassifyDetail.this, mImageList, mTiltisList, mResalePriceList, mPriceList, mNumberList);
+        mAdapter = new LanMujiangXuanAdapter(FirstClassifyDetail.this, mImageList, mTiltisList, mResalePriceList, mPriceList, mNumberList, mProductIdList);
 
         mRecyclerview.setAdapter(mAdapter);
 
@@ -314,7 +330,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
             public void onItenClick(View view, int position) {
                 Toast.makeText(UiUtilities.getContex(), "被点击了" + position, Toast.LENGTH_SHORT).show();
                 mIntent = new Intent(UiUtilities.getContex(), GoodsDetailActivity.class);
-                mIntent.putExtra(Constant.PRODUCT_ID, mIdList.get(position));  //产品id
+                mIntent.putExtra(Constant.PRODUCT_ID, mProductIdList.get(position));  //产品id
                 startActivity(mIntent);
             }
 
@@ -352,7 +368,7 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
 
                             mImageList.add(response.get(i).getThumb()); //图片
                             mTiltisList.add(response.get(i).getName());
-                            mIdList.add(response.get(i).getId());
+                            mProductIdList.add(response.get(i).getId());
                             mPriceList.add(response.get(i).getPrice());
                             mProductCostList.add(response.get(i).getProduct_cost());
                             mResalePriceList.add(response.get(i).getResale_price());
@@ -362,14 +378,14 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
 
                             String number = GetNunberUtils.getNumber(a);
                             LogUtils.d("编号:" + number);
-                            int length = String.valueOf(mIdList.get(i)).length();
+                            int length = String.valueOf(mProductIdList.get(i)).length();
                             StringBuffer stringBuffer = new StringBuffer();
                             if (length < 8) {
                                 int i1 = 8 - length;
                                 for (int j = 0; j < i1; j++) {
                                     stringBuffer.append(0);
                                 }
-                                stringBuffer.append(mIdList.get(i));
+                                stringBuffer.append(mProductIdList.get(i));
                             }
                             LogUtils.d("最终编号:" + number + stringBuffer);
                             String s = number + stringBuffer;
@@ -393,12 +409,19 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
     }
 
 
-    @OnClick({R.id.btn_first_classify_detail_update, R.id.btn_first_classify_detail_price, R.id.btn_first_classify_detail_choose})
+    @OnClick({R.id.btn_first_classify_detail_update, R.id.btn_first_classify_detail_price, R.id.btn_first_classify_detail_choose
+            , R.id.classify_back, R.id.search_et_input, R.id.search_et_input2})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_first_classify_detail_update:  //更新时间筛选
 
+                mBtnFirstClassifyDetailUpdate.setTextColor(Color.rgb(237, 86, 80));
+                mBtnFirstClassifyDetailPrice.setTextColor(Color.rgb(39, 39, 39));
+                mBtnFirstClassifyDetailChoose.setTextColor(Color.rgb(39, 39, 39));
+                mClassifyDetailIv.setImageResource(R.drawable.warehouse_icon_back);
+
                 mSortBy = "created_on_utc";         //筛选条件
+                mOrder = "DESC";
                 //触发自动加载
                 mSmartLayout.autoRefresh();
 
@@ -406,12 +429,19 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
                 break;
             case R.id.btn_first_classify_detail_price:   //价格筛选
 
+                mBtnFirstClassifyDetailUpdate.setTextColor(Color.rgb(39, 39, 39));
+                mBtnFirstClassifyDetailPrice.setTextColor(Color.rgb(237, 86, 80));
+                mBtnFirstClassifyDetailChoose.setTextColor(Color.rgb(39, 39, 39));
+
+
                 mSortBy = "price";         //筛选条件
-                if (mShaiXuan == 1) {
-                    mShaiXuan = 2;
+                if (mSX_order == 1) {
+                    mClassifyDetailIv.setImageResource(R.drawable.warehouse_icon_back2);
+                    mSX_order = 2;
                     mOrder = "ASC";  //升序(从小到大)
-                } else if (mShaiXuan == 2) {
-                    mShaiXuan = 1;
+                } else if (mSX_order == 2) {
+                    mClassifyDetailIv.setImageResource(R.drawable.warehouse_icon_back3);
+                    mSX_order = 1;
                     mOrder = "DESC";  //升序(从小到大)
                 } else {
 
@@ -422,6 +452,67 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
                 break;
             case R.id.btn_first_classify_detail_choose:
 
+                mBtnFirstClassifyDetailUpdate.setTextColor(Color.rgb(39, 39, 39));
+                mBtnFirstClassifyDetailPrice.setTextColor(Color.rgb(39, 39, 39));
+                mBtnFirstClassifyDetailChoose.setTextColor(Color.rgb(237, 86, 80));
+                mClassifyDetailIv.setImageResource(R.drawable.warehouse_icon_back);
+
+                break;
+
+            case R.id.classify_back:  //返回
+                LogUtils.d("返回");
+                finish();
+
+                break;
+
+            case R.id.search_et_input:  //搜索
+                if (mIntExtraTage == CATEGORY_TO) {  //从分类跳转
+                    mIntent = new Intent(FirstClassifyDetail.this, SearchActivity.class);
+                    mIntent.putExtra(Constant.SEARCH_TAGE, 3);
+                    mIntent.putExtra(Constant.CATEGORY_ID, mCategoryId); //分类id
+                    startActivity(mIntent);
+
+                } else if (mIntExtraTage == HOME_SEARCH) {
+                    finish();
+                    mIntent = new Intent(FirstClassifyDetail.this, SearchActivity.class);
+                    mIntent.putExtra(Constant.SEARCH_TAGE, 2); //从首页跳转
+                    startActivity(mIntent);
+
+                } else if (mIntExtraTage == CATEGORY_SEARCH) {
+                    finish();
+                    mIntent = new Intent(FirstClassifyDetail.this, SearchActivity.class);
+                    mIntent.putExtra(Constant.SEARCH_TAGE, 3);  //从分类搜索跳转
+                    mIntent.putExtra(Constant.CATEGORY_ID, mCategoryId); //分类id
+                    startActivity(mIntent);
+                } else {
+
+                }
+
+
+                break;
+            case R.id.search_et_input2:  //搜索2,有编辑框
+                if (mIntExtraTage == CATEGORY_TO) {  //从分类跳转
+                    mIntent = new Intent(FirstClassifyDetail.this, SearchActivity.class);
+                    mIntent.putExtra(Constant.SEARCH_TAGE, 3);
+                    mIntent.putExtra(Constant.CATEGORY_ID, mCategoryId); //分类id
+                    startActivity(mIntent);
+
+                } else if (mIntExtraTage == HOME_SEARCH) {
+                    finish();
+                    mIntent = new Intent(FirstClassifyDetail.this, SearchActivity.class);
+                    mIntent.putExtra(Constant.SEARCH_TAGE, 2); //从首页跳转
+                    startActivity(mIntent);
+
+                } else if (mIntExtraTage == CATEGORY_SEARCH) {
+                    finish();
+                    mIntent = new Intent(FirstClassifyDetail.this, SearchActivity.class);
+                    mIntent.putExtra(Constant.SEARCH_TAGE, 3);  //从分类搜索跳转
+                    mIntent.putExtra(Constant.CATEGORY_ID, mCategoryId); //分类id
+                    startActivity(mIntent);
+                } else {
+
+                }
+
 
                 break;
         }
@@ -430,131 +521,11 @@ public class FirstClassifyDetail extends AppCompatActivity implements SearchView
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mRadiogroupFirstClassifyDetail.setVisibility(View.GONE);
+        mFirstClassifyDetailLayout.setVisibility(View.GONE);
+        mSortBy = "id";  //筛选,默认id
+        mOrder = "DESC"; //筛选,默认降序
+        mClassifyDetailIv.setImageResource(R.drawable.warehouse_icon_back);
 
     }
-
-
-    private void initData(List<CategoriesContentMode.ChildrenBeanX> data) {
-
-
-    }
-
-    private void initContent(List<CategoriesContentMode.ChildrenBeanX> data) {
-       /* map.clear();
-
-        if (mPotion == 0) {
-
-        } else {
-            mChildrenBeanX = data.get(mPotion - 1);
-            mId = mChildrenBeanX.getId();
-
-            map.put("category_id", String.valueOf(mId));
-        }
-
-        map.put("page", String.valueOf(1));
-        map.put("limit", String.valueOf(20));
-        map.put("sort_by", "id");
-        map.put("order", "DESC");
-        OkHttpUtils
-                .get()
-                .url("https://dist.yumao168.com/api/products")
-                .params(map)
-                .build()
-                .execute(new FirstClassifyDetailCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(List<FirstClassifyDetailMode> response, int id) {
-
-                        //initView(response);
-                    }
-                });*/
-
-
-    }
-
-
-    private void init() {
-        initRadioGroup();
-    }
-
-    private void setSpacing(CustomRadioGroup cg, int widthdp, int heightdp) {
-        cg.setHorizontalSpacing(widthdp);
-        cg.setVerticalSpacing(heightdp);
-
-    }
-
-    private void initRadioGroup() {
-        setDataForRadioGroup();
-        mRadiogroupFirstClassifyDetail.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                group.check(checkedId);
-
-
-            }
-        });
-        mCustomRadioGroup = (CustomRadioGroup) findViewById(R.id.customRadioGroup);
-        setSpacing(mCustomRadioGroup, 12, 8);
-
-        mCustomRadioGroup.setListener(new CustomRadioGroup.OnclickListener() {
-            @Override
-            public void OnText(String text) {
-                mText = text;
-                //mPotion = mTextList.indexOf(text);
-                if (mChildren != null) {
-                    initContent(mChildren);
-                }
-
-            }
-        });
-
-
-    }
-
-    //    初始化RadioGroup,请求网络 获取去RadioButton显示数据,完了更新内容的视图
-    private void setDataForRadioGroup() {
-        OkHttpUtils
-                .get()
-                .url("https://dist.yumao168.com/api/categories/")
-                .build()
-                .execute(new CategoriesContentCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        //Toast.makeText(FirstClassifyDetail.this, "网络连接失败", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    @Override
-                    public void onResponse(CategoriesContentMode response, int id) {
-                        mChildren = response.getChildren();
-                        initData(mChildren);
-                        for (int i = 0; i < mChildren.size() + 1; i++) {
-                            mRadioButton = (RadioButton) FirstClassifyDetail.this.getLayoutInflater().inflate(R.layout.radiobutton_addcart, null);
-                            if (i == 0) {
-                                mRadioButton.setText("所有");
-                                mTextList.add("所有");
-                                mCustomRadioGroup.addView(mRadioButton);
-                                mRadioButton.setChecked(true);
-                            } else {
-                                mRadioButton.setText(mChildren.get(i - 1).getName());
-                                mTextList.add(mChildren.get(i - 1).getName());
-                                mCustomRadioGroup.addView(mRadioButton);
-
-                            }
-
-
-                        }
-
-                        initContent(mChildren);
-                    }
-                });
-
-    }
-
 
 }

@@ -34,6 +34,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
                 android:hint="商品搜索"
+                android:textSize="12dp"
                 android:textColorHint="@color/gray"/>
 
             </LinearLayout>

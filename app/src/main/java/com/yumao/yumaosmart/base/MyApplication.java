@@ -62,8 +62,7 @@ public class MyApplication extends MobApplication {
         //加载图片框架
         Picasso.with(this)
                 .setIndicatorsEnabled(true);//显示指示器
-        Picasso.with(this)
-                .setLoggingEnabled(true);//开启日志打印
+       // Picasso.with(this).setLoggingEnabled(true);//开启日志打印
     }
 
     //初始化Okhttp

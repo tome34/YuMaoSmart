@@ -36,6 +36,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="商品搜索"
+                android:textSize="12sp"
                 android:textColorHint="@color/gray"
                 android:imeOptions="actionSearch"
                 android:inputType="none"
@@ -70,7 +71,7 @@
         android:layout_height="42dp"
         android:background="@color/white"
         android:paddingBottom="10dp"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,12 +84,12 @@
 
         <ImageView
             android:id="@+id/iv_rubbish"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:src="@drawable/ic_rubbish"/>
+            android:src="@drawable/rearch_icon_del"/>
     </RelativeLayout>
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
@@ -97,5 +98,5 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:divider="@android:color/transparent"
-        android:visibility="invisible"/>
+        android:visibility="visible"/>
 </LinearLayout>

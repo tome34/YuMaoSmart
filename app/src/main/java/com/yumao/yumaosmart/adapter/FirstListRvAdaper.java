@@ -148,6 +148,7 @@ public class FirstListRvAdaper extends RecyclerView.Adapter<FirstListRvAdaper.My
                     mIntent = new Intent(UiUtilities.getContex(), FirstClassifyDetail.class);
                     mIntent.putExtra(Constant.CATEGORY_ID, mIdList.get(position-mPictureImageLenght));  //分类的id
                     mIntent.putExtra("vid", mVId);//门店id
+                    mIntent.putExtra(Constant.SEARCH_TAGE,1); //跳转的类型
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(mIntent);
                 }

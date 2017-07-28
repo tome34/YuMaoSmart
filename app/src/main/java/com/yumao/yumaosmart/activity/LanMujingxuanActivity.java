@@ -226,7 +226,7 @@ public class LanMujingxuanActivity extends BaseItemActivity {
         //设置管理器
         mRecyclerview.setLayoutManager(mLayoutManager);
         //设置adapter
-        mAdapter = new LanMujiangXuanAdapter(LanMujingxuanActivity.this, mImageList, mTiltisList, mResalePriceList, mPriceList, mNumberList);
+        mAdapter = new LanMujiangXuanAdapter(LanMujingxuanActivity.this, mImageList, mTiltisList, mResalePriceList, mPriceList, mNumberList,mProductIdList);
 
         mRecyclerview.setAdapter(mAdapter);
 
