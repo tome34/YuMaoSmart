@@ -22,6 +22,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.squareup.picasso.Picasso;
 import com.yumao.yumaosmart.R;
 import com.yumao.yumaosmart.activity.LoginActivity;
+import com.yumao.yumaosmart.activity.MyFavoriteActivity;
 import com.yumao.yumaosmart.activity.MyMaterial2Activity;
 import com.yumao.yumaosmart.activity.MyOrderListActivity;
 import com.yumao.yumaosmart.adapter.PersonnalcenterAdapter;
@@ -175,6 +176,35 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
             @Override
             public void onItenClick(View view, int position) {
                 Toast.makeText(UiUtilities.getContex(), "被点击了" + position, Toast.LENGTH_SHORT).show();
+                if (position == 0){         //我的佣金
+
+
+                }else if(position == 1){    //我的贷款
+
+                }else if(position == 2){    //我的销售
+
+                }else if(position == 3){    //会员订单
+
+                }else if(position == 4){    //我的收藏
+                    mIntent = new Intent(UiUtilities.getContex(), MyFavoriteActivity.class);
+                    startActivity(mIntent);
+
+                }else if(position == 5){    //我的推广
+
+                }else if(position == 6){    //门店资料
+
+                }else if(position == 7){    //中央仓
+
+                }else if(position == 8){    //商品管理
+
+                }else if(position == 9){    //城市分店
+
+                }else if(position == 10){   //城市V店
+
+                }else {
+                    Toast.makeText(UiUtilities.getContex(), "条目暂时未开发" + position, Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override

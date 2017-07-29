@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -42,10 +41,8 @@ import com.yumao.yumaosmart.utils.Arith;
 import com.yumao.yumaosmart.utils.GetNunberUtils;
 import com.yumao.yumaosmart.utils.LogUtils;
 import com.yumao.yumaosmart.utils.UiUtilities;
-import com.yumao.yumaosmart.widgit.AmountView;
 import com.yumao.yumaosmart.widgit.CustomCarGoodsCounterView;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,7 +58,6 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import okhttp3.Call;
-import okhttp3.Response;
 
 
 public class GoodsDetailActivity extends BaseItemActivity {
@@ -133,9 +129,6 @@ public class GoodsDetailActivity extends BaseItemActivity {
     ScrollView mDetailScrolView;
 
 
-    private AmountView mMAmountView;
-    private List<String> mData = new ArrayList<>();
-
     private int mProductId;  //产品id
     private String mVendorName;  //平台名字
 
@@ -155,8 +148,6 @@ public class GoodsDetailActivity extends BaseItemActivity {
 
     private List<String> mDetailStringList; //商品参数 中文key
 
-    private int mStock_quantity;
-    private int mAmount;
 
     private GoodsDetailSpAdapter mSpAdapter;
     private GoodsDetailPiAdapter mPiAdapter;
@@ -547,64 +538,6 @@ public class GoodsDetailActivity extends BaseItemActivity {
         }
     }
 
-    //设置详情页其他数据
-    private void initDetailView() {
-        /*mThumb = mGoodsDetailMode.getThumb();
-        for (int i = 0; i < mPictures.size(); i++) {
-            mImageView = new ImageView(this);
-
-
-            mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            mLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            mImageView.setLayoutParams(mLayoutParams);
-            mViews.add(mImageView);
-            Picasso.with(this).load(mPictures.get(i)).into(mImageView);
-        }
-        mTvActivityGoodsDetailTotalprice.setText(String.valueOf(mGoodsDetailMode.getPrice()));
-        mVpActivityGoodsDetailTop.setAdapter(new FirstViewPagerAdapter(mViews));
-        mTvActivityGoodsDetailGoodsname.setText(mGoodsDetailMode.getName());
-        mTvActivityGoodsDetailGoodsprice.setText(String.valueOf(mGoodsDetailMode.getPrice()));
-        mTvActivityGoodsLineCode.setText(mGoodsDetailMode.getSku());
-        mTvActivityGoodsTimeLimit.setText(mGoodsDetailMode.getWork_duration());
-//        mManufacturers = (List<String>) mGoodsDetailMode.getManufacturers();
-        mManufacturers = mGoodsDetailMode.getManufacturers();
-        if (!(mManufacturers == null)) {
-            mStringBuilder = new StringBuilder();
-            for (int i = 0; i < mManufacturers.size(); i++) {
-                map = (Map) mManufacturers.get(i);
-                mStr = (String) map.get("name");
-                mStringBuilder.append(mStr);
-            }
-            mTvActivityGoodsParamaterBrand.setText(mS);
-        } else {
-            mTvActivityGoodsParamaterBrand.setText(R.string.brand_yumaopintai);
-        }
-        mTvActivityGoodsParamaterDescription.setText(mGoodsDetailMode.getShort_description());
-        mVendor = mGoodsDetailMode.getVendor();
-        mActivityGoodsDetailAddress.setText(mVendor.getAddress());
-        // Picasso.with(this).load(mVendor.getLogo()).into( mIvActivityGoodsDetailStoresLogo);
-        mTvActivityGoodsDetailNumInthestores.setText(String.valueOf(mVendor.getProduct_amount()));
-        mVendorId = mVendor.getId();*/
-
-    }
-
-    //    初始化AmountView
-    private void initAmountView() {
-        mMAmountView = (AmountView) findViewById(R.id.amount_view);
-        mMAmountView.setGoods_storage(50);
-
-        mMAmountView.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
-            @Override
-            public void onAmountChange(View view, int amount) {
-
-               /* if (amount <= mStock_quantity) {
-                    mAmount = amount;
-                    mTvActivityGoodsDetailTotalprice.setText(String.valueOf(mGoodsDetailMode.getPrice() * mAmount));
-                }*/
-
-            }
-        });
-    }
 
     @OnClick({R.id.detail_activity_collection_iv,
             R.id.detail_activity_forward_iv,
@@ -614,12 +547,12 @@ public class GoodsDetailActivity extends BaseItemActivity {
     })
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.detail_activity_collection_iv:
-                break;
-            case R.id.detail_activity_forward_iv:
+
+            case R.id.detail_activity_forward_iv:    //转发图片
+
                 startActivity(new Intent(this, ConfirmOrderActivity.class));
                 break;
-            case R.id.detail_activity_shoppingcard_bt:
+            case R.id.detail_activity_shoppingcard_bt: //加入购物车
              /*   if (mStock_quantity > 0 && mAmount > 0) {
                     add2shoppingcard();
                 } else {
@@ -629,8 +562,13 @@ public class GoodsDetailActivity extends BaseItemActivity {
                    // LogUtils.d("点击了加入购物车"+mProductId);
 
                 break;
+            case R.id.detail_activity_collection_iv:  //我的收藏
+                //加入我的收藏
+                MyFavorite();
 
-            case R.id.detail_activity_get_it_now_bt:
+                break;
+
+            case R.id.detail_activity_get_it_now_bt:   //立即购买
                 /*if (!(mVendorId == 0)) {
                     Intent intent = new Intent();
                     intent.putExtra("venderId", mVendorId);
@@ -648,6 +586,12 @@ public class GoodsDetailActivity extends BaseItemActivity {
         }
     }
 
+    //加入我的搜藏
+    private void MyFavorite() {
+
+    }
+
+    //分享
     private void showShare() {
 
         OnekeyShare oks = new OnekeyShare();
@@ -686,32 +630,4 @@ public class GoodsDetailActivity extends BaseItemActivity {
         oks.show(this);
     }
 
-    private void add2shoppingcard() {
-        OkHttpUtils
-                .post()
-                .url("https://dist.yumao168.com/api/customers/" + UiUtilities.getUser().getId() + "/shopping-cart-items")
-                .addHeader("X-API-TOKEN", "" + UiUtilities.getUser().getToken())
-                .addParams("product_id", "" + mProductId)
-                .addParams("store_id", "1")
-                .addParams("quantity", "" + mAmount)
-                .build()
-                .execute(new Callback() {
-                    @Override
-                    public Object parseNetworkResponse(Response response, int id) throws Exception {
-                        return null;
-                    }
-
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(GoodsDetailActivity.this, "加入购物车失败", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    @Override
-                    public void onResponse(Object response, int id) {
-                        Toast.makeText(GoodsDetailActivity.this, "加入购物车成功", Toast.LENGTH_SHORT).show();
-                        mStock_quantity = mStock_quantity - mAmount;
-                    }
-                });
-    }
 }
